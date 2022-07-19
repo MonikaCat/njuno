@@ -189,7 +189,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator) error {
 // and persists them to the database along with attributable metadata. An error
 // is returned if the write fails.
 func (w Worker) ExportBlock(
-	b *tmctypes.ResultBlock, r *tmctypes.ResultBlockResults, txs []types.TxResponseTest, vals *tmctypes.ResultValidators,
+	b *tmctypes.ResultBlock, r *tmctypes.ResultBlockResults, txs []types.TxResponse, vals *tmctypes.ResultValidators,
 ) error {
 	// Save all validators
 	err := w.SaveValidators(vals.Validators)
@@ -266,7 +266,7 @@ func (w Worker) ExportCommit(commit *tmtypes.Commit, vals *tmctypes.ResultValida
 
 // ExportTxs accepts a slice of transactions and persists then inside the database.
 // An error is returned if the write fails.
-func (w Worker) ExportTxs(txs []types.TxResponseTest) error {
+func (w Worker) ExportTxs(txs []types.TxResponse) error {
 	// Handle all transactions inside the block
 	for _, tx := range txs {
 		// Save  transaction in database

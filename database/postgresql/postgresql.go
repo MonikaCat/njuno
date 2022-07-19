@@ -116,7 +116,7 @@ VALUES ($1, $2, $3, $4, $5, $6) ON CONFLICT DO NOTHING`
 }
 
 // SaveTx implements database.Database
-func (db *Database) SaveTx(tx types.TxResponseTest) error {
+func (db *Database) SaveTx(tx types.TxResponse) error {
 	var partitionID int64
 	partitionSize := config.Cfg.Database.PartitionSize
 	if partitionSize > 0 {
@@ -131,7 +131,7 @@ func (db *Database) SaveTx(tx types.TxResponseTest) error {
 }
 
 // saveTxInsidePartition stores the given transaction inside the partition having the given id
-func (db *Database) saveTxInsidePartition(tx types.TxResponseTest, partitionId int64) error {
+func (db *Database) saveTxInsidePartition(tx types.TxResponse, partitionId int64) error {
 	sqlStatement := `
 INSERT INTO transaction 
 (hash, height, memo, signatures, fee, gas, partition_id) 

@@ -192,41 +192,18 @@ func (cp *Node) BlockResults(height int64) (*tmctypes.ResultBlockResults, error)
 	return cp.client.BlockResults(cp.ctx, &height)
 }
 
-// Tx implements node.Node
-func (cp *Node) Tx(hash string) (bdtypes.TxResponse, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/tx?hash=0x%s&prove=false", cp.clientNode, hash))
-	if err != nil {
-		return bdtypes.TxResponse{}, err
-	}
-
-	defer resp.Body.Close()
-
-	bz, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return bdtypes.TxResponse{}, err
-	}
-
-	var tx bdtypes.TxResponse
-	err = json.Unmarshal([]byte(bz), &tx)
-	if err != nil {
-		return bdtypes.TxResponse{}, fmt.Errorf("error while unmarshaling tx: %s", err)
-	}
-
-	return tx, nil
-}
-
 // Txs implements node.Node
-func (cp *Node) Txs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponseTest, error) {
-	txResponses := make([]bdtypes.TxResponseTest, len(block.Block.Txs))
+func (cp *Node) Txs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponse, error) {
+	txResponses := make([]bdtypes.TxResponse, len(block.Block.Txs))
 
 	// get tx details from the block
-	var transaction bdtypes.TxResponseTest
+	var transaction bdtypes.TxResponse
 	for _, t := range block.Block.Txs {
 		err := json.Unmarshal(t, &transaction)
 		if err != nil {
 			// continue
 		}
-		txResponses = append(txResponses, bdtypes.NewTxResponseTest(transaction.Fee, transaction.Memo, transaction.Msg, transaction.Signatures, fmt.Sprintf("%X", t.Hash()), block.Block.Height))
+		txResponses = append(txResponses, bdtypes.NewTxResponse(transaction.Fee, transaction.Memo, transaction.Msg, transaction.Signatures, fmt.Sprintf("%X", t.Hash()), block.Block.Height))
 	}
 
 	return txResponses, nil

@@ -58,7 +58,7 @@ func NewDbCoins(coins sdk.Coins) DbCoins {
 // _________________________________________________________
 
 // NewDBSignatures returns signatures in string array
-func NewDBSignatures(signaturesList []types.BDSignatures) []string {
+func NewDBSignatures(signaturesList []types.TxSignatures) []string {
 	var signatures []string
 	for _, index := range signaturesList {
 		signatures = append(signatures, index.Signature)
