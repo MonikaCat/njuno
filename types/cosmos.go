@@ -12,15 +12,41 @@ import (
 
 // Validator contains the data of a single validator
 type Validator struct {
-	ConsAddr   string
-	ConsPubKey string
+	ConsensusAddr       string
+	ConsPubKey          string
+	OperatorAddr        string
+	SelfDelegateAddress string
+	Height              int64
 }
 
 // NewValidator allows to build a new Validator instance
-func NewValidator(consAddr string, consPubKey string) *Validator {
-	return &Validator{
-		ConsAddr:   consAddr,
-		ConsPubKey: consPubKey,
+func NewValidator(
+	consAddr string, opAddr string, consPubKey string,
+	selfDelegateAddress string,
+	height int64,
+) Validator {
+	return Validator{
+		ConsensusAddr:       consAddr,
+		ConsPubKey:          consPubKey,
+		OperatorAddr:        opAddr,
+		SelfDelegateAddress: selfDelegateAddress,
+		Height:              height,
+	}
+}
+
+// ValidatorVotingPower represents the voting power of a validator at a specific block height
+type ValidatorVotingPower struct {
+	ConsensusAddress string
+	VotingPower      int64
+	Height           int64
+}
+
+// NewValidatorVotingPower creates a new ValidatorVotingPower
+func NewValidatorVotingPower(address string, votingPower int64, height int64) ValidatorVotingPower {
+	return ValidatorVotingPower{
+		ConsensusAddress: address,
+		VotingPower:      votingPower,
+		Height:           height,
 	}
 }
 

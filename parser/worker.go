@@ -164,22 +164,35 @@ func (w Worker) HandleGenesis(genesisDoc *tmtypes.GenesisDoc, appState map[strin
 // SaveValidators persists a list of Tendermint validators with an address and a
 // consensus public key. An error is returned if the public key cannot be Bech32
 // encoded or if the DB write fails.
-func (w Worker) SaveValidators(vals []*tmtypes.Validator) error {
-	var validators = make([]*types.Validator, len(vals))
+func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
+	var validators = make([]types.Validator, len(vals))
+	var validatorsVP = make([]types.ValidatorVotingPower, len(vals))
+
 	for index, val := range vals {
 		consAddr := sdk.ConsAddress(val.Address).String()
+		selfDelegateAddress := sdk.AccAddress(val.Address).String()
 
 		consPubKey, err := types.ConvertValidatorPubKeyToBech32String(val.PubKey)
 		if err != nil {
 			return fmt.Errorf("failed to convert validator public key for validators %s: %s", consAddr, err)
 		}
+		validatorAddress, err := sdk.ValAddressFromHex(val.Address.String())
+		if err != nil {
+			fmt.Printf("failed to convert validator address from hex: %s", err)
+		}
 
-		validators[index] = types.NewValidator(consAddr, consPubKey)
+		validators[index] = types.NewValidator(consAddr, validatorAddress.String(), consPubKey, selfDelegateAddress, height)
+		validatorsVP[index] = types.NewValidatorVotingPower(consAddr, val.VotingPower, height)
 	}
 
 	err := w.db.SaveValidators(validators)
 	if err != nil {
 		return fmt.Errorf("error while saving validators: %s", err)
+	}
+
+	err = w.db.SaveValidatorsVotingPowers(validatorsVP)
+	if err != nil {
+		return fmt.Errorf("error while saving validators voting powers: %s", err)
 	}
 
 	return nil
@@ -192,7 +205,7 @@ func (w Worker) ExportBlock(
 	b *tmctypes.ResultBlock, r *tmctypes.ResultBlockResults, txs []types.TxResponse, vals *tmctypes.ResultValidators,
 ) error {
 	// Save all validators
-	err := w.SaveValidators(vals.Validators)
+	err := w.SaveValidators(vals.Validators, b.Block.Height)
 	if err != nil {
 		return err
 	}

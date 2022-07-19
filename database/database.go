@@ -36,8 +36,12 @@ type Database interface {
 
 	// SaveValidators stores a list of validators if they do not already exist.
 	// An error is returned if the operation fails.
-	SaveValidators(validators []*types.Validator) error
+	SaveValidators(validators []types.Validator) error
 
+	// SaveValidatorsVotingPowers stores a list of validators voting power.
+	// An error is returned if the operation fails.
+	SaveValidatorsVotingPowers(entries []types.ValidatorVotingPower) error
+	
 	// SaveCommitSignatures stores a  slice of validator commit signatures.
 	// An error is returned if the operation fails.
 	SaveCommitSignatures(signatures []*types.CommitSig) error

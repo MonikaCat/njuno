@@ -164,25 +164,86 @@ func (db *Database) HasValidator(addr string) (bool, error) {
 }
 
 // SaveValidators implements database.Database
-func (db *Database) SaveValidators(validators []*types.Validator) error {
+func (db *Database) SaveValidators(validators []types.Validator) error {
 	if len(validators) == 0 {
 		return nil
 	}
 
-	stmt := `INSERT INTO validator (consensus_address, consensus_pubkey) VALUES `
+	validatorQuery := `INSERT INTO validator (consensus_address, consensus_pubkey) VALUES `
 
-	var vparams []interface{}
-	for i, val := range validators {
-		vi := i * 2
+	validatorInfoQuery := `
+INSERT INTO validator_info (consensus_address, operator_address, self_delegate_address, height) 
+VALUES `
+	var validatorInfoParams []interface{}
+	var validatorParams []interface{}
 
-		stmt += fmt.Sprintf("($%d, $%d),", vi+1, vi+2)
-		vparams = append(vparams, val.ConsAddr, val.ConsPubKey)
+	for i, validator := range validators {
+		vp := i * 2
+		vi := i * 4 // Starting position for validator info params
+
+		validatorQuery += fmt.Sprintf("($%d,$%d),", vp+1, vp+2)
+		validatorParams = append(validatorParams,
+			validator.ConsensusAddr, validator.ConsPubKey)
+
+		validatorInfoQuery += fmt.Sprintf("($%d,$%d,$%d,$%d),", vi+1, vi+2, vi+3, vi+4)
+		validatorInfoParams = append(validatorInfoParams,
+			validator.ConsensusAddr, validator.OperatorAddr, validator.SelfDelegateAddress,
+			validator.Height,
+		)
 	}
 
-	stmt = stmt[:len(stmt)-1] // Remove trailing ,
-	stmt += " ON CONFLICT DO NOTHING"
-	_, err := db.Sql.Exec(stmt, vparams...)
-	return err
+	validatorQuery = validatorQuery[:len(validatorQuery)-1] // Remove trailing ","
+	validatorQuery += " ON CONFLICT DO NOTHING"
+	_, err := db.Sql.Exec(validatorQuery, validatorParams...)
+	if err != nil {
+		return fmt.Errorf("error while storing valdiators: %s", err)
+	}
+
+	validatorInfoQuery = validatorInfoQuery[:len(validatorInfoQuery)-1] // Remove the trailing ","
+	validatorInfoQuery += `
+ON CONFLICT (consensus_address) DO UPDATE 
+	SET consensus_address = excluded.consensus_address,
+		operator_address = excluded.operator_address,
+		self_delegate_address = excluded.self_delegate_address,
+		height = excluded.height
+WHERE validator_info.height <= excluded.height`
+	_, err = db.Sql.Exec(validatorInfoQuery, validatorInfoParams...)
+	if err != nil {
+		return fmt.Errorf("error while storing validator infos: %s", err)
+	}
+
+	return nil
+}
+
+// SaveValidatorsVotingPowers saves the given validator voting powers.
+func (db *Database) SaveValidatorsVotingPowers(entries []types.ValidatorVotingPower) error {
+	if len(entries) == 0 {
+		return nil
+	}
+
+	stmt := `INSERT INTO validator_voting_power (validator_address, voting_power, height) VALUES `
+	var params []interface{}
+
+	for i, entry := range entries {
+		pi := i * 3
+		stmt += fmt.Sprintf("($%d,$%d,$%d),", pi+1, pi+2, pi+3)
+		params = append(params, entry.ConsensusAddress, entry.VotingPower, entry.Height)
+	}
+
+	stmt = stmt[:len(stmt)-1]
+	stmt += `
+ON CONFLICT (validator_address) DO UPDATE 
+	SET voting_power = excluded.voting_power, 
+		height = excluded.height
+WHERE validator_voting_power.height <= excluded.height`
+
+	_, err := db.Sql.Exec(stmt, params...)
+	if err != nil {
+		return fmt.Errorf("error while storing validators voting power: %s", err)
+	}
+
+	return nil
+
 }
 
 // SaveCommitSignatures implements database.Database
