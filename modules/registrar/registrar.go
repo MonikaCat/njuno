@@ -28,7 +28,7 @@ import (
 
 // Context represents the context of the modules registrar
 type Context struct {
-	JunoConfig     config.Config
+	NJunoConfig    config.Config
 	SDKConfig      *sdk.Config
 	EncodingConfig *params.EncodingConfig
 	Database       database.Database
@@ -42,7 +42,7 @@ func NewContext(
 	database database.Database, proxy node.Node, logger logging.Logger,
 ) Context {
 	return Context{
-		JunoConfig:     parsingConfig,
+		NJunoConfig:    parsingConfig,
 		SDKConfig:      sdkConfig,
 		EncodingConfig: encodingConfig,
 		Database:       database,
@@ -97,10 +97,10 @@ func (r *DefaultRegistrar) BuildModules(ctx Context) modules.Modules {
 		ibc.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		messages.NewModule(r.parser, ctx.EncodingConfig.Marshaler, ctx.Database),
 		mint.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
-		pricefeed.NewModule(ctx.JunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
-		pruning.NewModule(ctx.JunoConfig, ctx.Database, ctx.Logger),
+		pricefeed.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
+		pruning.NewModule(ctx.NJunoConfig, ctx.Database, ctx.Logger),
 		staking.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
-		telemetry.NewModule(ctx.JunoConfig),
+		telemetry.NewModule(ctx.NJunoConfig),
 	}
 }
 

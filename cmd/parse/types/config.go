@@ -34,12 +34,12 @@ func ReadConfig(cfg *Config) (config.Config, error) {
 // UpdatedGlobalCfg parses the configuration file using the provided configuration and sets the
 // parsed config as the global one
 func UpdatedGlobalCfg(cfg *Config) error {
-	junoCfg, err := ReadConfig(cfg)
+	nJunoCfg, err := ReadConfig(cfg)
 	if err != nil {
 		return err
 	}
 
 	// Set the global configuration
-	config.Cfg = junoCfg
+	config.Cfg = nJunoCfg
 	return nil
 }
