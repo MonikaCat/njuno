@@ -48,5 +48,5 @@ func NewRPCConfig(clientName, address string, maxConnections int) *RPCConfig {
 
 // DefaultRPCConfig returns the default instance of RPCConfig
 func DefaultRPCConfig() *RPCConfig {
-	return NewRPCConfig("juno", "http://localhost:26657", 20)
+	return NewRPCConfig("njuno", "http://localhost:26657", 20)
 }

@@ -14,7 +14,7 @@ var (
 	Cfg Config
 )
 
-// Config defines all necessary juno configuration parameters.
+// Config defines all necessary nJuno configuration parameters.
 type Config struct {
 	bytes []byte
 

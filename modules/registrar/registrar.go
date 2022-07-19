@@ -77,7 +77,7 @@ var (
 	_ Registrar = &DefaultRegistrar{}
 )
 
-// DefaultRegistrar represents a registrar that allows to handle the default Juno modules
+// DefaultRegistrar represents a registrar that allows to handle the default nJuno modules
 type DefaultRegistrar struct {
 	parser messages.MessageAddressesParser
 }

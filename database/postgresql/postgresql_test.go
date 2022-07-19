@@ -33,10 +33,10 @@ func (suite *DbTestSuite) SetupTest() {
 
 	// Build the database
 	dbCfg := databaseconfig.NewDatabaseConfig(
-		"bdjuno",
+		"njuno",
 		"localhost",
 		6433,
-		"bdjuno",
+		"njuno",
 		"password",
 		"",
 		"public",

@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	// JunoConfig the runner
-	config := cmd.NewConfig("juno").
+	// NJunoConfig the runner
+	config := cmd.NewConfig("njuno").
 		WithParseConfig(types.NewConfig().
 			WithRegistrar(registrar.NewDefaultRegistrar(
 				messages.CosmosMessageAddressesParser,

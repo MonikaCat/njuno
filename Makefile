@@ -24,11 +24,11 @@ BUILD_FLAGS := -ldflags '$(LD_FLAGS)'
 
 build: go.sum
 ifeq ($(OS),Windows_NT)
-	@echo "building juno binary..."
-	@go build -mod=readonly $(BUILD_FLAGS) -o build/juno.exe ./cmd/juno
+	@echo "building njuno binary..."
+	@go build -mod=readonly $(BUILD_FLAGS) -o build/njuno.exe ./cmd/njuno
 else
-	@echo "building juno binary..."
-	@go build -mod=readonly $(BUILD_FLAGS) -o build/juno ./cmd/juno
+	@echo "building njuno binary..."
+	@go build -mod=readonly $(BUILD_FLAGS) -o build/njuno ./cmd/njuno
 endif
 .PHONY: build
 
@@ -37,8 +37,8 @@ endif
 ###############################################################################
 
 install: go.sum
-	@echo "installing juno binary..."
-	@go install -mod=readonly $(BUILD_FLAGS) ./cmd/juno
+	@echo "installing njuno binary..."
+	@go install -mod=readonly $(BUILD_FLAGS) ./cmd/njuno
 .PHONY: install
 
 ###############################################################################
@@ -47,12 +47,12 @@ install: go.sum
 
 stop-docker-test:
 	@echo "Stopping Docker container..."
-	@docker stop bdjuno-test-db || true && docker rm bdjuno-test-db || true
+	@docker stop njuno-test-db || true && docker rm njuno-test-db || true
 .PHONY: stop-docker-test
 
 start-docker-test: stop-docker-test
 	@echo "Starting Docker container..."
-	@docker run --name bdjuno-test-db -e POSTGRES_USER=bdjuno -e POSTGRES_PASSWORD=password -e POSTGRES_DB=bdjuno -d -p 6433:5432 postgres
+	@docker run --name njuno-test-db -e POSTGRES_USER=njuno -e POSTGRES_PASSWORD=password -e POSTGRES_DB=njuno -d -p 6433:5432 postgres
 .PHONY: start-docker-test
 
 coverage:
@@ -76,7 +76,7 @@ lint-fix:
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/forbole/juno
+	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/MonikaCat/njuno
 .PHONY: format
 
 clean:

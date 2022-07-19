@@ -10,7 +10,7 @@ import (
 // Parser represents a function that allows to parse a file contents as a Config object
 type Parser = func(fileContents []byte) (Config, error)
 
-// DefaultConfigParser attempts to read and parse a Juno config from the given string bytes.
+// DefaultConfigParser attempts to read and parse a nJuno config from the given string bytes.
 // An error reading or parsing the config results in a panic.
 func DefaultConfigParser(configData []byte) (Config, error) {
 	var cfg = Config{

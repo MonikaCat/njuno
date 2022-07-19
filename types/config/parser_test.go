@@ -16,7 +16,7 @@ chain:
 node: 
   type: remote
   rpc:
-    client_name: juno
+    client_name: njuno
     address: http://localhost:26657
 
 logging:
@@ -33,7 +33,7 @@ parser:
 
 database:
   host: localhost
-  name: juno
+  name: njuno
   password: password
   port: 5432
   schema: public

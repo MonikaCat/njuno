@@ -16,7 +16,7 @@ func TestConfig_UnmarshalYAML(t *testing.T) {
 type: "remote"
 config:
   rpc:
-    client_name: "juno"
+    client_name: "njuno"
     max_connections: 1
     address: "http://localhost:26657"
 `
@@ -32,7 +32,7 @@ func TestConfig_MarshalYAML(t *testing.T) {
 		Type: nodeconfig.TypeRemote,
 		Details: &remote.Details{
 			RPC: &remote.RPCConfig{
-				ClientName:     "juno",
+				ClientName:     "njuno",
 				Address:        "http://localhost:26657",
 				MaxConnections: 10,
 			},
@@ -45,7 +45,7 @@ func TestConfig_MarshalYAML(t *testing.T) {
 type: remote
 config:
     rpc:
-        client_name: juno
+        client_name: njuno
         address: http://localhost:26657
         max_connections: 10
 `

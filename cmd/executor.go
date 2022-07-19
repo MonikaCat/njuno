@@ -8,7 +8,6 @@ import (
 	"github.com/MonikaCat/njuno/types/config"
 
 	initcmd "github.com/MonikaCat/njuno/cmd/init"
-	migratecmd "github.com/MonikaCat/njuno/cmd/migrate"
 	parsecmd "github.com/MonikaCat/njuno/cmd/parse"
 	startcmd "github.com/MonikaCat/njuno/cmd/start"
 
@@ -44,7 +43,6 @@ func BuildDefaultExecutor(config *Config) cli.Executor {
 		initcmd.NewInitCmd(config.GetInitConfig()),
 		parsecmd.NewParseCmd(config.GetParseConfig()),
 		startcmd.NewStartCmd(config.GetParseConfig()),
-		migratecmd.NewMigrateCmd(config.GetName(), config.GetParseConfig()),
 	)
 
 	return PrepareRootCmd(config.GetName(), rootCmd)

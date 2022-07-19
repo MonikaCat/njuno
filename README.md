@@ -1,16 +1,15 @@
 <div align="center">
-  <h1> Juno </h1>
+  <h1> nJuno </h1>
 </div>
 
 ![banner](.docs/.img/logo.png)
 
-> This branch is intended to be used with Cosmos SDK `v0.40.x`.
+> This branch is intended to be used with Cosmos SDK `v0.42.x`.
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/forbole/juno/Tests)](https://github.com/forbole/juno/actions?query=workflow%3ATests)
-[![Go Report Card](https://goreportcard.com/badge/github.com/forbole/juno)](https://goreportcard.com/report/github.com/forbole/juno)
-[![Codecov](https://img.shields.io/codecov/c/github/forbole/juno)](https://codecov.io/gh/forbole/juno/branch/v3/cosmos-stargate)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/MonikaCat/njuno/Tests)](https://github.com/MonikaCat/njuno/actions?query=workflow%3ATests)
+[![Go Report Card](https://goreportcard.com/badge/github.com/MonikaCat/njuno)](https://goreportcard.com/report/github.com/MonikaCat/njuno)
 
-> Juno is a Cosmos Hub blockchain data aggregator and exporter that provides the ability for developers and clients to query for indexed chain data.
+> nJuno is a Nomic blockchain data aggregator and exporter that provides the ability for developers and clients to query for indexed chain data.
 
 ## Table of Contents
   - [Background](#background)
@@ -20,7 +19,7 @@
   - [License](#license)
 
 ## Background
-This version of Juno is a fork of [FissionLabs's Juno](https://github.com/fissionlabsio/juno). 
+This version of nJuno is a fork of [FissionLabs's Juno](https://github.com/fissionlabsio/juno). 
 
 The main reason behind the fork what to improve the original project by: 
 
@@ -31,20 +30,8 @@ We achieved the first objective by supporting both PostgreSQL and MongoDB. We al
 
 On the other hand, to achieve a highly modular code, we implemented extension points through the `worker.RegisterBlockHandler`, `worker.RegisterTxHandler` and `worker.RegisterMsgHandler` methods. You can use those to extend the default working of the code (which simply parses and saves the data on the database) with whatever operation you want.    
 
-## Compatibility table
-Since the Cosmos SDK has evolved a lot, we have different versions of Juno available.
-
-| Juno version | Cosmos SDK Version  | Juno branch |
-| :----------------: | :---------: | :----------: |
-| v3.0.0 | Stargate <br> (`v0.40.x`, `v0.41.x`, `v0.42.x`) | `v3/cosmos-stargate` | 
-| v3.0.0 | `v0.44.x` | `v3/cosmos-v0.44.x` | 
-| v2.0.0 | Stargate <br> (`v0.40.x`, `v0.41.x`, `v0.42.x`) | `v2/cosmos-stargate`  |
-|  v2.0.0 |`v0.44.x` | `v2/cosmos-v0.44.x` | 
-
-
-
 ## Usage
-To know how to set up and run Juno, please refer to the [docs folder](.docs).
+To know how to set up and run nJuno, please refer to the [docs folder](.docs).
 
 ## Testing
 If you want to test the code, you can do so by running
