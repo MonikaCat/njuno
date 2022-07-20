@@ -3,8 +3,11 @@ package parser
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 
 	"github.com/MonikaCat/njuno/logging"
+	"gopkg.in/yaml.v2"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 
@@ -165,12 +168,13 @@ func (w Worker) HandleGenesis(genesisDoc *tmtypes.GenesisDoc, appState map[strin
 // consensus public key. An error is returned if the public key cannot be Bech32
 // encoded or if the DB write fails.
 func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
-	var validators = make([]types.Validator, len(vals))
-	var validatorsVP = make([]types.ValidatorVotingPower, len(vals))
+	var validators []types.Validator
+	// = make([]types.Validator, len(vals))
+	var validatorsVP []types.ValidatorVotingPower
+	// = make([]types.ValidatorVotingPower, len(vals))
 
-	for index, val := range vals {
+	for _, val := range vals {
 		consAddr := sdk.ConsAddress(val.Address).String()
-		selfDelegateAddress := sdk.AccAddress(val.Address).String()
 
 		consPubKey, err := types.ConvertValidatorPubKeyToBech32String(val.PubKey)
 		if err != nil {
@@ -181,8 +185,25 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 			fmt.Printf("failed to convert validator address from hex: %s", err)
 		}
 
-		validators[index] = types.NewValidator(consAddr, validatorAddress.String(), consPubKey, selfDelegateAddress, height)
-		validatorsVP[index] = types.NewValidatorVotingPower(consAddr, val.VotingPower, height)
+		cfg := config.Cfg.Parser
+		c := &types.ValidatorsList{}
+		yamlFile, err := ioutil.ReadFile(cfg.ValidatorsListFilePath)
+		if err != nil {
+			log.Printf("error while reading yaml file: %s ", err)
+		}
+		err = yaml.Unmarshal(yamlFile, c)
+		if err != nil {
+			log.Printf("error while unmarshaling yaml file: %s ", err)
+		}
+
+		for _, entry := range c.Validators {
+			if entry.Validator.Hex == val.Address.String() {
+				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))
+			}
+		}
+
+		// validators[index] = types.NewValidator(consAddr, validatorAddress.String(), consPubKey, selfDelegateAddress, height)
+		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr, val.VotingPower, height))
 	}
 
 	err := w.db.SaveValidators(validators)

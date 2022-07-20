@@ -136,3 +136,19 @@ func NewGenesis(chainID string, startTime time.Time, initialHeight int64) *Genes
 		InitialHeight: initialHeight,
 	}
 }
+
+// ValidatorsList represents validators list
+type ValidatorsList struct {
+	bytes      []byte
+	Validators []ValidatorList `yaml:"validators"`
+}
+
+type ValidatorList struct {
+	Validator ValidatorInfo `yaml:"validator"`
+}
+type ValidatorInfo struct {
+	Hex     string `yaml:"hex"`
+	Address string `yaml:"address"`
+	Moniker string `yaml:"moniker"`
+	Details string `yaml:"details"`
+}
