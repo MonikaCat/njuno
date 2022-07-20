@@ -16,3 +16,12 @@ CREATE TABLE validator_voting_power
     height            BIGINT NOT NULL
 );
 CREATE INDEX validator_voting_power_height_index ON validator_voting_power (height);
+
+CREATE TABLE validator_description
+(
+    validator_address TEXT   NOT NULL REFERENCES validator (consensus_address) PRIMARY KEY,
+    moniker           TEXT,
+    details           TEXT,
+    height            BIGINT NOT NULL
+);
+CREATE INDEX validator_description_height_index ON validator_description (height);

@@ -93,3 +93,25 @@ func ToNullString(value string) sql.NullString {
 		String: value,
 	}
 }
+
+// _________________________________________________________
+
+// ValidatorDescriptionRow represent a row in validator_description
+type ValidatorDescriptionRow struct {
+	ValAddress string         `db:"validator_address"`
+	Moniker    sql.NullString `db:"moniker"`
+	Details    sql.NullString `db:"details"`
+	Height     int64          `db:"height"`
+}
+
+// NewValidatorDescriptionRow return a row representing data structure in validator_description
+func NewValidatorDescriptionRow(
+	valAddress, moniker, details string, height int64,
+) ValidatorDescriptionRow {
+	return ValidatorDescriptionRow{
+		ValAddress: valAddress,
+		Moniker:    ToNullString(moniker),
+		Details:    ToNullString(details),
+		Height:     height,
+	}
+}

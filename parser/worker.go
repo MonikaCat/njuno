@@ -172,6 +172,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 	// = make([]types.Validator, len(vals))
 	var validatorsVP []types.ValidatorVotingPower
 	// = make([]types.ValidatorVotingPower, len(vals))
+	var validatorsDesc []types.ValidatorDescription
 
 	for _, val := range vals {
 		consAddr := sdk.ConsAddress(val.Address).String()
@@ -199,6 +200,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 		for _, entry := range c.Validators {
 			if entry.Validator.Hex == val.Address.String() {
 				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))
+				validatorsDesc = append(validatorsDesc, types.NewValidatorDescription(consAddr, entry.Validator.Details, entry.Validator.Moniker, height))
 			}
 		}
 
@@ -212,6 +214,10 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 	}
 
 	err = w.db.SaveValidatorsVotingPowers(validatorsVP)
+	if err != nil {
+		return fmt.Errorf("error while saving validators voting powers: %s", err)
+	}
+	err = w.db.SaveValidatorDescription(validatorsDesc)
 	if err != nil {
 		return fmt.Errorf("error while saving validators voting powers: %s", err)
 	}

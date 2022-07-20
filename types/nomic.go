@@ -152,3 +152,24 @@ type ValidatorInfo struct {
 	Moniker string `yaml:"moniker"`
 	Details string `yaml:"details"`
 }
+
+// ValidatorDescription contains the description of a validator
+// and timestamp do the description get changed
+type ValidatorDescription struct {
+	OperatorAddress string
+	Description     string
+	Moniker         string
+	Height          int64
+}
+
+// NewValidatorDescription returns a new ValidatorDescription object
+func NewValidatorDescription(
+	opAddr string, description string, moniker string, height int64,
+) ValidatorDescription {
+	return ValidatorDescription{
+		OperatorAddress: opAddr,
+		Description:     description,
+		Moniker:         moniker,
+		Height:          height,
+	}
+}
