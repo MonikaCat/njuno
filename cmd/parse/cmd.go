@@ -20,7 +20,6 @@ func NewParseCmd(parseCfg *parsecmdtypes.Config) *cobra.Command {
 	cmd.AddCommand(
 		parseblocks.NewBlocksCmd(parseCfg),
 		parsegenesis.NewGenesisCmd(parseCfg),
-		// parsetransactions.NewTransactionsCmd(parseCfg),
 	)
 
 	return cmd

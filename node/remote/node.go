@@ -341,7 +341,7 @@ func (cp *Node) AccountBalance(address string) (sdk.Coins, error) {
 		return sdk.Coins{}, fmt.Errorf("error while processing account balance of address %s: %s", address, err)
 	}
 
-	var balance banktypes.QueryAllBalancesResponse
+	var balance types.QueryAllBalancesResponse
 	err = json.Unmarshal(bz, &balance)
 	if err != nil {
 		return sdk.Coins{}, fmt.Errorf("error while unmarshaling account balance of address %s: %s", address, err)

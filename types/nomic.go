@@ -173,3 +173,13 @@ func NewValidatorDescription(
 		Height:          height,
 	}
 }
+
+type QueryAllBalancesResponse struct {
+	Balances   sdk.Coins     `son:"balances"`
+	Pagination *PageResponse `json:"pagination,omitempty"`
+}
+
+type PageResponse struct {
+	NextKey []byte `json:"next_key,omitempty"`
+	Total   string `json:"total,omitempty"`
+}

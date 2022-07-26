@@ -6,6 +6,7 @@ import (
 
 	"github.com/MonikaCat/njuno/node"
 
+	"github.com/MonikaCat/njuno/modules/actions"
 	"github.com/MonikaCat/njuno/modules/bank"
 	"github.com/MonikaCat/njuno/modules/consensus"
 	"github.com/MonikaCat/njuno/modules/ibc"
@@ -92,6 +93,7 @@ func NewDefaultRegistrar(parser messages.MessageAddressesParser) *DefaultRegistr
 // BuildModules implements Registrar
 func (r *DefaultRegistrar) BuildModules(ctx Context) modules.Modules {
 	return modules.Modules{
+		actions.NewModule(ctx.NJunoConfig, ctx.EncodingConfig),
 		bank.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		consensus.NewModule(ctx.Database),
 		ibc.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
