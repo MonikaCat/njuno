@@ -34,24 +34,18 @@ var (
 	_ node.Node = &Node{}
 )
 
-var nomicNode = "https://app.nomic.io:8443/"
-
 // Node implements a wrapper around both a Tendermint RPCConfig client and a
 // chain SDK REST client that allows for essential data queries.
 type Node struct {
-	ctx        context.Context
-	codec      codec.Marshaler
-	client     *httpclient.HTTP
-	clientNode string // Full (REST client) node
-
-	// rpcClient rpcclient.Client // Tendermint (RPC client) node
-	// txServiceClient tx.C
-	// grpcConnection  *grpc.ClientConn
+	ctx      context.Context
+	codec    codec.Marshaler
+	client   *httpclient.HTTP
+	RPCNode  string // RPC node
+	RESTNode string // REST node
 }
 
 // NewNode allows to build a new Node instance
 func NewNode(cfg *Details, codec codec.Marshaler) (*Node, error) {
-	clientNode := "http://138.197.71.46:26657"
 	httpClient, err := jsonrpcclient.DefaultHTTPClient(cfg.RPC.Address)
 	if err != nil {
 		return nil, err
@@ -78,8 +72,9 @@ func NewNode(cfg *Details, codec codec.Marshaler) (*Node, error) {
 		ctx:   context.Background(),
 		codec: codec,
 
-		client:     rpcClient,
-		clientNode: clientNode,
+		client:   rpcClient,
+		RPCNode:  cfg.RPC.Address,
+		RESTNode: cfg.REST.Address,
 	}, nil
 }
 
@@ -236,7 +231,7 @@ func (cp *Node) Stop() {
 
 // Supply implements node.Node
 func (cp *Node) Supply() (sdk.Coins, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/cosmos/bank/v1beta1/supply/unom", nomicNode))
+	resp, err := http.Get(fmt.Sprintf("%s/cosmos/bank/v1beta1/supply/unom", cp.RESTNode))
 	if err != nil {
 		return sdk.Coins{}, fmt.Errorf("error while getting total supply: %s", err)
 	}
@@ -261,7 +256,7 @@ func (cp *Node) Supply() (sdk.Coins, error) {
 
 // Inflation implements node.Node
 func (cp *Node) Inflation() (string, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/cosmos/mint/v1beta1/inflation", nomicNode))
+	resp, err := http.Get(fmt.Sprintf("%s/cosmos/mint/v1beta1/inflation", cp.RESTNode))
 	if err != nil {
 		return "", fmt.Errorf("error while getting inflation: %s", err)
 	}
@@ -283,7 +278,7 @@ func (cp *Node) Inflation() (string, error) {
 
 // StkingPool implements node.Node
 func (cp *Node) StakingPool() (stakingtypes.Pool, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/cosmos/staking/v1beta1/pool", nomicNode))
+	resp, err := http.Get(fmt.Sprintf("%s/cosmos/staking/v1beta1/pool", cp.RESTNode))
 	if err != nil {
 		return stakingtypes.Pool{}, fmt.Errorf("error while getting staking pool: %s", err)
 	}
@@ -306,7 +301,7 @@ func (cp *Node) StakingPool() (stakingtypes.Pool, error) {
 
 // IBCParams implements node.Node
 func (cp *Node) IBCParams() (types.IBCTransactionParams, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/ibc/apps/transfer/v1/params", nomicNode))
+	resp, err := http.Get(fmt.Sprintf("%s/ibc/apps/transfer/v1/params", cp.RESTNode))
 	if err != nil {
 		return types.IBCTransactionParams{}, fmt.Errorf("error while getting ibc params: %s", err)
 	}
@@ -329,7 +324,7 @@ func (cp *Node) IBCParams() (types.IBCTransactionParams, error) {
 
 // AccountBalance implements node.Node
 func (cp *Node) AccountBalance(address string) (sdk.Coins, error) {
-	resp, err := http.Get(fmt.Sprintf("%s/cosmos/bank/v1beta1/balances/%s", nomicNode, address))
+	resp, err := http.Get(fmt.Sprintf("%s/cosmos/bank/v1beta1/balances/%s", cp.RESTNode, address))
 	if err != nil {
 		return sdk.Coins{}, fmt.Errorf("error while getting account balance of address %s: %s", address, err)
 	}

@@ -17,7 +17,6 @@ var (
 func GetHeightRequestContext(context context.Context, height int64) context.Context {
 	return metadata.AppendToOutgoingContext(
 		context,
-		// grpctypes.GRPCBlockHeightHeader,
 		strconv.FormatInt(height, 10),
 	)
 }
