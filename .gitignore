@@ -1,0 +1,10 @@
+build/
+
+# Configuration
+*.json
+config.yaml
+
+# Coverage
+coverage.*
+
+.DS_Store
