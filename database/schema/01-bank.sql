@@ -1,9 +1,3 @@
-CREATE TYPE COIN AS
-(
-    denom  TEXT,
-    amount TEXT
-);
-
 CREATE TABLE supply
 (
     one_row_id BOOLEAN NOT NULL DEFAULT TRUE PRIMARY KEY,

@@ -1,3 +1,9 @@
+CREATE TYPE COIN AS
+(
+    denom  TEXT,
+    amount TEXT
+);
+
 CREATE TABLE validator
 (
     consensus_address TEXT NOT NULL PRIMARY KEY, /* Validator consensus address */
