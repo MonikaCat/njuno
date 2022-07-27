@@ -3,8 +3,8 @@ package node
 import (
 	"context"
 
-	"github.com/MonikaCat/njuno/types"
 	bdtypes "github.com/MonikaCat/njuno/types"
+	types "github.com/MonikaCat/njuno/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	constypes "github.com/tendermint/tendermint/consensus/types"
