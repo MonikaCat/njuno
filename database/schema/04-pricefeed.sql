@@ -1,4 +1,3 @@
-
 CREATE TABLE token
 (
     name TEXT NOT NULL UNIQUE

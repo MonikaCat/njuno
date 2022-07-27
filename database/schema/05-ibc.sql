@@ -1,4 +1,3 @@
-
 CREATE TABLE ibc_params
 (
     one_row_id BOOLEAN NOT NULL DEFAULT TRUE PRIMARY KEY,
