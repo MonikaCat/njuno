@@ -35,7 +35,7 @@ func (m *Module) updateIBCParams() error {
 
 	params, err := m.source.IBCParams()
 	if err != nil {
-		return fmt.Errorf("error while getting params: %s", err)
+		return fmt.Errorf("error while getting ibc params: %s", err)
 	}
 
 	return m.db.SaveIBCParams(types.NewIBCParams(params, height))
