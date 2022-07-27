@@ -30,10 +30,6 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveTx(tx types.TxResponse) error
 
-	// HasValidator returns true if a given validator by consensus address exists.
-	// An error is returned if the operation fails.
-	HasValidator(address string) (bool, error)
-
 	// SaveValidators stores a list of validators if they do not already exist.
 	// An error is returned if the operation fails.
 	SaveValidators(validators []types.Validator) error

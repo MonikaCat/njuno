@@ -9,11 +9,11 @@ import (
 	parsegenesis "github.com/MonikaCat/njuno/cmd/parse/genesis"
 )
 
-// NewParseCmd returns the Cobra command allowing to parse some chain data without having to re-sync the whole database
+// NewParseCmd returns the Cobra command allowing to parse chain data without having to re-sync the whole database
 func NewParseCmd(parseCfg *parsecmdtypes.Config) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:               "parse",
-		Short:             "Parse some data without the need to re-syncing the whole database from scratch",
+		Short:             "Parse data without the need to re-sync the whole database from scratch",
 		PersistentPreRunE: runPersistentPreRuns(parsecmdtypes.ReadConfigPreRunE(parseCfg)),
 	}
 

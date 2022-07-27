@@ -34,12 +34,6 @@ func NewConfig() *Config {
 	return &Config{}
 }
 
-// WithConfigCreator sets the given setup function as the configuration creator
-func (c *Config) WithConfigCreator(creator ConfigCreator) *Config {
-	c.createConfig = creator
-	return c
-}
-
 // GetConfigCreator return the function that should be run to create a configuration from a set of
 // flags specified by the user with the "init" command
 func (c *Config) GetConfigCreator() ConfigCreator {

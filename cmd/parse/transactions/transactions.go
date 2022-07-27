@@ -24,7 +24,7 @@ func newTransactionsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 		Use:   "all",
 		Short: "Parse missing or incomplete transactions",
 		Long: fmt.Sprintf(`Refetch missing or incomplete transactions and store them inside the database. 
-You can specify a custom height range by using the %s and %s flags. 
+You can set a custom height range by using the %s and %s flags. 
 `, flagStart, flagEnd),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			parseCtx, err := parsecmdtypes.GetParserContext(config.Cfg, parseConfig)

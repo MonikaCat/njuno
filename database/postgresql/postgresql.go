@@ -155,14 +155,6 @@ ON CONFLICT (hash, partition_id) DO UPDATE
 	return nil
 }
 
-// HasValidator implements database.Database
-func (db *Database) HasValidator(addr string) (bool, error) {
-	var res bool
-	stmt := `SELECT EXISTS(SELECT 1 FROM validator WHERE consensus_address = $1);`
-	err := db.Sql.QueryRow(stmt, addr).Scan(&res)
-	return res, err
-}
-
 // SaveValidators implements database.Database
 func (db *Database) SaveValidators(validators []types.Validator) error {
 	if len(validators) == 0 {

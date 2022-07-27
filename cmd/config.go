@@ -24,12 +24,6 @@ func (c *Config) GetName() string {
 	return c.name
 }
 
-// WithInitConfig sets cfg as the parse command configuration
-func (c *Config) WithInitConfig(cfg *initcmd.Config) *Config {
-	c.initConfig = cfg
-	return c
-}
-
 // GetInitConfig returns the currently set parse configuration
 func (c *Config) GetInitConfig() *initcmd.Config {
 	if c.initConfig == nil {

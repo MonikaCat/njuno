@@ -40,24 +40,12 @@ func (cfg *Config) GetRegistrar() registrar.Registrar {
 	return cfg.registrar
 }
 
-// WithConfigParser sets the configuration parser to be used
-func (cfg *Config) WithConfigParser(p config.Parser) *Config {
-	cfg.configParser = p
-	return cfg
-}
-
 // GetConfigParser returns the configuration parser to be used
 func (cfg *Config) GetConfigParser() config.Parser {
 	if cfg.configParser == nil {
 		return config.DefaultConfigParser
 	}
 	return cfg.configParser
-}
-
-// WithEncodingConfigBuilder sets the configurations builder to be used
-func (cfg *Config) WithEncodingConfigBuilder(b EncodingConfigBuilder) *Config {
-	cfg.encodingConfigBuilder = b
-	return cfg
 }
 
 // GetEncodingConfigBuilder returns the encoding config builder to be used
@@ -68,12 +56,6 @@ func (cfg *Config) GetEncodingConfigBuilder() EncodingConfigBuilder {
 	return cfg.encodingConfigBuilder
 }
 
-// WithSetupConfig sets the SDK setup configurator to be used
-func (cfg *Config) WithSetupConfig(s SdkConfigSetup) *Config {
-	cfg.setupCfg = s
-	return cfg
-}
-
 // GetSetupConfig returns the SDK configuration builder to use
 func (cfg *Config) GetSetupConfig() SdkConfigSetup {
 	if cfg.setupCfg == nil {
@@ -82,24 +64,12 @@ func (cfg *Config) GetSetupConfig() SdkConfigSetup {
 	return cfg.setupCfg
 }
 
-// WithDBBuilder sets the database builder to be used
-func (cfg *Config) WithDBBuilder(b database.Builder) *Config {
-	cfg.buildDb = b
-	return cfg
-}
-
 // GetDBBuilder returns the database builder to be used
 func (cfg *Config) GetDBBuilder() database.Builder {
 	if cfg.buildDb == nil {
 		return builder.Builder
 	}
 	return cfg.buildDb
-}
-
-// WithLogger sets the logger to be used while parsing the data
-func (cfg *Config) WithLogger(logger logging.Logger) *Config {
-	cfg.logger = logger
-	return cfg
 }
 
 // GetLogger returns the logger to be used when parsing the data
