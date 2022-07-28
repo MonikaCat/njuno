@@ -1,4 +1,4 @@
-package pricefeed
+package token
 
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -6,19 +6,18 @@ import (
 	"github.com/MonikaCat/njuno/database"
 	"github.com/MonikaCat/njuno/logging"
 	"github.com/MonikaCat/njuno/modules"
-	"github.com/MonikaCat/njuno/modules/token"
 	source "github.com/MonikaCat/njuno/node"
 	"github.com/MonikaCat/njuno/types/config"
 )
 
 var (
-	_ modules.Module                   = &Module{}
-	_ modules.PeriodicOperationsModule = &Module{}
+	_ modules.Module                     = &Module{}
+	_ modules.AdditionalOperationsModule = &Module{}
 )
 
 // Module represents the pricefeed module
 type Module struct {
-	cfg    *token.Config
+	cfg    *Config
 	cdc    codec.Marshaler
 	db     database.Database
 	logger logging.Logger
@@ -31,7 +30,7 @@ func NewModule(cfg config.Config, cdc codec.Marshaler, db database.Database, log
 		panic(err)
 	}
 
-	pricefeedCfg, err := token.ParseConfig(bz)
+	pricefeedCfg, err := ParseConfig(bz)
 	if err != nil {
 		panic(err)
 	}
@@ -47,5 +46,5 @@ func NewModule(cfg config.Config, cdc codec.Marshaler, db database.Database, log
 
 // Name implements modules.Module
 func (m *Module) Name() string {
-	return "pricefeed"
+	return "token"
 }

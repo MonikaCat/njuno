@@ -1,4 +1,4 @@
-package pricefeed
+package token
 
 import (
 	"gopkg.in/yaml.v3"

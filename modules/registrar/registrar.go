@@ -14,6 +14,7 @@ import (
 	"github.com/MonikaCat/njuno/modules/pricefeed"
 	"github.com/MonikaCat/njuno/modules/staking"
 	"github.com/MonikaCat/njuno/modules/telemetry"
+	"github.com/MonikaCat/njuno/modules/token"
 
 	"github.com/MonikaCat/njuno/logging"
 
@@ -103,6 +104,7 @@ func (r *DefaultRegistrar) BuildModules(ctx Context) modules.Modules {
 		pruning.NewModule(ctx.NJunoConfig, ctx.Database, ctx.Logger),
 		staking.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		telemetry.NewModule(ctx.NJunoConfig),
+		token.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 	}
 }
 

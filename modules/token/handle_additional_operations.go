@@ -1,4 +1,4 @@
-package pricefeed
+package token
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ func (m *Module) RunAdditionalOperations() error {
 // checkConfig checks if the module config is valid
 func (m *Module) checkConfig() error {
 	if m.cfg == nil {
-		return fmt.Errorf("pricefeed config is not set but module is enabled")
+		return fmt.Errorf("token config is not set but module is enabled")
 	}
 
 	return nil
@@ -27,7 +27,7 @@ func (m *Module) checkConfig() error {
 
 // storeTokens stores the tokens defined inside the given configuration into the database
 func (m *Module) storeTokens() error {
-	log.Debug().Str("module", "pricefeed").Msg("storing tokens")
+	log.Debug().Str("module", "token").Msg("storing tokens")
 
 	for _, coin := range m.cfg.Tokens {
 		// Save the coin as a token with its units

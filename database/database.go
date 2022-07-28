@@ -122,6 +122,14 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveDoubleSignEvidence(evidence types.DoubleSignEvidence) error
 
+	// GetTokensPriceID returns token ID stored in database.
+	// An error is returned if the operation fails.
+	GetTokensPriceID() ([]string, error)
+
+	// SaveTokensPrice stores tokens price in database.
+	// An error is returned if the operation fails.
+	SaveTokensPrice(prices []types.TokenPrice) error
+
 	// Close closes the connection to the database
 	Close()
 }
