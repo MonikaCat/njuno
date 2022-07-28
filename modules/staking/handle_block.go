@@ -14,11 +14,11 @@ func (m *Module) HandleBlock(
 	block *tmctypes.ResultBlock, _ *tmctypes.ResultBlockResults, _ *tmctypes.ResultValidators,
 ) error {
 
-	// Update the staking pool
-	go m.updateStakingPool(block.Block.Height)
-
-	// Update the double sign evidences
+	// Update double sign evidences
 	go m.updateDoubleSignEvidence(block.Block.Height, block.Block.Evidence.Evidence)
+
+	// Update staking pool
+	go m.updateStakingPool(block.Block.Height)
 
 	return nil
 }

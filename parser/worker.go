@@ -204,7 +204,6 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 			}
 		}
 
-		// validators[index] = types.NewValidator(consAddr, validatorAddress.String(), consPubKey, selfDelegateAddress, height)
 		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr, val.VotingPower, height))
 	}
 
