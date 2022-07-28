@@ -74,10 +74,6 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveIBCParams(params *types.IBCParams) error
 
-	// SaveAccountBalance stores the account balance value.
-	// An error is returned if the operation fails.
-	SaveAccountBalance(balances types.AccountBalance) error
-
 	// SaveToken stores the token details.
 	// An error is returned if the operation fails.
 	SaveToken(token types.Token) error

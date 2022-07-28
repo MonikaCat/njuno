@@ -466,22 +466,6 @@ WHERE ibc_params.height <= excluded.height`
 	return nil
 }
 
-func (db *Database) SaveAccountBalance(balance types.AccountBalance) error {
-	stmt := `
-INSERT INTO account_balance (address, coins, height) 
-VALUES ($1, $2, $3)
-ON CONFLICT (address) DO UPDATE 
-	SET coins = excluded.coins, 
-	    height = excluded.height 
-WHERE account_balance.height <= excluded.height`
-
-	_, err := db.Sql.Exec(stmt, balance.Address, balance.Balance, balance.Height)
-	if err != nil {
-		return fmt.Errorf("error while storing account balance: %s", err)
-	}
-	return nil
-}
-
 // SaveToken allows to save the given token details
 func (db *Database) SaveToken(token types.Token) error {
 	query := `INSERT INTO token (name) VALUES ($1) ON CONFLICT DO NOTHING`

@@ -2,8 +2,8 @@ CREATE TABLE validator_info
 (
     consensus_address     TEXT   NOT NULL UNIQUE PRIMARY KEY REFERENCES validator (consensus_address),
     operator_address      TEXT   NOT NULL UNIQUE,
-    self_delegate_address TEXT REFERENCES account (address),
-    height                BIGINT NOT NULL
+    self_delegate_address TEXT,
+    height                BIGINT NOT NULL REFERENCES block (height)
 );
 CREATE INDEX validator_info_operator_address_index ON validator_info (operator_address);
 CREATE INDEX validator_info_self_delegate_address_index ON validator_info (self_delegate_address);
@@ -12,7 +12,7 @@ CREATE TABLE validator_voting_power
 (
     validator_address TEXT   NOT NULL REFERENCES validator (consensus_address) PRIMARY KEY,
     voting_power      BIGINT NOT NULL,
-    height            BIGINT NOT NULL
+    height            BIGINT NOT NULL REFERENCES block (height)
 );
 CREATE INDEX validator_voting_power_height_index ON validator_voting_power (height);
 
@@ -21,7 +21,7 @@ CREATE TABLE validator_description
     validator_address TEXT   NOT NULL REFERENCES validator (consensus_address) PRIMARY KEY,
     moniker           TEXT,
     details           TEXT,
-    height            BIGINT NOT NULL
+    height            BIGINT NOT NULL REFERENCES block (height)
 );
 CREATE INDEX validator_description_height_index ON validator_description (height);
 
@@ -36,7 +36,7 @@ CREATE TABLE double_sign_vote
     height            BIGINT   NOT NULL,
     round             INT      NOT NULL,
     block_id          TEXT     NOT NULL,
-    validator_address TEXT     NOT NULL,
+    validator_address TEXT     NOT NULL REFERENCES validator (consensus_address),
     validator_index   INT      NOT NULL,
     signature         TEXT     NOT NULL,
     UNIQUE (block_id, validator_address)

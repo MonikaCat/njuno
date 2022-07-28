@@ -7,12 +7,3 @@ CREATE TABLE supply
 );
 CREATE INDEX supply_height_index ON supply (height);
 
-
-CREATE TABLE account_balance
-(
-    address TEXT   NOT NULL PRIMARY KEY,
-    coins   COIN[] NOT NULL DEFAULT '{}',
-    height  BIGINT NOT NULL
-);
-CREATE INDEX account_balance_height_index ON account_balance (height);
-
