@@ -15,7 +15,7 @@ var (
 	_ modules.AdditionalOperationsModule = &Module{}
 )
 
-// Module represents the pricefeed module
+// Module represents the token module
 type Module struct {
 	cfg    *Config
 	cdc    codec.Marshaler
@@ -30,13 +30,13 @@ func NewModule(cfg config.Config, cdc codec.Marshaler, db database.Database, log
 		panic(err)
 	}
 
-	pricefeedCfg, err := ParseConfig(bz)
+	tokenCfg, err := ParseConfig(bz)
 	if err != nil {
 		panic(err)
 	}
 
 	return &Module{
-		cfg:    pricefeedCfg,
+		cfg:    tokenCfg,
 		cdc:    cdc,
 		db:     db,
 		logger: logger,

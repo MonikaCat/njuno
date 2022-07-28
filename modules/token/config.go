@@ -6,7 +6,7 @@ import (
 	"github.com/MonikaCat/njuno/types"
 )
 
-// Config contains the configuration about the pricefeed module
+// Config contains the configuration about the token and pricefeed module
 type Config struct {
 	Tokens []types.Token `yaml:"tokens"`
 }
