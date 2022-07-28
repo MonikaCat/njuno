@@ -122,6 +122,10 @@ type Database interface {
 	// An error is returned if the operation fails.
 	GetBlockHeightTimeMinuteAgo(now time.Time) (dbtypes.BlockRow, error)
 
+	// SaveDoubleSignEvidence stores double sign record in database.
+	// An error is returned if the operation fails.
+	SaveDoubleSignEvidence(evidence types.DoubleSignEvidence) error
+
 	// Close closes the connection to the database
 	Close()
 }

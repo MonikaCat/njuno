@@ -24,3 +24,34 @@ CREATE TABLE validator_description
     height            BIGINT NOT NULL
 );
 CREATE INDEX validator_description_height_index ON validator_description (height);
+
+
+
+/* ---- DOUBLE SIGN EVIDENCE ---- */
+
+CREATE TABLE double_sign_vote
+(
+    id                SERIAL PRIMARY KEY,
+    type              SMALLINT NOT NULL,
+    height            BIGINT   NOT NULL,
+    round             INT      NOT NULL,
+    block_id          TEXT     NOT NULL,
+    validator_address TEXT     NOT NULL,
+    validator_index   INT      NOT NULL,
+    signature         TEXT     NOT NULL,
+    UNIQUE (block_id, validator_address)
+);
+CREATE INDEX double_sign_vote_validator_address_index ON double_sign_vote (validator_address);
+CREATE INDEX double_sign_vote_height_index ON double_sign_vote (height);
+
+/*
+ * This holds the double sign evidences.
+ * It should be updated on a on BLOCK basis.
+ */
+CREATE TABLE double_sign_evidence
+(
+    height    BIGINT NOT NULL,
+    vote_a_id BIGINT NOT NULL REFERENCES double_sign_vote (id),
+    vote_b_id BIGINT NOT NULL REFERENCES double_sign_vote (id)
+);
+CREATE INDEX double_sign_evidence_height_index ON double_sign_evidence (height);

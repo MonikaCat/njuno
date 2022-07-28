@@ -655,3 +655,40 @@ WHERE average_block_time_per_day.height <= excluded.height`
 
 	return nil
 }
+
+// SaveDoubleSignEvidence saves the given double sign evidence inside the proper tables
+func (db *Database) SaveDoubleSignEvidence(evidence types.DoubleSignEvidence) error {
+	voteA, err := db.saveDoubleSignVote(evidence.VoteA)
+	if err != nil {
+		return fmt.Errorf("error while storing double sign vote: %s", err)
+	}
+
+	voteB, err := db.saveDoubleSignVote(evidence.VoteB)
+	if err != nil {
+		return fmt.Errorf("error while storing double sign vote: %s", err)
+	}
+
+	stmt := `
+INSERT INTO double_sign_evidence (height, vote_a_id, vote_b_id) 
+VALUES ($1, $2, $3) ON CONFLICT DO NOTHING`
+	_, err = db.Sql.Exec(stmt, evidence.Height, voteA, voteB)
+	if err != nil {
+		return fmt.Errorf("error while storing double sign evidence: %s", err)
+	}
+
+	return nil
+}
+
+// saveDoubleSignVote saves the given vote inside the database, returning the row id
+func (db *Database) saveDoubleSignVote(vote types.DoubleSignVote) (int64, error) {
+	stmt := `
+INSERT INTO double_sign_vote 
+    (type, height, round, block_id, validator_address, validator_index, signature) 
+VALUES ($1, $2, $3, $4, $5, $6, $7) ON CONFLICT DO NOTHING RETURNING id`
+
+	var id int64
+	err := db.Sql.QueryRow(stmt,
+		vote.Type, vote.Height, vote.Round, vote.BlockID, vote.ValidatorAddress, vote.ValidatorIndex, vote.Signature,
+	).Scan(&id)
+	return id, err
+}
