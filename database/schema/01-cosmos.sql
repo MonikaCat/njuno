@@ -1,15 +1,12 @@
-CREATE TYPE COIN AS
-(
-    denom  TEXT,
-    amount TEXT
-);
-
+/* ---- VALIDATOR ---- */
 CREATE TABLE validator
 (
     consensus_address TEXT NOT NULL PRIMARY KEY, /* Validator consensus address */
     consensus_pubkey  TEXT NOT NULL UNIQUE /* Validator consensus public key */
 );
 
+
+/* ---- BLOCK ---- */
 CREATE TABLE block
 (
     height           BIGINT  UNIQUE PRIMARY KEY,
@@ -23,6 +20,8 @@ CREATE INDEX block_height_index ON block (height);
 CREATE INDEX block_hash_index ON block (hash);
 CREATE INDEX block_proposer_address_index ON block (proposer_address);
 
+
+/* ---- PRE COMMIT ---- */
 CREATE TABLE pre_commit
 (
     validator_address TEXT                        NOT NULL REFERENCES validator (consensus_address),
@@ -35,6 +34,8 @@ CREATE TABLE pre_commit
 CREATE INDEX pre_commit_validator_address_index ON pre_commit (validator_address);
 CREATE INDEX pre_commit_height_index ON pre_commit (height);
 
+
+/* ---- TRANSACTION ---- */
 CREATE TABLE transaction
 (
     hash         TEXT    NOT NULL,

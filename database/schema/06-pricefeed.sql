@@ -1,4 +1,4 @@
-
+/* ---- TOKEN PRICE ---- */
 CREATE TABLE token_price
 (
     id         SERIAL                      NOT NULL PRIMARY KEY,
