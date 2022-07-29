@@ -169,6 +169,7 @@ type ValidatorInfo struct {
 	Address    string `yaml:"address"`
 	Commission string `yaml:"commission"`
 	Details    string `yaml:"details"`
+	Identity   string `yaml:"identity"`
 	Moniker    string `yaml:"moniker"`
 }
 
@@ -177,17 +178,19 @@ type ValidatorInfo struct {
 type ValidatorDescription struct {
 	OperatorAddress string
 	Description     string
+	Identity        string
 	Moniker         string
 	Height          int64
 }
 
 // NewValidatorDescription returns a new ValidatorDescription object
 func NewValidatorDescription(
-	opAddr string, description string, moniker string, height int64,
+	opAddr string, description string, identity string, moniker string, height int64,
 ) ValidatorDescription {
 	return ValidatorDescription{
 		OperatorAddress: opAddr,
 		Description:     description,
+		Identity:        identity,
 		Moniker:         moniker,
 		Height:          height,
 	}

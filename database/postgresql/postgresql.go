@@ -240,16 +240,17 @@ WHERE validator_voting_power.height <= excluded.height`
 
 // SaveValidatorDescription save validators description in database.
 func (db *Database) SaveValidatorDescription(description []types.ValidatorDescription) error {
-	stmt := `INSERT INTO validator_description (validator_address, moniker, details, height) VALUES `
+	stmt := `INSERT INTO validator_description (validator_address, moniker, identity, details, height) VALUES `
 
 	var descriptionList []interface{}
 	for i, desc := range description {
-		si := i * 4
+		si := i * 5
 
-		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4)
+		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4, si+5)
 		descriptionList = append(descriptionList,
 			dbtypes.ToNullString(desc.OperatorAddress),
 			dbtypes.ToNullString(desc.Moniker),
+			dbtypes.ToNullString(desc.Identity),
 			dbtypes.ToNullString(desc.Description),
 			desc.Height)
 	}
@@ -258,6 +259,7 @@ func (db *Database) SaveValidatorDescription(description []types.ValidatorDescri
 	stmt += ` ON CONFLICT (validator_address) DO UPDATE
     SET moniker = excluded.moniker, 
         details = excluded.details,
+		identity = excluded.identity,
         height = excluded.height
 WHERE validator_description.height <= excluded.height`
 	_, err := db.Sql.Exec(stmt, descriptionList...)

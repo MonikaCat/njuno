@@ -117,7 +117,34 @@ func NewValidatorDescriptionRow(
 	}
 }
 
-// --------------------------------------------------------------------------------------------------------------------
+// _________________________________________________________
+
+// ValidatorCommissionRow represents a single row of the validator_commission database table
+type ValidatorCommissionRow struct {
+	OperatorAddress string `db:"validator_address"`
+	Commission      string `db:"commission"`
+	Height          int64  `db:"height"`
+}
+
+// NewValidatorCommissionRow allows to easily build a new ValidatorCommissionRow instance
+func NewValidatorCommissionRow(
+	operatorAddress string, commission string, height int64,
+) ValidatorCommissionRow {
+	return ValidatorCommissionRow{
+		OperatorAddress: operatorAddress,
+		Commission:      commission,
+		Height:          height,
+	}
+}
+
+// Equal tells whether v and w represent the same rows
+func (v ValidatorCommissionRow) Equal(w ValidatorCommissionRow) bool {
+	return v.OperatorAddress == w.OperatorAddress &&
+		v.Commission == w.Commission &&
+		v.Height == w.Height
+}
+
+// _________________________________________________________
 
 type TokenUnitRow struct {
 	TokenName string         `db:"token_name"`
@@ -132,7 +159,7 @@ type TokenRow struct {
 	TradedUnit string `db:"traded_unit"`
 }
 
-// --------------------------------------------------------------------------------------------------------------------
+// _________________________________________________________
 
 // TokenPriceRow represent a row of the table token_price in the database
 type TokenPriceRow struct {

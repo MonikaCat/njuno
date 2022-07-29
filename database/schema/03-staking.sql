@@ -25,8 +25,9 @@ CREATE TABLE validator_description
 (
     validator_address TEXT   NOT NULL REFERENCES validator (consensus_address) PRIMARY KEY,
     moniker           TEXT,
+    identity          TEXT,
     details           TEXT,
-    height            BIGINT NOT NULL REFERENCES block (height)
+    height            BIGINT NOT NULL
 );
 CREATE INDEX validator_description_height_index ON validator_description (height);
 
@@ -34,9 +35,9 @@ CREATE INDEX validator_description_height_index ON validator_description (height
 /* ---- VALIDATOR COMMISSION ---- */
 CREATE TABLE validator_commission
 (
-    validator_address   TEXT NOT NULL PRIMARY KEY REFERENCES validator (consensus_address) ,
+    validator_address   TEXT NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
     commission          TEXT NOT NULL,
-    height              BIGINT NOT NULL 
+    height              BIGINT NOT NULL
 );
 CREATE INDEX validator_commission_height_index ON validator_commission (height);
 

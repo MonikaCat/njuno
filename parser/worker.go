@@ -200,7 +200,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 		for _, entry := range c.Validators {
 			if entry.Validator.Hex == val.Address.String() {
 				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))
-				validatorsDesc = append(validatorsDesc, types.NewValidatorDescription(consAddr, entry.Validator.Details, entry.Validator.Moniker, height))
+				validatorsDesc = append(validatorsDesc, types.NewValidatorDescription(consAddr, entry.Validator.Details, entry.Validator.Identity, entry.Validator.Moniker, height))
 			}
 		}
 
