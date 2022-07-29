@@ -19,7 +19,7 @@ func (m *Module) RunAdditionalOperations() error {
 	return nil
 }
 
-// saveValidatorsCommission stores validator commision in database 
+// saveValidatorsCommission stores validator commision in database
 func (m *Module) saveValidatorsCommission() error {
 	var validatorsDesc []types.ValidatorCommission
 
@@ -39,8 +39,19 @@ func (m *Module) saveValidatorsCommission() error {
 		log.Printf("error while getting the latest block height: %s ", err)
 	}
 
+	// get validator address from validator_description table
+	validatorDescList, err := m.db.GetValidatorsDescription()
+	if err != nil {
+		log.Printf("error while getting validators description: %s ", err)
+	}
+
 	for _, val := range validatorList.Validators {
-		validatorsDesc = append(validatorsDesc, types.NewValidatorCommission(val.Validator.Address, val.Validator.Commission, height))
+		for _, desc := range validatorDescList {
+			if desc.Identity == val.Validator.Identity && desc.Moniker == val.Validator.Moniker {
+				validatorsDesc = append(validatorsDesc, types.NewValidatorCommission(desc.OperatorAddress, val.Validator.Commission, height))
+
+			}
+		}
 	}
 
 	err = m.db.SaveValidatorCommission(validatorsDesc)

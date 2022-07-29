@@ -42,6 +42,10 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveValidatorDescription(description []types.ValidatorDescription) error
 
+	// GetValidatorsDescription returns validators description stored in database.
+	// An error is returned if the operation fails.
+	GetValidatorsDescription() ([]types.ValidatorDescription, error)
+
 	// SaveCommitSignatures stores a  slice of validator commit signatures.
 	// An error is returned if the operation fails.
 	SaveCommitSignatures(signatures []*types.CommitSig) error

@@ -267,6 +267,32 @@ WHERE validator_description.height <= excluded.height`
 
 }
 
+// GetValidatorDescription returns validators description from database.
+func (db *Database) GetValidatorsDescription() ([]types.ValidatorDescription, error) {
+	var result []dbtypes.ValidatorDescriptionRow
+	stmt := `SELECT * FROM validator_description`
+
+	err := db.Sqlx.Select(&result, stmt)
+	if err != nil {
+		return nil, nil
+	}
+
+	if len(result) == 0 {
+		return nil, nil
+	}
+	var list []types.ValidatorDescription
+	for _, index := range result {
+		list = append(list,
+			types.NewValidatorDescription(index.ValAddress,
+				dbtypes.ToString(index.Details),
+				dbtypes.ToString(index.Identity),
+				dbtypes.ToString(index.Moniker),
+				index.Height))
+	}
+
+	return list, nil
+}
+
 // --------------------------------------------------------------------------------------------------------------------
 
 // SaveValidatorCommission saves validators commission in database.
@@ -278,7 +304,7 @@ func (db *Database) SaveValidatorCommission(validatorsCommission []types.Validat
 		si := i * 3
 		stmt += fmt.Sprintf("($%d, $%d, $%d),", si+1, si+2, si+3)
 		commissionList = append(commissionList,
-			dbtypes.ToNullString(sdk.ConsAddress(data.ValAddress).String()),
+			dbtypes.ToNullString(data.ValAddress),
 			dbtypes.ToNullString(data.Commission),
 			data.Height)
 	}
