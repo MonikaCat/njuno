@@ -87,6 +87,13 @@ func NewGenesisRow(chainID string, time time.Time, initialHeight int64) GenesisR
 
 // _________________________________________________________
 
+func ToString(value sql.NullString) string {
+	if value.Valid {
+		return value.String
+	}
+	return ""
+}
+
 func ToNullString(value string) sql.NullString {
 	value = strings.TrimSpace(value)
 	return sql.NullString{
@@ -101,17 +108,19 @@ func ToNullString(value string) sql.NullString {
 type ValidatorDescriptionRow struct {
 	ValAddress string         `db:"validator_address"`
 	Moniker    sql.NullString `db:"moniker"`
+	Identity   sql.NullString `db:"identity"`
 	Details    sql.NullString `db:"details"`
 	Height     int64          `db:"height"`
 }
 
 // NewValidatorDescriptionRow return a row representing data structure in validator_description
 func NewValidatorDescriptionRow(
-	valAddress, moniker, details string, height int64,
+	valAddress, moniker, identity, details string, height int64,
 ) ValidatorDescriptionRow {
 	return ValidatorDescriptionRow{
 		ValAddress: valAddress,
 		Moniker:    ToNullString(moniker),
+		Identity:   ToNullString(identity),
 		Details:    ToNullString(details),
 		Height:     height,
 	}
