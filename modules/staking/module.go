@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	_ modules.Module      = &Module{}
-	_ modules.BlockModule = &Module{}
+	_ modules.Module                     = &Module{}
+	_ modules.BlockModule                = &Module{}
+	_ modules.AdditionalOperationsModule = &Module{}
 )
 
 // Module represents the staking module

@@ -31,6 +31,16 @@ CREATE TABLE validator_description
 CREATE INDEX validator_description_height_index ON validator_description (height);
 
 
+/* ---- VALIDATOR COMMISSION ---- */
+CREATE TABLE validator_commission
+(
+    validator_address   TEXT NOT NULL PRIMARY KEY REFERENCES validator (consensus_address) ,
+    commission          TEXT NOT NULL,
+    height              BIGINT NOT NULL 
+);
+CREATE INDEX validator_commission_height_index ON validator_commission (height);
+
+
 /* ---- DOUBLE SIGN VOTE ---- */
 CREATE TABLE double_sign_vote
 (

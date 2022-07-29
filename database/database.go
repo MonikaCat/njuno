@@ -130,6 +130,10 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveTokensPrice(prices []types.TokenPrice) error
 
+	// SaveValidatorCommission stores validators commission value  in database.
+	// An error is returned if the operation fails.
+	SaveValidatorCommission(data []types.ValidatorCommission) error
+
 	// Close closes the connection to the database
 	Close()
 }

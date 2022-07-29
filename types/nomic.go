@@ -165,10 +165,11 @@ type ValidatorList struct {
 	Validator ValidatorInfo `yaml:"validator"`
 }
 type ValidatorInfo struct {
-	Hex     string `yaml:"hex"`
-	Address string `yaml:"address"`
-	Moniker string `yaml:"moniker"`
-	Details string `yaml:"details"`
+	Hex        string `yaml:"hex"`
+	Address    string `yaml:"address"`
+	Commission string `yaml:"commission"`
+	Details    string `yaml:"details"`
+	Moniker    string `yaml:"moniker"`
 }
 
 // ValidatorDescription contains the description of a validator
@@ -247,5 +248,25 @@ func NewDoubleSignEvidence(height int64, voteA DoubleSignVote, voteB DoubleSignV
 		VoteA:  voteA,
 		VoteB:  voteB,
 		Height: height,
+	}
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+// ValidatorCommission contains the data of a validator commission at a given height
+type ValidatorCommission struct {
+	ValAddress string
+	Commission string
+	Height     int64
+}
+
+// NewValidatorCommission return a new ValidatorCommission instance
+func NewValidatorCommission(
+	valAddress string, rate string, height int64,
+) ValidatorCommission {
+	return ValidatorCommission{
+		ValAddress: valAddress,
+		Commission: rate,
+		Height:     height,
 	}
 }

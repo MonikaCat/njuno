@@ -265,6 +265,32 @@ WHERE validator_description.height <= excluded.height`
 
 }
 
+// --------------------------------------------------------------------------------------------------------------------
+
+// SaveValidatorCommission saves validators commission in database.
+func (db *Database) SaveValidatorCommission(validatorsCommission []types.ValidatorCommission) error {
+	stmt := `INSERT INTO validator_commission (validator_address, commission, height) VALUES `
+
+	var commissionList []interface{}
+	for i, data := range validatorsCommission {
+		si := i * 3
+		stmt += fmt.Sprintf("($%d, $%d, $%d,", si+1, si+2, si+3)
+		commissionList = append(commissionList,
+			dbtypes.ToNullString(sdk.ConsAddress(data.ValAddress).String()),
+			dbtypes.ToNullString(data.Commission),
+			data.Height)
+	}
+
+	stmt = stmt[:len(stmt)-1]
+	stmt += `
+ON CONFLICT (validator_address) DO UPDATE 
+	SET commission = excluded.commission, 
+		height = excluded.height
+WHERE validator_commission.height <= excluded.height`
+	_, err := db.Sql.Exec(stmt, commissionList...)
+	return err
+}
+
 // SaveCommitSignatures implements database.Database
 func (db *Database) SaveCommitSignatures(signatures []*types.CommitSig) error {
 	if len(signatures) == 0 {
