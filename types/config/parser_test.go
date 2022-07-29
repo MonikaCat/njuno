@@ -9,7 +9,7 @@ import (
 func TestDefaultConfigParser(t *testing.T) {
 	data := `
 chain:
-  bech32_prefix: cosmos
+  bech32_prefix: nomic
   modules:
     - pruning
 
@@ -45,6 +45,6 @@ database:
 	require.NoError(t, err)
 	bytes, _ := cfg.GetBytes()
 	require.NotEmpty(t, bytes)
-	require.Equal(t, "cosmos", cfg.Chain.Bech32Prefix)
+	require.Equal(t, "nomic", cfg.Chain.Bech32Prefix)
 	require.Equal(t, []string{"pruning"}, cfg.Chain.Modules)
 }
