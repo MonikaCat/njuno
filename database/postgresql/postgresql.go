@@ -274,7 +274,7 @@ func (db *Database) SaveValidatorCommission(validatorsCommission []types.Validat
 	var commissionList []interface{}
 	for i, data := range validatorsCommission {
 		si := i * 3
-		stmt += fmt.Sprintf("($%d, $%d, $%d,", si+1, si+2, si+3)
+		stmt += fmt.Sprintf("($%d, $%d, $%d),", si+1, si+2, si+3)
 		commissionList = append(commissionList,
 			dbtypes.ToNullString(sdk.ConsAddress(data.ValAddress).String()),
 			dbtypes.ToNullString(data.Commission),
