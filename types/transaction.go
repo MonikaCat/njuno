@@ -15,32 +15,32 @@ type Tx struct {
 
 // TxResponse represents a valid transaction response
 type TxResponse struct {
-	Fee        TxFee          `protobuf:"bytes,1,opt,name=fee,proto3" json:"fee,omitempty"`
-	Memo       string         `protobuf:"bytes,2,opt,name=memo,proto3" json:"memo,omitempty"`
-	Msg        []TxMsg        `protobuf:"bytes,3,opt,name=msg,proto3" json:"msg,omitempty"`
-	Signatures []TxSignatures `protobuf:"bytes,4,opt,name=signatures,proto3" json:"signatures,omitempty"`
-	Hash       string         `protobuf:"bytes,5,opt,name=hash,proto3" json:"hash,omitempty"`
-	Height     int64          `protobuf:"bytes,6,opt,name=height,proto3" json:"height,omitempty"`
+	Fee        TxFee          `json:"fee" yaml:"fee"`
+	Memo       string         `json:"memo" yaml:"memo"`
+	Msg        []TxMsg        `json:"msg" yaml:"msg"`
+	Signatures []TxSignatures `json:"signatures" yaml:"signatures"`
+	Hash       string         `json:"hash" yaml:"hash"`
+	Height     int64          `json:"height" yaml:"height"`
 }
 
 type TxFee struct {
-	Amount sdk.Coins `protobuf:"bytes,1,opt,name=amount,proto3" json:"amount,omitempty"`
-	Gas    string    `protobuf:"bytes,2,opt,name=gas,proto3" json:"gas"`
+	Amount sdk.Coins `json:"amount" yaml:"amount"`
+	Gas    string    `json:"gas" yaml:"gas"`
 }
 
 type TxSignatures struct {
-	Signature string `protobuf:"bytes,2,opt,name=signature,proto3" json:"signature"`
+	Signature string `json:"signature" yaml:"signature"`
 }
 
 type TxMsg struct {
-	Type  string     `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-	Value TxMsgValue `protobuf:"bytes,2,opt,name=value,proto3" json:"value"`
+	Type  string     `json:"type" yaml:"type"`
+	Value TxMsgValue `json:"value" yaml:"value"`
 }
 
 type TxMsgValue struct {
-	Amount           sdk.Coin `protobuf:"bytes,1,opt,name=amount,proto3" json:"amount,omitempty"`
-	DelegatorAddress string   `protobuf:"bytes,2,opt,name=delegator_address,proto3" json:"delegator_address"`
-	ValidatorAddress string   `protobuf:"bytes,3,opt,name=validator_address,proto3" json:"validator_address"`
+	Amount           sdk.Coin `json:"amount" yaml:"amount"`
+	DelegatorAddress string   `json:"delegator_address" yaml:"delegator_address"`
+	ValidatorAddress string   `json:"validator_address" yaml:"validator_address"`
 }
 
 // NewTxResponse allows to build a new TxResponse instance
