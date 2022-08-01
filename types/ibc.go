@@ -1,12 +1,12 @@
 package types
 
-// IBCParams represents the x/ibc transaction parameters
+// IBCTransactionParams represents the x/ibc transaction parameters
 type IBCTransactionParams struct {
 	ReceiveEnabled bool `json:"receive_enabled" yaml:"receive_enabled"`
 	SendEnabled    bool `json:"send_enabled" yaml:"send_enabled"`
 }
 
-// IBCParams represents the x/ibc trasfer parameters
+// IBCTransferParams represents the x/ibc trasfer parameters
 type IBCTransferParams struct {
 	Params IBCTransactionParams `json:"params" yaml:"params"`
 }

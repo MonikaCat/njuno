@@ -69,7 +69,7 @@ func NewChainConfig(bech32Prefix string, modules []string) ChainConfig {
 
 // DefaultChainConfig returns the default instance of ChainConfig
 func DefaultChainConfig() ChainConfig {
-	return NewChainConfig("cosmos", nil)
+	return NewChainConfig("nomic", nil)
 }
 
 func (cfg ChainConfig) IsModuleEnabled(moduleName string) bool {

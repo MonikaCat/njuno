@@ -4,8 +4,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-
-	"github.com/MonikaCat/njuno/types"
 )
 
 // findValidatorByAddr finds a validator by a consensus address given a set of
@@ -19,15 +17,4 @@ func findValidatorByAddr(consAddr string, vals *tmctypes.ResultValidators) *tmty
 	}
 
 	return nil
-}
-
-// sumGasTxs returns the total gas consumed by a set of transactions.
-func sumGasTxs(txs []*types.Tx) uint64 {
-	var totalGas uint64
-
-	for _, tx := range txs {
-		totalGas += uint64(tx.GasUsed)
-	}
-
-	return totalGas
 }
