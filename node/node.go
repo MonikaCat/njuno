@@ -30,9 +30,9 @@ type Node interface {
 	// An error is returned if the query fails.
 	Genesis() (*tmctypes.ResultGenesis, error)
 
-	// IBCParams queries the latest ibc parameters.
+	// IBCTransferParams queries the latest ibc parameters.
 	// An error is returned if the query fails.
-	IBCParams() (types.IBCTransferParams, error)
+	IBCTransferParams() (types.IBCTransfer, error)
 
 	// Inflation queries the latest inflation value.
 	// An error is returned if the query fails.

@@ -1,20 +1,20 @@
 package types
 
-// IBCTransferParams represents the x/ibc transfer parameters
-type IBCTransferParams struct {
+// IBCTransfer represents the x/ibc transfer parameters
+type IBCTransfer struct {
 	ReceiveEnabled bool `json:"receive_enabled" yaml:"receive_enabled"`
 	SendEnabled    bool `json:"send_enabled" yaml:"send_enabled"`
 }
 
-// IBCParams represents the x/ibc transfer parameters
-type IBCParams struct {
-	Params IBCTransferParams
+// IBCTransferParams represents the x/ibc transfer parameters
+type IBCTransferParams struct {
+	Params IBCTransfer
 	Height int64
 }
 
-// NewIBCParams allows to build a new IBCParams instance
-func NewIBCParams(params IBCTransferParams, height int64) *IBCParams {
-	return &IBCParams{
+// NewIBCTransferParams allows to build a new IBCTransferParams instance
+func NewIBCTransferParams(params IBCTransfer, height int64) *IBCTransferParams {
+	return &IBCTransferParams{
 		Params: params,
 		Height: height,
 	}

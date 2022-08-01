@@ -1,5 +1,5 @@
 table:
-  name: ibc_params
+  name: ibc_transfer_params
   schema: public
 select_permissions:
 - permission:

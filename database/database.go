@@ -93,9 +93,9 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveGenesis(genesis *types.Genesis) error
 
-	// SaveIBCParams stores the ibc tx params value in database.
+	// SaveIBCTransferParams stores the ibc transfer params value in database.
 	// An error is returned if the operation fails.
-	SaveIBCParams(params *types.IBCParams) error
+	SaveIBCTransferParams(params *types.IBCTransferParams) error
 
 	// SaveInflation stores the inflation value in database.
 	// An error is returned if the operation fails.

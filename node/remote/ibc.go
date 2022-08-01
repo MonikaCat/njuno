@@ -9,24 +9,24 @@ import (
 	"github.com/MonikaCat/njuno/types"
 )
 
-// IBCParams implements node.Node
-func (cp *Node) IBCParams() (types.IBCTransferParams, error) {
+// IBCTransferParams implements node.Node
+func (cp *Node) IBCTransferParams() (types.IBCTransfer, error) {
 	resp, err := http.Get(fmt.Sprintf("%s/ibc/apps/transfer/v1/params", cp.RESTNode))
 	if err != nil {
-		return types.IBCTransferParams{}, fmt.Errorf("error while getting ibc params: %s", err)
+		return types.IBCTransfer{}, fmt.Errorf("error while getting ibc transfer params: %s", err)
 	}
 
 	defer resp.Body.Close()
 
 	bz, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return types.IBCTransferParams{}, fmt.Errorf("error while processing ibc params: %s", err)
+		return types.IBCTransfer{}, fmt.Errorf("error while processing ibc transfer params: %s", err)
 	}
 
-	var params types.IBCTransferParams
+	var params types.IBCTransfer
 	err = json.Unmarshal(bz, &params)
 	if err != nil {
-		return types.IBCTransferParams{}, fmt.Errorf("error while unmarshaling ibc params: %s", err)
+		return types.IBCTransfer{}, fmt.Errorf("error while unmarshaling ibc transfer params: %s", err)
 	}
 
 	return params, nil

@@ -14,7 +14,7 @@ func (m *Module) RegisterPeriodicOperations(scheduler *gocron.Scheduler) error {
 
 	// Setup a cron job to run every midnight
 	if _, err := scheduler.Every(1).Day().At("00:00").Do(func() {
-		m.updateIBCParams()
+		m.updateIBCTransferParams()
 	}); err != nil {
 		return err
 	}
@@ -22,22 +22,22 @@ func (m *Module) RegisterPeriodicOperations(scheduler *gocron.Scheduler) error {
 	return nil
 }
 
-// updateIBCParams gets the updated ibc params
+// updateIBCTransferParams gets the updated ibc transfer params
 // and stores them inside the database
-func (m *Module) updateIBCParams() error {
+func (m *Module) updateIBCTransferParams() error {
 	height, err := m.db.GetLastBlockHeight()
 	if err != nil {
 		return err
 	}
 
 	log.Debug().Str("module", "ibc").Int64("height", height).
-		Msg("updating ibc params")
+		Msg("updating ibc transfer params")
 
-	params, err := m.source.IBCParams()
+	params, err := m.source.IBCTransferParams()
 	if err != nil {
-		return fmt.Errorf("error while getting ibc params: %s", err)
+		return fmt.Errorf("error while getting ibc transfer params: %s", err)
 	}
 
-	return m.db.SaveIBCParams(types.NewIBCParams(params, height))
+	return m.db.SaveIBCTransferParams(types.NewIBCTransferParams(params, height))
 
 }
