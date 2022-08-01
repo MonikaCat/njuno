@@ -19,10 +19,6 @@ type Database interface {
 	// Close closes the connection to the database
 	Close()
 
-	// HasBlock tells whether or not the database has already stored the block having the given height.
-	// An error is returned if the operation fails.
-	HasBlock(height int64) (bool, error)
-
 	// GetBlockHeightTimeDayAgo returns block height from day ago.
 	// An error is returned if the operation fails.
 	GetBlockHeightTimeDayAgo(now time.Time) (dbtypes.BlockRow, error)
@@ -54,6 +50,10 @@ type Database interface {
 	// GetTokensPriceID returns token ID stored in database.
 	// An error is returned if the operation fails.
 	GetTokensPriceID() ([]string, error)
+
+	// HasBlock tells whether or not the database has already stored the block having the given height.
+	// An error is returned if the operation fails.
+	HasBlock(height int64) (bool, error)
 
 	// SaveAverageBlockTimeGenesis stores the average
 	// block time from genesis.
@@ -144,14 +144,14 @@ type Database interface {
 
 // PruningDb represents a database that supports pruning properly
 type PruningDb interface {
+	// GetLastPruned returns the last height at which the database was pruned
+	GetLastPruned() (int64, error)
+
 	// Prune prunes the data for the given height, returning any error
 	Prune(height int64) error
 
 	// StoreLastPruned saves the last height at which the database was pruned
 	StoreLastPruned(height int64) error
-
-	// GetLastPruned returns the last height at which the database was pruned
-	GetLastPruned() (int64, error)
 }
 
 // Context contains the data that might be used to build a Database instance
