@@ -64,7 +64,6 @@ func (w Worker) Start() {
 	for i := range w.queue {
 		if err := w.ProcessIfNotExists(i); err != nil {
 			// re-enqueue any failed job
-			// TODO: Implement exponential backoff or max retries for a block height.
 			go func() {
 				w.logger.Error("re-enqueueing failed block", "height", i, "err", err)
 				w.queue <- i
@@ -76,8 +75,8 @@ func (w Worker) Start() {
 }
 
 // ProcessIfNotExists defines the job consumer workflow. It will fetch a block for a given
-// height and associated metadata and export it to a database if it does not exist yet. It returns an
-// error if any export process fails.
+// height and associated metadata and export it to a database if it does not exist yet.
+// It returns an error if any export process fails.
 func (w Worker) ProcessIfNotExists(height int64) error {
 	exists, err := w.db.HasBlock(height)
 	if err != nil {
@@ -92,7 +91,7 @@ func (w Worker) ProcessIfNotExists(height int64) error {
 	return w.Process(height)
 }
 
-// Process fetches  a block for a given height and associated metadata and export it to a database.
+// Process fetches a block for a given height and associated metadata and export it to a database.
 // It returns an error if any export process fails.
 func (w Worker) Process(height int64) error {
 	if height == 0 {
@@ -144,9 +143,7 @@ func (w Worker) ProcessTransactions(height int64) error {
 		return fmt.Errorf("failed to get transactions for block: %s", err)
 	}
 
-	fmt.Printf("\n ******* TXS ****** \n %v \n ", txs)
-	// return w.ExportTxs(txs)
-	return nil
+	return w.ExportTxs(txs)
 }
 
 // HandleGenesis accepts a GenesisDoc and calls all the registered genesis handlers
@@ -169,10 +166,20 @@ func (w Worker) HandleGenesis(genesisDoc *tmtypes.GenesisDoc, appState map[strin
 // encoded or if the DB write fails.
 func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 	var validators []types.Validator
-	// = make([]types.Validator, len(vals))
 	var validatorsVP []types.ValidatorVotingPower
-	// = make([]types.ValidatorVotingPower, len(vals))
 	var validatorsDesc []types.ValidatorDescription
+	cfg := config.Cfg.Parser
+
+	validatorsList := &types.ValidatorsList{}
+	yamlFile, err := ioutil.ReadFile(cfg.ValidatorsListFilePath)
+	if err != nil {
+		log.Printf("error while reading yaml file: %s ", err)
+	}
+
+	err = yaml.Unmarshal(yamlFile, validatorsList)
+	if err != nil {
+		log.Printf("error while unmarshaling yaml file: %s ", err)
+	}
 
 	for _, val := range vals {
 		consAddr := sdk.ConsAddress(val.Address).String()
@@ -181,33 +188,27 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 		if err != nil {
 			return fmt.Errorf("failed to convert validator public key for validators %s: %s", consAddr, err)
 		}
+
 		validatorAddress, err := sdk.ValAddressFromHex(val.Address.String())
 		if err != nil {
 			fmt.Printf("failed to convert validator address from hex: %s", err)
 		}
 
-		cfg := config.Cfg.Parser
-		c := &types.ValidatorsList{}
-		yamlFile, err := ioutil.ReadFile(cfg.ValidatorsListFilePath)
-		if err != nil {
-			log.Printf("error while reading yaml file: %s ", err)
-		}
-		err = yaml.Unmarshal(yamlFile, c)
-		if err != nil {
-			log.Printf("error while unmarshaling yaml file: %s ", err)
-		}
-
-		for _, entry := range c.Validators {
+		for _, entry := range validatorsList.Validators {
 			if entry.Validator.Hex == val.Address.String() {
+				// store validators
 				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))
+
+				// store validators description
 				validatorsDesc = append(validatorsDesc, types.NewValidatorDescription(consAddr, entry.Validator.Details, entry.Validator.Identity, entry.Validator.Moniker, height))
 			}
 		}
 
+		// store voting power
 		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr, val.VotingPower, height))
 	}
 
-	err := w.db.SaveValidators(validators)
+	err = w.db.SaveValidators(validators)
 	if err != nil {
 		return fmt.Errorf("error while saving validators: %s", err)
 	}
@@ -216,6 +217,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 	if err != nil {
 		return fmt.Errorf("error while saving validators voting powers: %s", err)
 	}
+
 	err = w.db.SaveValidatorDescription(validatorsDesc)
 	if err != nil {
 		return fmt.Errorf("error while saving validators voting powers: %s", err)
@@ -230,6 +232,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 func (w Worker) ExportBlock(
 	b *tmctypes.ResultBlock, r *tmctypes.ResultBlockResults, txs []types.TxResponse, vals *tmctypes.ResultValidators,
 ) error {
+
 	// Save all validators
 	err := w.SaveValidators(vals.Validators, b.Block.Height)
 	if err != nil {
@@ -274,6 +277,7 @@ func (w Worker) ExportBlock(
 // returned if any write fails or if there is any missing aggregated data.
 func (w Worker) ExportCommit(commit *tmtypes.Commit, vals *tmctypes.ResultValidators) error {
 	var signatures []*types.CommitSig
+
 	for _, commitSig := range commit.Signatures {
 		// Avoid empty commits
 		if commitSig.Signature == nil {

@@ -55,7 +55,7 @@ func RootCmd(name string) *cobra.Command {
 		Short: fmt.Sprintf("%s is a Nomic chain data aggregator and exporter", name),
 		Long: fmt.Sprintf(`A Nomic chain data aggregator. It improves the chain's data accessibility
 by providing an indexed database exposing aggregated resources and models such as blocks, validators, pre-commits, 
-transactions, and various aspects of the governance module. 
+transactions, and various aspects of the staking module. 
 %s is meant to run with a GraphQL layer on top so that it even further eases the ability for developers and
 downstream clients to answer queries such as "What is the average gas cost of a block?" while also allowing
 them to compose more aggregate and complex queries.`, name),

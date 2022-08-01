@@ -54,9 +54,8 @@ type Node interface {
 	// An error is returned if the query fails.
 	Supply() (sdk.Coins, error)
 
-	// Txs queries for all the transactions in a block. Transactions are returned
-	// in the sdk.TxResponse format which internally contains an sdk.Tx. An error is
-	// returned if any query fails.
+	// Txs queries for all the transactions in a block.
+	// An error is returned if any query fails.
 	Txs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponse, error)
 
 	// Validators returns all the known Tendermint validators for a given block
