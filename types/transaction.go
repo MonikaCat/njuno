@@ -2,16 +2,7 @@ package types
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/tx"
 )
-
-// Tx represents an already existing blockchain transaction
-type Tx struct {
-	*tx.Tx
-	*sdk.TxResponse
-}
-
-// ----------------------------------------------------------------------------------------------------------
 
 // TxResponse represents a valid transaction response
 type TxResponse struct {

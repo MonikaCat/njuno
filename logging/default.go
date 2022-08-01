@@ -103,22 +103,22 @@ func (d *defaultLogger) EventsError(module modules.Module, block *tmctypes.Resul
 }
 
 // TxError implements Logger
-func (d *defaultLogger) TxError(module modules.Module, tx *types.Tx, err error) {
+func (d *defaultLogger) TxError(module modules.Module, tx *types.TxResponse, err error) {
 	d.Error("error while handling transaction",
 		"err", err,
 		LogKeyModule, module.Name(),
 		LogKeyHeight, tx.Height,
-		LogKeyTxHash, tx.TxHash,
+		LogKeyTxHash, tx.Hash,
 	)
 }
 
 // MsgError implements Logger
-func (d *defaultLogger) MsgError(module modules.Module, tx *types.Tx, msg sdk.Msg, err error) {
+func (d *defaultLogger) MsgError(module modules.Module, tx *types.TxResponse, msg sdk.Msg, err error) {
 	d.Error("error while handling message",
 		"err", err,
 		LogKeyModule, module.Name(),
 		LogKeyHeight, tx.Height,
-		LogKeyTxHash, tx.TxHash,
+		LogKeyTxHash, tx.Hash,
 		LogKeyMsgType, proto.MessageName(msg),
 	)
 }
