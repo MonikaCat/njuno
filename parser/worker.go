@@ -196,6 +196,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 		}
 
 		for _, entry := range validatorsList.Validators {
+			// compare with address from yaml file
 			if entry.Validator.Hex == val.Address.String() {
 				// store validators
 				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))

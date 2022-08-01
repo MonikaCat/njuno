@@ -123,7 +123,7 @@ func NewValidatorDescription(
 
 // ----------------------------------------------------------------------------------------------------------
 
-// ValidatorsList represents validators list
+// ValidatorsList represents validators list from a file
 type ValidatorsList struct {
 	Validators []ValidatorList `yaml:"validators"`
 }
