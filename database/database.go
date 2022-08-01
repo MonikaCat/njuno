@@ -16,79 +16,44 @@ import (
 
 // Database represents an abstract database that can be used to save data inside it
 type Database interface {
+	// Close closes the connection to the database
+	Close()
+
 	// HasBlock tells whether or not the database has already stored the block having the given height.
 	// An error is returned if the operation fails.
 	HasBlock(height int64) (bool, error)
 
-	// SaveBlock will be called when a new block is parsed, passing the block itself
-	// and the transactions contained inside that block.
+	// GetBlockHeightTimeDayAgo returns block height from day ago.
 	// An error is returned if the operation fails.
-	// NOTE. For each transaction inside txs, SaveTx will be called as well.
-	SaveBlock(block *types.Block) error
+	GetBlockHeightTimeDayAgo(now time.Time) (dbtypes.BlockRow, error)
 
-	// SaveTx will be called to save each transaction contained inside a block.
+	// GetBlockHeightTimeHourAgo returns block height from one hour ago.
 	// An error is returned if the operation fails.
-	SaveTx(tx types.TxResponse) error
+	GetBlockHeightTimeHourAgo(now time.Time) (dbtypes.BlockRow, error)
 
-	// SaveValidators stores a list of validators if they do not already exist.
+	// GetBlockHeightTimeMinuteAgo returns block height from one minute ago.
 	// An error is returned if the operation fails.
-	SaveValidators(validators []types.Validator) error
+	GetBlockHeightTimeMinuteAgo(now time.Time) (dbtypes.BlockRow, error)
 
-	// SaveValidatorsVotingPowers stores a list of validators voting power.
+	// GetGenesis returns the genesis details.
 	// An error is returned if the operation fails.
-	SaveValidatorsVotingPowers(entries []types.ValidatorVotingPower) error
+	GetGenesis() (*types.Genesis, error)
 
-	// SaveValidatorDescription stores the validators description.
+	// GetLastBlock returns the latest block store in database.
 	// An error is returned if the operation fails.
-	SaveValidatorDescription(description []types.ValidatorDescription) error
-
-	// GetValidatorsDescription returns validators description stored in database.
-	// An error is returned if the operation fails.
-	GetValidatorsDescription() ([]types.ValidatorDescription, error)
-
-	// SaveCommitSignatures stores a  slice of validator commit signatures.
-	// An error is returned if the operation fails.
-	SaveCommitSignatures(signatures []*types.CommitSig) error
-
-	// SaveMessage stores a single message.
-	// An error is returned if the operation fails.
-	SaveMessage(msg *types.Message) error
-
-	// SaveSupply stores a total supply value.
-	// An error is returned if the operation fails.
-	SaveSupply(coins sdk.Coins, height int64) error
-
-	// SaveInflation stores the inflation value.
-	// An error is returned if the operation fails.
-	SaveInflation(inflation string, height int64) error
-
-	// SaveStakingPool stores the staking pool value.
-	// An error is returned if the operation fails.
-	SaveStakingPool(pool *types.StakingPool) error
+	GetLastBlock() (*dbtypes.BlockRow, error)
 
 	// GetLastBlockHeight returns the latest block height stored in database.
 	// An error is returned if the operation fails.
 	GetLastBlockHeight() (int64, error)
 
-	// GetLastBlock returns the latest block store in db.
+	// GetValidatorsDescription returns validators description stored in database.
 	// An error is returned if the operation fails.
-	GetLastBlock() (*dbtypes.BlockRow, error)
+	GetValidatorsDescription() ([]types.ValidatorDescription, error)
 
-	// SaveIBCParams stores the ibc tx params value.
+	// GetTokensPriceID returns token ID stored in database.
 	// An error is returned if the operation fails.
-	SaveIBCParams(params *types.IBCParams) error
-
-	// SaveToken stores the token details.
-	// An error is returned if the operation fails.
-	SaveToken(token types.Token) error
-
-	// SaveGenesis stores the genesis details.
-	// An error is returned if the operation fails.
-	SaveGenesis(genesis *types.Genesis) error
-
-	// GetGenesis returns the genesis details.
-	// An error is returned if the operation fails.
-	GetGenesis() (*types.Genesis, error)
+	GetTokensPriceID() ([]string, error)
 
 	// SaveAverageBlockTimeGenesis stores the average
 	// block time from genesis.
@@ -110,36 +75,71 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveAverageBlockTimePerMin(averageTime float64, height int64) error
 
-	// GetBlockHeightTimeDayAgo returns block height from day ago.
+	// SaveBlock will be called when a new block is parsed, passing the block itself
+	// and the transactions contained inside that block.
 	// An error is returned if the operation fails.
-	GetBlockHeightTimeDayAgo(now time.Time) (dbtypes.BlockRow, error)
+	// NOTE. For each transaction inside txs, SaveTx will be called as well.
+	SaveBlock(block *types.Block) error
 
-	// GetBlockHeightTimeHourAgo returns block height from one hour ago.
+	// SaveCommitSignatures stores a  slice of validator commit signatures.
 	// An error is returned if the operation fails.
-	GetBlockHeightTimeHourAgo(now time.Time) (dbtypes.BlockRow, error)
-
-	// GetBlockHeightTimeMinuteAgo returns block height from one minute ago.
-	// An error is returned if the operation fails.
-	GetBlockHeightTimeMinuteAgo(now time.Time) (dbtypes.BlockRow, error)
+	SaveCommitSignatures(signatures []*types.CommitSig) error
 
 	// SaveDoubleSignEvidence stores double sign record in database.
 	// An error is returned if the operation fails.
 	SaveDoubleSignEvidence(evidence types.DoubleSignEvidence) error
 
-	// GetTokensPriceID returns token ID stored in database.
+	// SaveGenesis stores the genesis details in database.
 	// An error is returned if the operation fails.
-	GetTokensPriceID() ([]string, error)
+	SaveGenesis(genesis *types.Genesis) error
+
+	// SaveIBCParams stores the ibc tx params value in database.
+	// An error is returned if the operation fails.
+	SaveIBCParams(params *types.IBCParams) error
+
+	// SaveInflation stores the inflation value in database.
+	// An error is returned if the operation fails.
+	SaveInflation(inflation string, height int64) error
+
+	// SaveMessage stores a single message.
+	// An error is returned if the operation fails.
+	SaveMessage(msg *types.Message) error
+
+	// SaveStakingPool stores the staking pool value in database.
+	// An error is returned if the operation fails.
+	SaveStakingPool(pool *types.StakingPool) error
+
+	// SaveSupply stores a total supply value in database.
+	// An error is returned if the operation fails.
+	SaveSupply(coins sdk.Coins, height int64) error
+
+	// SaveToken stores the token details in database.
+	// An error is returned if the operation fails.
+	SaveToken(token types.Token) error
 
 	// SaveTokensPrice stores tokens price in database.
 	// An error is returned if the operation fails.
 	SaveTokensPrice(prices []types.TokenPrice) error
 
-	// SaveValidatorCommission stores validators commission value  in database.
+	// SaveTx stores transaction contained inside a block in database.
+	// An error is returned if the operation fails.
+	SaveTx(tx types.TxResponse) error
+
+	// SaveValidators stores a list of validators in database.
+	// An error is returned if the operation fails.
+	SaveValidators(validators []types.Validator) error
+
+	// SaveValidatorCommission stores validators commission value in database.
 	// An error is returned if the operation fails.
 	SaveValidatorCommission(data []types.ValidatorCommission) error
 
-	// Close closes the connection to the database
-	Close()
+	// SaveValidatorDescription stores the validators description in database.
+	// An error is returned if the operation fails.
+	SaveValidatorDescription(description []types.ValidatorDescription) error
+
+	// SaveValidatorsVotingPowers stores a list of validators voting power in database.
+	// An error is returned if the operation fails.
+	SaveValidatorsVotingPowers(entries []types.ValidatorVotingPower) error
 }
 
 // PruningDb represents a database that supports pruning properly
