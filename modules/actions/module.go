@@ -36,14 +36,14 @@ func NewModule(cfg config.Config, encodingConfig *params.EncodingConfig) *Module
 	}
 
 	// Build the node
-	junoNode, err := builder.BuildNode(nodeCfg, encodingConfig)
+	nJunoNode, err := builder.BuildNode(nodeCfg, encodingConfig)
 	if err != nil {
 		panic(err)
 	}
 
 	return &Module{
 		cfg:  actionsCfg,
-		node: junoNode,
+		node: nJunoNode,
 	}
 }
 
