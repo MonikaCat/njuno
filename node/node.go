@@ -33,7 +33,7 @@ type Node interface {
 
 	// IBCParams queries the latest ibc parameters.
 	// An error is returned if the query fails.
-	IBCParams() (types.IBCTransactionParams, error)
+	IBCParams() (types.IBCTransferParams, error) 
 
 	// Inflation queries the latest inflation value.
 	// An error is returned if the query fails.
