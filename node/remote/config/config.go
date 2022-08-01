@@ -72,5 +72,5 @@ func NewRESTConfig(address string) *RESTConfig {
 
 // DefaultRESTConfig returns the default instance of RESTConfig
 func DefaultRESTConfig() *RESTConfig {
-	return NewRESTConfig("http://localhost:26657")
+	return NewRESTConfig("http://localhost:1317")
 }

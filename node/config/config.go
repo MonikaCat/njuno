@@ -3,7 +3,7 @@ package config
 import (
 	"gopkg.in/yaml.v3"
 
-	"github.com/MonikaCat/njuno/node/remote"
+	remote "github.com/MonikaCat/njuno/node/remote/config"
 )
 
 const (

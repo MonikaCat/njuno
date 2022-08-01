@@ -8,7 +8,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	nodeconfig "github.com/MonikaCat/njuno/node/config"
-	"github.com/MonikaCat/njuno/node/remote"
+	remote "github.com/MonikaCat/njuno/node/remote/config"
 )
 
 func TestConfig_UnmarshalYAML(t *testing.T) {
