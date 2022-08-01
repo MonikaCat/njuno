@@ -101,10 +101,6 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveInflation(inflation string, height int64) error
 
-	// SaveMessage stores a single message.
-	// An error is returned if the operation fails.
-	SaveMessage(msg *types.Message) error
-
 	// SaveStakingPool stores the staking pool value in database.
 	// An error is returned if the operation fails.
 	SaveStakingPool(pool *types.StakingPool) error

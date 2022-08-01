@@ -16,11 +16,6 @@ func (db *Database) Prune(height int64) error {
 		return err
 	}
 
-	_, err = db.Sql.Exec(`
-DELETE FROM message 
-USING transaction 
-WHERE message.transaction_hash = transaction.hash AND transaction.height = $1
-`, height)
 	return err
 }
 
