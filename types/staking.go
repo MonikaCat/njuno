@@ -125,7 +125,6 @@ func NewValidatorDescription(
 
 // ValidatorsList represents validators list
 type ValidatorsList struct {
-	// bytes      []byte
 	Validators []ValidatorList `yaml:"validators"`
 }
 

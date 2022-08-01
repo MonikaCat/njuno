@@ -22,6 +22,7 @@ import (
 
 	"github.com/MonikaCat/njuno/node"
 	"github.com/MonikaCat/njuno/types"
+	bdtypes "github.com/MonikaCat/njuno/types"
 	"github.com/MonikaCat/njuno/types/utils"
 )
 
@@ -117,7 +118,7 @@ func (w Worker) Process(height int64) error {
 		return fmt.Errorf("failed to get block results from node: %s", err)
 	}
 
-	txs, err := w.node.Txs(block)
+	txs, err := w.UnmarshalTxs(block)
 	if err != nil {
 		return fmt.Errorf("failed to get transactions for block: %s", err)
 	}
@@ -138,7 +139,7 @@ func (w Worker) ProcessTransactions(height int64) error {
 		return fmt.Errorf("failed to get block from node: %s", err)
 	}
 
-	txs, err := w.node.Txs(block)
+	txs, err := w.UnmarshalTxs(block)
 	if err != nil {
 		return fmt.Errorf("failed to get transactions for block: %s", err)
 	}
@@ -320,4 +321,22 @@ func (w Worker) ExportTxs(txs []types.TxResponse) error {
 	}
 
 	return nil
+}
+
+// UnmarshalTxs process all transactions contained in a block
+func (w Worker) UnmarshalTxs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponse, error) {
+	txResponses := make([]bdtypes.TxResponse, len(block.Block.Txs))
+
+	// get tx details from the block
+	var transaction bdtypes.TxResponse
+	for _, t := range block.Block.Txs {
+		err := json.Unmarshal(t, &transaction)
+		if err != nil {
+			// continue
+		}
+
+		txResponses = append(txResponses, bdtypes.NewTxResponse(transaction.Fee, transaction.Memo, transaction.Msg, transaction.Signatures, fmt.Sprintf("%X", t.Hash()), block.Block.Height))
+	}
+
+	return txResponses, nil
 }

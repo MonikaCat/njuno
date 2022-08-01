@@ -1,7 +1,6 @@
 package node
 
 import (
-	bdtypes "github.com/MonikaCat/njuno/types"
 	types "github.com/MonikaCat/njuno/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -33,7 +32,7 @@ type Node interface {
 
 	// IBCParams queries the latest ibc parameters.
 	// An error is returned if the query fails.
-	IBCParams() (types.IBCTransferParams, error) 
+	IBCParams() (types.IBCTransferParams, error)
 
 	// Inflation queries the latest inflation value.
 	// An error is returned if the query fails.
@@ -53,10 +52,6 @@ type Node interface {
 	// Supply queries the latest supply value.
 	// An error is returned if the query fails.
 	Supply() (sdk.Coins, error)
-
-	// Txs queries for all the transactions in a block.
-	// An error is returned if any query fails.
-	Txs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponse, error)
 
 	// Validators returns all the known Tendermint validators for a given block
 	// height. An error is returned if the query fails.
