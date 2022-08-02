@@ -154,7 +154,7 @@ VALUES `
 	validatorQuery += " ON CONFLICT DO NOTHING"
 	_, err := db.Sql.Exec(validatorQuery, validatorParams...)
 	if err != nil {
-		return fmt.Errorf("error while storing valdiators: %s", err)
+		return fmt.Errorf("error while storing validators: %s", err)
 	}
 
 	validatorInfoQuery = validatorInfoQuery[:len(validatorInfoQuery)-1] // Remove the trailing ","
