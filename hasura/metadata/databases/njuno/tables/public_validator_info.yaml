@@ -5,9 +5,6 @@ object_relationships:
 - name: validator
   using:
     foreign_key_constraint_on: consensus_address
-- name: block
-  using:
-    foreign_key_constraint_on: height
 select_permissions:
 - permission:
     allow_aggregations: true

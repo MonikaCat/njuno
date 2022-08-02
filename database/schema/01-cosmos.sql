@@ -25,7 +25,7 @@ CREATE INDEX block_proposer_address_index ON block (proposer_address);
 CREATE TABLE pre_commit
 (
     validator_address TEXT                        NOT NULL REFERENCES validator (consensus_address),
-    height            BIGINT                      NOT NULL,
+    height            BIGINT                      NOT NULL REFERENCES block (height),
     timestamp         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     voting_power      BIGINT                      NOT NULL,
     proposer_priority BIGINT                      NOT NULL,
