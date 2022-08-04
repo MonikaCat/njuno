@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 
 	types "github.com/MonikaCat/njuno/types"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/rs/zerolog/log"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"
@@ -11,7 +12,7 @@ import (
 
 // HandleBlock implements modules.BlockModule
 func (m *Module) HandleBlock(
-	block *tmctypes.ResultBlock, _ *tmctypes.ResultBlockResults, _ *tmctypes.ResultValidators,
+	block *tmctypes.ResultBlock, _ *tmctypes.ResultBlockResults, vals *tmctypes.ResultValidators,
 ) error {
 
 	// Update double sign evidences
@@ -19,6 +20,9 @@ func (m *Module) HandleBlock(
 
 	// Update staking pool
 	go m.updateStakingPool(block.Block.Height)
+
+	// Update validators voting power
+	go m.updateValidatorsVotingPower(vals.Validators, block.Block.Height)
 
 	return nil
 }
@@ -83,5 +87,24 @@ func (m *Module) updateStakingPool(height int64) {
 		log.Error().Str("module", "staking").Err(err).Int64("height", height).
 			Msg("error while saving staking pool")
 		return
+	}
+}
+
+// updateValidatorsVotingPower stores each validator latest voting power value inside the database
+func (m *Module) updateValidatorsVotingPower(vals []*tmtypes.Validator, height int64) {
+	log.Debug().Str("module", "staking").Int64("height", height).
+		Msg("updating validators voting power")
+	var validatorsVP []types.ValidatorVotingPower
+
+	for _, val := range vals {
+		consAddr := sdk.ConsAddress(val.Address).String()
+		// store voting power
+		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr, val.VotingPower, height))
+	}
+
+	err := m.db.SaveValidatorsVotingPower(validatorsVP)
+	if err != nil {
+		log.Error().Str("module", "staking").Err(err).Int64("height", height).
+			Msg("error while saving validators voting power")
 	}
 }

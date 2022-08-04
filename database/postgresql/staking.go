@@ -232,8 +232,8 @@ WHERE validator_description.height <= excluded.height`
 
 // -------------------------------------------------------------------------------------------------------------------
 
-// SaveValidatorsVotingPowers saves the given validator voting powers.
-func (db *Database) SaveValidatorsVotingPowers(entries []types.ValidatorVotingPower) error {
+// SaveValidatorsVotingPower saves the given validator voting powers.
+func (db *Database) SaveValidatorsVotingPower(entries []types.ValidatorVotingPower) error {
 	if len(entries) == 0 {
 		return nil
 	}

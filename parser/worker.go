@@ -3,11 +3,8 @@ package parser
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 
 	"github.com/MonikaCat/njuno/logging"
-	"gopkg.in/yaml.v2"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 
@@ -169,20 +166,7 @@ func (w Worker) HandleGenesis(genesisDoc *tmtypes.GenesisDoc, appState map[strin
 // encoded or if the DB write fails.
 func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 	var validators []types.Validator
-	var validatorsVP []types.ValidatorVotingPower
 	var validatorsDesc []types.ValidatorDescription
-	cfg := config.Cfg.Parser
-
-	validatorsList := &types.ValidatorsList{}
-	yamlFile, err := ioutil.ReadFile(cfg.ValidatorsListFilePath)
-	if err != nil {
-		log.Printf("error while reading yaml file: %s ", err)
-	}
-
-	err = yaml.Unmarshal(yamlFile, validatorsList)
-	if err != nil {
-		log.Printf("error while unmarshaling yaml file: %s ", err)
-	}
 
 	for _, val := range vals {
 		consAddr := sdk.ConsAddress(val.Address).String()
@@ -197,7 +181,7 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 			fmt.Printf("failed to convert validator address from hex: %s", err)
 		}
 
-		for _, entry := range validatorsList.Validators {
+		for _, entry := range w.validatorsList.Validators {
 			// compare with address from yaml file
 			if entry.Validator.Hex == val.Address.String() {
 				// store validators
@@ -208,23 +192,16 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 			}
 		}
 
-		// store voting power
-		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr, val.VotingPower, height))
 	}
 
-	err = w.db.SaveValidators(validators)
+	err := w.db.SaveValidators(validators)
 	if err != nil {
 		return fmt.Errorf("error while saving validators: %s", err)
 	}
 
-	err = w.db.SaveValidatorsVotingPowers(validatorsVP)
-	if err != nil {
-		return fmt.Errorf("error while saving validators voting powers: %s", err)
-	}
-
 	err = w.db.SaveValidatorDescription(validatorsDesc)
 	if err != nil {
-		return fmt.Errorf("error while saving validators voting powers: %s", err)
+		return fmt.Errorf("error while saving validators description: %s", err)
 	}
 
 	return nil

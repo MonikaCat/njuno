@@ -133,9 +133,9 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveValidatorDescription(description []types.ValidatorDescription) error
 
-	// SaveValidatorsVotingPowers stores a list of validators voting power in database.
+	// SaveValidatorsVotingPower stores a list of validators voting power in database.
 	// An error is returned if the operation fails.
-	SaveValidatorsVotingPowers(entries []types.ValidatorVotingPower) error
+	SaveValidatorsVotingPower(entries []types.ValidatorVotingPower) error
 }
 
 // PruningDb represents a database that supports pruning properly
