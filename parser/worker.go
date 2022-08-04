@@ -166,7 +166,6 @@ func (w Worker) HandleGenesis(genesisDoc *tmtypes.GenesisDoc, appState map[strin
 // encoded or if the DB write fails.
 func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 	var validators []types.Validator
-	var validatorsDesc []types.ValidatorDescription
 
 	for _, val := range vals {
 		consAddr := sdk.ConsAddress(val.Address).String()
@@ -186,22 +185,13 @@ func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
 			if entry.Validator.Hex == val.Address.String() {
 				// store validators
 				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))
-
-				// store validators description
-				validatorsDesc = append(validatorsDesc, types.NewValidatorDescription(consAddr, entry.Validator.Details, entry.Validator.Identity, entry.Validator.Moniker, height))
 			}
 		}
-
 	}
 
 	err := w.db.SaveValidators(validators)
 	if err != nil {
 		return fmt.Errorf("error while saving validators: %s", err)
-	}
-
-	err = w.db.SaveValidatorDescription(validatorsDesc)
-	if err != nil {
-		return fmt.Errorf("error while saving validators description: %s", err)
 	}
 
 	return nil
