@@ -1,6 +1,8 @@
 package staking
 
 import (
+	"fmt"
+
 	"github.com/MonikaCat/njuno/types"
 	"github.com/rs/zerolog/log"
 )
@@ -17,7 +19,7 @@ func (m *Module) RunAdditionalOperations() error {
 
 // saveValidatorsCommission stores validator commision in database
 func (m *Module) saveValidatorsCommission() error {
-	var validatorsDesc []types.ValidatorCommission
+	var validatorsCommission []types.ValidatorCommission
 
 	height, err := m.db.GetLastBlockHeight()
 	if err != nil {
@@ -31,15 +33,21 @@ func (m *Module) saveValidatorsCommission() error {
 	}
 
 	for _, val := range m.validatorsList.Validators {
+		found := false
 		for _, desc := range validatorDescList {
-			if desc.Identity == val.Validator.Identity && desc.Moniker == val.Validator.Moniker {
-				validatorsDesc = append(validatorsDesc, types.NewValidatorCommission(desc.OperatorAddress, val.Validator.Commission, height))
-
+			if !found {
+				if val.Validator.Identity == desc.Identity && val.Validator.Moniker == desc.Moniker {
+					found = true
+					// store validators commission
+					validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(desc.OperatorAddress, val.Validator.Commission, height))
+				}
 			}
 		}
 	}
 
-	err = m.db.SaveValidatorCommission(validatorsDesc)
+	fmt.Printf("\n \n found validators %v \n \n ", validatorsCommission)
+
+	err = m.db.SaveValidatorCommission(validatorsCommission)
 	if err != nil {
 		log.Printf("error while saving validator commission: %s ", err)
 	}
