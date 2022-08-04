@@ -56,11 +56,7 @@ func GetParserContext(cfg config.Config, parseConfig *Config) (*parser.Context, 
 		return nil, fmt.Errorf("error while setting logging level: %s", err)
 	}
 
-	// Get the modules
-	context := modsregistrar.NewContext(cfg, sdkConfig, &encodingConfig, db, cp, parseConfig.GetLogger())
-	mods := parseConfig.GetRegistrar().BuildModules(context)
-	registeredModules := modsregistrar.GetModules(mods, cfg.Chain.Modules, parseConfig.GetLogger())
-
+	// Get the validators list
 	validatorsList := &types.ValidatorsList{}
 	yamlFile, err := ioutil.ReadFile(cfg.Parser.ValidatorsListFilePath)
 	if err != nil {
@@ -71,6 +67,11 @@ func GetParserContext(cfg config.Config, parseConfig *Config) (*parser.Context, 
 	if err != nil {
 		log.Printf("error while unmarshaling validators list yaml file: %s ", err)
 	}
+
+	// Get the modules
+	context := modsregistrar.NewContext(cfg, sdkConfig, &encodingConfig, db, cp, parseConfig.GetLogger(), validatorsList)
+	mods := parseConfig.GetRegistrar().BuildModules(context)
+	registeredModules := modsregistrar.GetModules(mods, cfg.Chain.Modules, parseConfig.GetLogger())
 
 	return parser.NewContext(&encodingConfig, cp, db, parseConfig.GetLogger(), registeredModules, validatorsList), nil
 }

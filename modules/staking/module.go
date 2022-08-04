@@ -7,6 +7,7 @@ import (
 	"github.com/MonikaCat/njuno/logging"
 	"github.com/MonikaCat/njuno/modules"
 	source "github.com/MonikaCat/njuno/node"
+	"github.com/MonikaCat/njuno/types"
 )
 
 var (
@@ -17,18 +18,20 @@ var (
 
 // Module represents the staking module
 type Module struct {
-	cdc    codec.Marshaler
-	db     database.Database
-	logger logging.Logger
-	source source.Node
+	cdc            codec.Marshaler
+	db             database.Database
+	logger         logging.Logger
+	source         source.Node
+	validatorsList *types.ValidatorsList
 }
 
-func NewModule(cdc codec.Marshaler, db database.Database, logger logging.Logger, source source.Node) *Module {
+func NewModule(cdc codec.Marshaler, db database.Database, logger logging.Logger, source source.Node, validatorsList *types.ValidatorsList) *Module {
 	return &Module{
-		cdc:    cdc,
-		db:     db,
-		logger: logger,
-		source: source,
+		cdc:            cdc,
+		db:             db,
+		logger:         logger,
+		source:         source,
+		validatorsList: validatorsList,
 	}
 }
 
