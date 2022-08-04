@@ -2,9 +2,13 @@ package types
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"reflect"
 
 	"github.com/MonikaCat/njuno/parser"
+	"github.com/MonikaCat/njuno/types"
+	"gopkg.in/yaml.v2"
 
 	nodebuilder "github.com/MonikaCat/njuno/node/builder"
 	"github.com/MonikaCat/njuno/types/config"
@@ -57,7 +61,18 @@ func GetParserContext(cfg config.Config, parseConfig *Config) (*parser.Context, 
 	mods := parseConfig.GetRegistrar().BuildModules(context)
 	registeredModules := modsregistrar.GetModules(mods, cfg.Chain.Modules, parseConfig.GetLogger())
 
-	return parser.NewContext(&encodingConfig, cp, db, parseConfig.GetLogger(), registeredModules), nil
+	validatorsList := &types.ValidatorsList{}
+	yamlFile, err := ioutil.ReadFile(cfg.Parser.ValidatorsListFilePath)
+	if err != nil {
+		log.Printf("error while reading validators list yaml file: %s ", err)
+	}
+
+	err = yaml.Unmarshal(yamlFile, validatorsList)
+	if err != nil {
+		log.Printf("error while unmarshaling validators list yaml file: %s ", err)
+	}
+
+	return parser.NewContext(&encodingConfig, cp, db, parseConfig.GetLogger(), registeredModules, validatorsList), nil
 }
 
 // getConfig returns the SDK Config instance as well as if it's sealed or not
