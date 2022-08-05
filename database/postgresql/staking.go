@@ -129,14 +129,12 @@ func (db *Database) SaveValidators(validators []types.Validator) error {
 
 	validatorQuery := `INSERT INTO validator (consensus_address, consensus_pubkey) VALUES `
 
-	validatorInfoQuery := `
-INSERT INTO validator_info (consensus_address, operator_address, self_delegate_address, height) 
-VALUES `
+	validatorInfoQuery := `INSERT INTO validator_info (consensus_address, operator_address, self_delegate_address, height) VALUES `
 	var validatorInfoParams []interface{}
 	var validatorParams []interface{}
 
 	for i, validator := range validators {
-		vp := i * 2
+		vp := i * 2 // Starting position for validator params
 		vi := i * 4 // Starting position for validator info params
 
 		validatorQuery += fmt.Sprintf("($%d,$%d),", vp+1, vp+2)
@@ -158,13 +156,7 @@ VALUES `
 	}
 
 	validatorInfoQuery = validatorInfoQuery[:len(validatorInfoQuery)-1] // Remove the trailing ","
-	validatorInfoQuery += `
-ON CONFLICT (consensus_address) DO UPDATE 
-	SET consensus_address = excluded.consensus_address,
-		operator_address = excluded.operator_address,
-		self_delegate_address = excluded.self_delegate_address,
-		height = excluded.height
-WHERE validator_info.height <= excluded.height`
+	validatorInfoQuery += `ON CONFLICT DO NOTHING`
 	_, err = db.Sql.Exec(validatorInfoQuery, validatorInfoParams...)
 	if err != nil {
 		return fmt.Errorf("error while storing validator infos: %s", err)
