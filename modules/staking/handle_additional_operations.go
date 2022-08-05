@@ -1,8 +1,6 @@
 package staking
 
 import (
-	"fmt"
-
 	"github.com/MonikaCat/njuno/types"
 	"github.com/rs/zerolog/log"
 )
@@ -44,8 +42,6 @@ func (m *Module) saveValidatorsCommission() error {
 			}
 		}
 	}
-
-	fmt.Printf("\n \n found validators %v \n \n ", validatorsCommission)
 
 	err = m.db.SaveValidatorCommission(validatorsCommission)
 	if err != nil {
