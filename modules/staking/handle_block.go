@@ -27,6 +27,9 @@ func (m *Module) HandleBlock(
 	// Update validators description
 	go m.updateValidatorsDescription(vals.Validators, block.Block.Height)
 
+	// Update validators commission
+	go m.updateValidatorsCommission(vals.Validators, block.Block.Height)
+
 	return nil
 }
 
@@ -137,5 +140,34 @@ func (m *Module) updateValidatorsDescription(vals []*tmtypes.Validator, height i
 	if err != nil {
 		log.Error().Str("module", "staking").Err(err).Int64("height", height).
 			Msg("error while saving validators description")
+	}
+}
+
+// updateValidatorsCommission stores each validator commision in database
+func (m *Module) updateValidatorsCommission(vals []*tmtypes.Validator, height int64) {
+	log.Debug().Str("module", "staking").Int64("height", height).
+		Msg("updating validators commission")
+
+	var validatorsCommission []types.ValidatorCommission
+
+	for _, val := range vals {
+		consAddr := sdk.ConsAddress(val.Address).String()
+		found := false
+		for _, entry := range m.validatorsList.Validators {
+			// compare with address from yaml file
+			if !found {
+				if val.Address.String() == entry.Validator.Hex {
+					found = true
+					// store validators commision
+					validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr, entry.Validator.Commission, height))
+				}
+			}
+		}
+	}
+
+	err := m.db.SaveValidatorCommission(validatorsCommission)
+	if err != nil {
+		log.Error().Str("module", "staking").Err(err).Int64("height", height).
+			Msg("error while saving validators commission")
 	}
 }
