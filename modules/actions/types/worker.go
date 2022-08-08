@@ -71,7 +71,10 @@ func (w *ActionsWorker) RegisterHandler(path string, handler ActionHandler) {
 		logging.ReponseTimeBuckets(path, start)
 
 		// Write the response
-		writer.Write(data)
+		_, err = writer.Write(data)
+		if err != nil {
+			w.handleError(writer, path, err)
+		}
 	})
 }
 
@@ -89,7 +92,10 @@ func (w *ActionsWorker) handleError(writer http.ResponseWriter, path string, err
 	}
 
 	writer.WriteHeader(http.StatusBadRequest)
-	writer.Write(errorBody)
+	_, err = writer.Write(errorBody)
+	if err != nil {
+		w.handleError(writer, path, err)
+	}
 }
 
 // Start starts the worker
