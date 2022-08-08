@@ -223,12 +223,6 @@ func (w Worker) ExportBlock(
 		return fmt.Errorf("failed to persist block: %s", err)
 	}
 
-	// Save the commits
-	err = w.ExportCommit(b.Block.LastCommit, vals)
-	if err != nil {
-		return err
-	}
-
 	// Call the block handlers
 	for _, module := range w.modules {
 		if blockModule, ok := module.(modules.BlockModule); ok {
@@ -237,6 +231,12 @@ func (w Worker) ExportBlock(
 				w.logger.BlockError(module, b, err)
 			}
 		}
+	}
+
+	// Save the commits
+	err = w.ExportCommit(b.Block.LastCommit, vals)
+	if err != nil {
+		return err
 	}
 
 	// Export the transactions
