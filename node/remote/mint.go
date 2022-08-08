@@ -28,5 +28,5 @@ func (cp *Node) Inflation() (string, error) {
 		return "", fmt.Errorf("error while unmarshaling inflation: %s", err)
 	}
 
-	return string(inflation.Inflation), nil
+	return inflation.Inflation, nil
 }

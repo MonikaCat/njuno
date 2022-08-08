@@ -143,7 +143,7 @@ func (m *Module) updateValidatorsDescription(vals []*tmtypes.Validator, height i
 	}
 }
 
-// updateValidatorsCommission stores each validator commision in database
+// updateValidatorsCommission stores each validator commission in database
 func (m *Module) updateValidatorsCommission(vals []*tmtypes.Validator, height int64) {
 	log.Debug().Str("module", "staking").Int64("height", height).
 		Msg("updating validators commission")
@@ -158,7 +158,7 @@ func (m *Module) updateValidatorsCommission(vals []*tmtypes.Validator, height in
 			if !found {
 				if val.Address.String() == entry.Validator.Hex {
 					found = true
-					// store validators commision
+					// store validators commission
 					validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr, entry.Validator.Commission, height))
 				}
 			}
