@@ -300,10 +300,7 @@ func (w Worker) UnmarshalTxs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponse,
 	// get tx details from the block
 	var transaction bdtypes.TxResponse
 	for _, t := range block.Block.Txs {
-		err := json.Unmarshal(t, &transaction)
-		if err != nil {
-			// continue
-		}
+		_ = json.Unmarshal(t, &transaction)
 
 		txResponses = append(txResponses, bdtypes.NewTxResponse(transaction.Fee, transaction.Memo, transaction.Msg, transaction.Signatures, fmt.Sprintf("%X", t.Hash()), block.Block.Height))
 	}

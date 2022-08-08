@@ -1,6 +1,7 @@
 package mint
 
 import (
+	"github.com/MonikaCat/njuno/modules/utils"
 	"github.com/go-co-op/gocron"
 	"github.com/rs/zerolog/log"
 )
@@ -11,7 +12,7 @@ func (m *Module) RegisterPeriodicOperations(scheduler *gocron.Scheduler) error {
 
 	// Setup a cron job to run every midnight
 	if _, err := scheduler.Every(1).Day().At("00:00").Do(func() {
-		m.updateInflation()
+		utils.WatchMethod(m.updateInflation)
 	}); err != nil {
 		return err
 	}
