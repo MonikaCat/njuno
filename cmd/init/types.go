@@ -34,7 +34,7 @@ func NewConfig() *Config {
 	return &Config{}
 }
 
-// GetConfigCreator return the function that should be run to create a configuration from a set of
+// GetConfigCreator returns the function that should be run to create a configuration from a set of
 // flags specified by the user with the "init" command
 func (c *Config) GetConfigCreator() ConfigCreator {
 	if c.createConfig == nil {
