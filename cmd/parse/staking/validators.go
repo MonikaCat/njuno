@@ -14,7 +14,7 @@ import (
 // validatorsCmd returns a Cobra command that allows to fix the validators information
 func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 	return &cobra.Command{
-		Use:   "validators",
+		Use:   "validator-list",
 		Short: "Fix the information about validators reading the details from .yaml file",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			parseCtx, err := parsecmdtypes.GetParserContext(config.Cfg, parseConfig)
