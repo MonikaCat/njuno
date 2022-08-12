@@ -2,6 +2,7 @@ build/
 
 # Configuration
 *.json
+config.yaml
 
 # Coverage
 coverage.*
