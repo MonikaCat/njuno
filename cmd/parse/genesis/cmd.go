@@ -52,14 +52,9 @@ file itself and not the on-chain data.`,
 				return err
 			}
 
-			genState, err := utils.GetGenesisState(genDoc)
-			if err != nil {
-				return err
-			}
-
 			for _, module := range parseCtx.Modules {
 				if module, ok := module.(modules.GenesisModule); ok {
-					err = module.HandleGenesis(genDoc, genState)
+					err = module.HandleGenesis(genDoc)
 					if err != nil {
 						return err
 					}

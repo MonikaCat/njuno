@@ -1,7 +1,6 @@
 package modules
 
 import (
-	"encoding/json"
 	"strings"
 
 	"github.com/go-co-op/gocron"
@@ -66,7 +65,7 @@ type GenesisModule interface {
 	// For convenience of use, the already-unmarshalled AppState is provided along with the full GenesisDoc.
 	// NOTE. The returned error will be logged using the GenesisError method. All other modules' handlers
 	// will still be called.
-	HandleGenesis(doc *tmtypes.GenesisDoc, appState map[string]json.RawMessage) error
+	HandleGenesis(doc *tmtypes.GenesisDoc) error
 }
 
 type BlockModule interface {

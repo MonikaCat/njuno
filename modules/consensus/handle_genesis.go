@@ -1,7 +1,6 @@
 package consensus
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/MonikaCat/njuno/types"
@@ -11,7 +10,7 @@ import (
 )
 
 // HandleGenesis implements modules.Module
-func (m *Module) HandleGenesis(doc *tmtypes.GenesisDoc, _ map[string]json.RawMessage) error {
+func (m *Module) HandleGenesis(doc *tmtypes.GenesisDoc) error {
 	log.Debug().Str("module", "consensus").Msg("parsing genesis")
 
 	// Save the genesis time

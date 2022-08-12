@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -28,38 +27,23 @@ func ReadGenesisFileGenesisDoc(genesisPath string) (*tmtypes.GenesisDoc, error) 
 	return genesisDoc, nil
 }
 
-// GetGenesisState returns the genesis state by getting it from the given genesis doc
-func GetGenesisState(doc *tmtypes.GenesisDoc) (map[string]json.RawMessage, error) {
-	var genesisState map[string]json.RawMessage
-	err := json.Unmarshal(doc.AppState, &genesisState)
-	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal genesis state: %s", err)
-	}
-	return genesisState, nil
-}
-
-// GetGenesisDocAndState reads the genesis from node or file and returns genesis doc and state
-func GetGenesisDocAndState(genesisPath string, node node.Node) (*tmtypes.GenesisDoc, map[string]json.RawMessage, error) {
+// GetGenesisDoc reads the genesis from node or file and returns genesis doc
+func GetGenesisDoc(genesisPath string, node node.Node) (*tmtypes.GenesisDoc, error) {
 	var genesisDoc *tmtypes.GenesisDoc
 	if strings.TrimSpace(genesisPath) != "" {
 		genDoc, err := ReadGenesisFileGenesisDoc(genesisPath)
 		if err != nil {
-			return nil, nil, fmt.Errorf("error while reading genesis file: %s", err)
+			return nil, fmt.Errorf("error while reading genesis file: %s", err)
 		}
 		genesisDoc = genDoc
 
 	} else {
 		response, err := node.Genesis()
 		if err != nil {
-			return nil, nil, fmt.Errorf("failed to get genesis: %s", err)
+			return nil, fmt.Errorf("failed to get genesis: %s", err)
 		}
 		genesisDoc = response.Genesis
 	}
 
-	genesisState, err := GetGenesisState(genesisDoc)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	return genesisDoc, genesisState, nil
+	return genesisDoc, nil
 }
