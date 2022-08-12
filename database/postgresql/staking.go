@@ -149,7 +149,10 @@ func (db *Database) SaveValidators(validators []types.Validator) error {
 	}
 
 	validatorQuery = validatorQuery[:len(validatorQuery)-1] // Remove trailing ","
-	validatorQuery += " ON CONFLICT DO NOTHING"
+	validatorQuery += `
+ON CONFLICT (consensus_address) DO UPDATE 
+	SET consensus_pubkey = excluded.consensus_pubkey`
+
 	_, err := db.Sql.Exec(validatorQuery, validatorParams...)
 	if err != nil {
 		return fmt.Errorf("error while storing validators: %s", err)

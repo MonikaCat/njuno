@@ -7,6 +7,7 @@ import (
 
 	parseblocks "github.com/MonikaCat/njuno/cmd/parse/blocks"
 	parsegenesis "github.com/MonikaCat/njuno/cmd/parse/genesis"
+	parsestaking "github.com/MonikaCat/njuno/cmd/parse/staking"
 	parsetransactions "github.com/MonikaCat/njuno/cmd/parse/transactions"
 )
 
@@ -22,6 +23,7 @@ func NewParseCmd(parseCfg *parsecmdtypes.Config) *cobra.Command {
 		parseblocks.NewBlocksCmd(parseCfg),
 		parsegenesis.NewGenesisCmd(parseCfg),
 		parsetransactions.NewTransactionsCmd(parseCfg),
+		parsestaking.NewStakingCmd(parseCfg),
 	)
 
 	return cmd
