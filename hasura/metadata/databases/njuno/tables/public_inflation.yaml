@@ -1,0 +1,11 @@
+table:
+  name: inflation
+  schema: public
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - value
+    - height
+    filter: {}
+  role: anonymous
