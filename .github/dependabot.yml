@@ -13,4 +13,5 @@ updates:
     reviewers:
       - MonikaCat
     labels:
+      - automerge
       - dependencies
