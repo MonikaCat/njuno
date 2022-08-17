@@ -11,7 +11,7 @@ require (
 	github.com/lib/pq v1.10.6
 	github.com/prometheus/client_golang v1.13.0
 	github.com/rs/zerolog v1.21.0
-	github.com/spf13/cobra v1.1.3
+	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.7.1
 	github.com/stretchr/testify v1.8.0
 	github.com/tendermint/tendermint v0.34.12
