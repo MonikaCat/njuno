@@ -104,7 +104,7 @@ func (r *DefaultRegistrar) BuildModules(ctx Context) modules.Modules {
 		mint.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		pricefeed.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		pruning.NewModule(ctx.NJunoConfig, ctx.Database, ctx.Logger),
-		staking.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy, ctx.ValidatorsList),
+		staking.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy, ctx.ValidatorsList),
 		telemetry.NewModule(ctx.NJunoConfig),
 		token.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 	}
