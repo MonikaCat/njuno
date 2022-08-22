@@ -130,7 +130,6 @@ type ValidatorList struct {
 	Validator ValidatorInfo `yaml:"validator"`
 }
 type ValidatorInfo struct {
-	Hex               string `yaml:"hex"`
 	Address           string `yaml:"address"`
 	Commission        string `yaml:"commission"`
 	Details           string `yaml:"details"`
