@@ -235,13 +235,13 @@ func (db *Database) SaveValidatorsStatuses(statuses []types.ValidatorStatus) err
 		return nil
 	}
 
-	statusStmt := `INSERT INTO validator_status (validator_address, in_active_set, jailed, height) VALUES `
+	statusStmt := `INSERT INTO validator_status (validator_address, in_active_set, jailed, tombstoned, height) VALUES `
 	var statusParams []interface{}
 
 	for i, status := range statuses {
-		si := i * 4
-		statusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4)
-		statusParams = append(statusParams, status.ConsensusAddress, status.InActiveSet, status.Jailed, status.Height)
+		si := i * 5
+		statusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4, si+5)
+		statusParams = append(statusParams, status.ConsensusAddress, status.InActiveSet, status.Jailed, status.Tombstoned, status.Height)
 	}
 
 	statusStmt = statusStmt[:len(statusStmt)-1]
@@ -249,6 +249,7 @@ func (db *Database) SaveValidatorsStatuses(statuses []types.ValidatorStatus) err
 	ON CONFLICT (validator_address) DO UPDATE
 		SET in_active_set = excluded.in_active_set,
 		    jailed = excluded.jailed,
+		    tombstoned = excluded.tombstoned,
 		    height = excluded.height
 	WHERE validator_status.height <= excluded.height`
 	_, err := db.Sql.Exec(statusStmt, statusParams...)
