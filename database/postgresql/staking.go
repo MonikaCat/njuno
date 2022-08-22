@@ -127,31 +127,29 @@ func (db *Database) SaveValidators(validators []types.Validator) error {
 		return nil
 	}
 
-	validatorQuery := `INSERT INTO validator (consensus_address, consensus_pubkey) VALUES `
+	validatorQuery := `INSERT INTO validator (consensus_address) VALUES `
 
-	validatorInfoQuery := `INSERT INTO validator_info (consensus_address, operator_address, self_delegate_address, height) VALUES `
+	validatorInfoQuery := `INSERT INTO validator_info (consensus_address, self_delegate_address, height) VALUES `
 	var validatorInfoParams []interface{}
 	var validatorParams []interface{}
 
 	for i, validator := range validators {
-		vp := i * 2 // Starting position for validator params
-		vi := i * 4 // Starting position for validator info params
+		vi := i * 3 // Starting position for validator info params
 
-		validatorQuery += fmt.Sprintf("($%d,$%d),", vp+1, vp+2)
+		validatorQuery += fmt.Sprintf("($%d),", i+1)
 		validatorParams = append(validatorParams,
-			validator.ConsensusAddr, validator.ConsPubKey)
+			validator.ConsensusAddr)
 
-		validatorInfoQuery += fmt.Sprintf("($%d,$%d,$%d,$%d),", vi+1, vi+2, vi+3, vi+4)
+		validatorInfoQuery += fmt.Sprintf("($%d,$%d,$%d),", vi+1, vi+2, vi+3)
 		validatorInfoParams = append(validatorInfoParams,
-			validator.ConsensusAddr, validator.OperatorAddr, validator.SelfDelegateAddress,
+			validator.ConsensusAddr, validator.SelfDelegateAddress,
 			validator.Height,
 		)
 	}
 
 	validatorQuery = validatorQuery[:len(validatorQuery)-1] // Remove trailing ","
 	validatorQuery += `
-ON CONFLICT (consensus_address) DO UPDATE 
-	SET consensus_pubkey = excluded.consensus_pubkey`
+ON CONFLICT (consensus_address) DO NOTHING`
 
 	_, err := db.Sql.Exec(validatorQuery, validatorParams...)
 	if err != nil {

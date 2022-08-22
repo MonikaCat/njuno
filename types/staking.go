@@ -55,22 +55,18 @@ func NewDoubleSignVote(
 // Validator contains the data of a single validator
 type Validator struct {
 	ConsensusAddr       string
-	ConsPubKey          string
-	OperatorAddr        string
 	SelfDelegateAddress string
 	Height              int64
 }
 
 // NewValidator allows to build a new Validator instance
 func NewValidator(
-	consAddr string, opAddr string, consPubKey string,
+	consAddr string,
 	selfDelegateAddress string,
 	height int64,
 ) Validator {
 	return Validator{
 		ConsensusAddr:       consAddr,
-		ConsPubKey:          consPubKey,
-		OperatorAddr:        opAddr,
 		SelfDelegateAddress: selfDelegateAddress,
 		Height:              height,
 	}

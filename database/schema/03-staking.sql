@@ -2,11 +2,9 @@
 CREATE TABLE validator_info
 (
     consensus_address     TEXT   NOT NULL UNIQUE PRIMARY KEY REFERENCES validator (consensus_address),
-    operator_address      TEXT   NOT NULL UNIQUE,
     self_delegate_address TEXT,
     height                BIGINT NOT NULL
 );
-CREATE INDEX validator_info_operator_address_index ON validator_info (operator_address);
 CREATE INDEX validator_info_self_delegate_address_index ON validator_info (self_delegate_address);
 
 

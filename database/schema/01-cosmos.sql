@@ -1,8 +1,7 @@
 /* ---- VALIDATOR ---- */
 CREATE TABLE validator
 (
-    consensus_address TEXT NOT NULL PRIMARY KEY UNIQUE, /* Validator consensus address */
-    consensus_pubkey  TEXT NOT NULL /* Validator consensus public key */
+    consensus_address TEXT NOT NULL PRIMARY KEY UNIQUE /* Validator consensus address */
 );
 
 
