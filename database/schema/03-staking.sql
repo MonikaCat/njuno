@@ -23,7 +23,7 @@ CREATE INDEX validator_voting_power_height_index ON validator_voting_power (heig
 /* ---- VALIDATOR DESCRIPTION ---- */
 CREATE TABLE validator_description
 (
-    validator_address TEXT   NOT NULL REFERENCES validator (consensus_address) PRIMARY KEY,
+    validator_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
     moniker           TEXT,
     identity          TEXT,
     details           TEXT,
@@ -42,6 +42,15 @@ CREATE TABLE validator_commission
 );
 CREATE INDEX validator_commission_height_index ON validator_commission (height);
 
+/* ---- VALIDATOR STATUS ---- */
+CREATE TABLE validator_status
+(
+    validator_address TEXT    NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
+    in_active_set     BOOLEAN NOT NULL,
+    jailed            BOOLEAN NOT NULL,
+    height            BIGINT  NOT NULL
+);
+CREATE INDEX validator_status_height_index ON validator_status (height);
 
 /* ---- DOUBLE SIGN VOTE ---- */
 CREATE TABLE double_sign_vote
