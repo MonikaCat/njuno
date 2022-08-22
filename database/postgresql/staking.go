@@ -172,15 +172,16 @@ ON CONFLICT (consensus_address) DO UPDATE
 
 // SaveValidatorCommission saves validators commission in database.
 func (db *Database) SaveValidatorCommission(validatorsCommission []types.ValidatorCommission) error {
-	stmt := `INSERT INTO validator_commission (validator_address, commission, height) VALUES `
+	stmt := `INSERT INTO validator_commission (validator_address, commission, min_self_delegation, height) VALUES `
 
 	var commissionList []interface{}
 	for i, data := range validatorsCommission {
-		si := i * 3
-		stmt += fmt.Sprintf("($%d, $%d, $%d),", si+1, si+2, si+3)
+		si := i * 4
+		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4)
 		commissionList = append(commissionList,
 			dbtypes.ToNullString(data.ValAddress),
 			dbtypes.ToNullString(data.Commission),
+			dbtypes.ToNullString(data.MinSelfDelegation),
 			data.Height)
 	}
 
@@ -188,6 +189,7 @@ func (db *Database) SaveValidatorCommission(validatorsCommission []types.Validat
 	stmt += `
 ON CONFLICT (validator_address) DO UPDATE 
 	SET commission = excluded.commission, 
+		min_self_delegation = excluded.min_self_delegation,
 		height = excluded.height
 WHERE validator_commission.height <= excluded.height`
 	_, err := db.Sql.Exec(stmt, commissionList...)

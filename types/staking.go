@@ -80,19 +80,21 @@ func NewValidator(
 
 // ValidatorCommission contains the data of a validator commission at a given height
 type ValidatorCommission struct {
-	ValAddress string
-	Commission string
-	Height     int64
+	ValAddress        string
+	Commission        string
+	MinSelfDelegation string
+	Height            int64
 }
 
 // NewValidatorCommission return a new ValidatorCommission instance
 func NewValidatorCommission(
-	valAddress string, rate string, height int64,
+	valAddress, commission, minSelfDelegation string, height int64,
 ) ValidatorCommission {
 	return ValidatorCommission{
-		ValAddress: valAddress,
-		Commission: rate,
-		Height:     height,
+		ValAddress:        valAddress,
+		Commission:        commission,
+		MinSelfDelegation: minSelfDelegation,
+		Height:            height,
 	}
 }
 
@@ -132,12 +134,16 @@ type ValidatorList struct {
 	Validator ValidatorInfo `yaml:"validator"`
 }
 type ValidatorInfo struct {
-	Hex        string `yaml:"hex"`
-	Address    string `yaml:"address"`
-	Commission string `yaml:"commission"`
-	Details    string `yaml:"details"`
-	Identity   string `yaml:"identity"`
-	Moniker    string `yaml:"moniker"`
+	Hex               string `yaml:"hex"`
+	Address           string `yaml:"address"`
+	Commission        string `yaml:"commission"`
+	Details           string `yaml:"details"`
+	Identity          string `yaml:"identity"`
+	Jailed            string `yaml:"jailed"`
+	MinSelfDelegation string `yaml:"min_self_delegation"`
+	Moniker           string `yaml:"moniker"`
+	Tombstoned        string `yaml:"tombstoned"`
+	InActiveSet       string `yaml:"in_active_set"`
 }
 
 // ----------------------------------------------------------------------------------------------------------

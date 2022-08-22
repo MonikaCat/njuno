@@ -4,19 +4,21 @@ import "database/sql"
 
 // ValidatorCommissionRow represents a single row of the validator_commission database table
 type ValidatorCommissionRow struct {
-	OperatorAddress string `db:"validator_address"`
-	Commission      string `db:"commission"`
-	Height          int64  `db:"height"`
+	OperatorAddress   string         `db:"validator_address"`
+	Commission        string         `db:"commission"`
+	MinSelfDelegation sql.NullString `db:"min_self_delegation"`
+	Height            int64          `db:"height"`
 }
 
 // NewValidatorCommissionRow allows to build new ValidatorCommissionRow instance
 func NewValidatorCommissionRow(
-	operatorAddress string, commission string, height int64,
+	operatorAddress string, commission string, minSelfDelegation string, height int64,
 ) ValidatorCommissionRow {
 	return ValidatorCommissionRow{
-		OperatorAddress: operatorAddress,
-		Commission:      commission,
-		Height:          height,
+		OperatorAddress:   operatorAddress,
+		Commission:        commission,
+		MinSelfDelegation: ToNullString(minSelfDelegation),
+		Height:            height,
 	}
 }
 
@@ -24,6 +26,7 @@ func NewValidatorCommissionRow(
 func (v ValidatorCommissionRow) Equal(w ValidatorCommissionRow) bool {
 	return v.OperatorAddress == w.OperatorAddress &&
 		v.Commission == w.Commission &&
+		v.MinSelfDelegation == w.MinSelfDelegation &&
 		v.Height == w.Height
 }
 

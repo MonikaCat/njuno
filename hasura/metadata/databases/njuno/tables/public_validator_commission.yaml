@@ -11,6 +11,7 @@ select_permissions:
     columns:
     - validator_address
     - commission
+    - min_self_delegation
     - height
     filter: {}
   role: anonymous
