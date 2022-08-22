@@ -163,3 +163,23 @@ func NewValidatorVotingPower(address string, votingPower int64, height int64) Va
 		Height:           height,
 	}
 }
+
+// ----------------------------------------------------------------------------------------------------------
+
+// ValidatorStatus represents the latest state of a validator
+type ValidatorStatus struct {
+	ConsensusAddress string
+	InActiveSet      string
+	Jailed           string
+	Height           int64
+}
+
+// NewValidatorStatus creates a new ValidatorVotingPower
+func NewValidatorStatus(valConsAddr, inActiveSet, jailed string, height int64) ValidatorStatus {
+	return ValidatorStatus{
+		ConsensusAddress: valConsAddr,
+		InActiveSet:      inActiveSet,
+		Jailed:           jailed,
+		Height:           height,
+	}
+}

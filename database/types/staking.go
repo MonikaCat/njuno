@@ -62,3 +62,31 @@ func (v ValidatorDescriptionRow) Equal(w ValidatorDescriptionRow) bool {
 		v.Details == w.Details &&
 		v.Height == w.Height
 }
+
+// _________________________________________________________
+
+// ValidatorStatusRow represents a single row of the validator_status table
+type ValidatorStatusRow struct {
+	InActiveSet string `db:"in_active_set"`
+	Jailed      string `db:"jailed"`
+	ConsAddress string `db:"validator_address"`
+	Height      int64  `db:"height"`
+}
+
+// NewValidatorStatusRow builds a new ValidatorStatusRow
+func NewValidatorStatusRow(inActiveSet, jailed, consAddess string, height int64) ValidatorStatusRow {
+	return ValidatorStatusRow{
+		InActiveSet: inActiveSet,
+		Jailed:      jailed,
+		ConsAddress: consAddess,
+		Height:      height,
+	}
+}
+
+// Equal tells whether v and w contain the same data
+func (v ValidatorStatusRow) Equal(w ValidatorStatusRow) bool {
+	return v.InActiveSet == w.InActiveSet &&
+		v.Jailed == w.Jailed &&
+		v.ConsAddress == w.ConsAddress &&
+		v.Height == w.Height
+}

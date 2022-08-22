@@ -45,10 +45,10 @@ CREATE INDEX validator_commission_height_index ON validator_commission (height);
 /* ---- VALIDATOR STATUS ---- */
 CREATE TABLE validator_status
 (
-    validator_address TEXT    NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
-    in_active_set     BOOLEAN NOT NULL,
-    jailed            BOOLEAN NOT NULL,
-    height            BIGINT  NOT NULL
+    validator_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
+    in_active_set     TEXT   NOT NULL,
+    jailed            TEXT   NOT NULL,
+    height            BIGINT NOT NULL
 );
 CREATE INDEX validator_status_height_index ON validator_status (height);
 

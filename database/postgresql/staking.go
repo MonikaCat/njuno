@@ -229,6 +229,38 @@ WHERE validator_description.height <= excluded.height`
 
 // -------------------------------------------------------------------------------------------------------------------
 
+// SaveValidatorsStatuses save latest validator  in database
+func (db *Database) SaveValidatorsStatuses(statuses []types.ValidatorStatus) error {
+	if len(statuses) == 0 {
+		return nil
+	}
+
+	statusStmt := `INSERT INTO validator_status (validator_address, in_active_set, jailed, height) VALUES `
+	var statusParams []interface{}
+
+	for i, status := range statuses {
+		si := i * 4
+		statusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4)
+		statusParams = append(statusParams, status.ConsensusAddress, status.InActiveSet, status.Jailed, status.Height)
+	}
+
+	statusStmt = statusStmt[:len(statusStmt)-1]
+	statusStmt += `
+	ON CONFLICT (validator_address) DO UPDATE
+		SET in_active_set = excluded.in_active_set,
+		    jailed = excluded.jailed,
+		    height = excluded.height
+	WHERE validator_status.height <= excluded.height`
+	_, err := db.Sql.Exec(statusStmt, statusParams...)
+	if err != nil {
+		return fmt.Errorf("error while stroring validators statuses: %s", err)
+	}
+
+	return nil
+}
+
+// -------------------------------------------------------------------------------------------------------------------
+
 // SaveValidatorsVotingPower saves the given validator voting powers.
 func (db *Database) SaveValidatorsVotingPower(entries []types.ValidatorVotingPower) error {
 	if len(entries) == 0 {
