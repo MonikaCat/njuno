@@ -23,7 +23,7 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 			var validators []types.Validator
 			var validatorsDescription []types.ValidatorDescription
 			var validatorsCommission []types.ValidatorCommission
-			var validatorsStatuses []types.ValidatorStatus
+			var validatorsStatus []types.ValidatorStatus
 
 			for _, val := range parseCtx.ValidatorsList.Validators {
 				consAddr := sdk.ConsAddress(val.Validator.Address).String()
@@ -31,7 +31,7 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 				validators = append(validators, types.NewValidator(consAddr, val.Validator.Address, 1))
 				validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr, val.Validator.Details, val.Validator.Identity, val.Validator.Moniker, 1))
 				validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr, val.Validator.Commission, val.Validator.MinSelfDelegation, 1))
-				validatorsStatuses = append(validatorsStatuses, types.NewValidatorStatus(consAddr, val.Validator.InActiveSet, val.Validator.Jailed, val.Validator.Tombstoned, 1))
+				validatorsStatus = append(validatorsStatus, types.NewValidatorStatus(consAddr, val.Validator.InActiveSet, val.Validator.Jailed, val.Validator.Tombstoned, 1))
 			}
 
 			err = parseCtx.Database.SaveValidators(validators)
@@ -52,10 +52,10 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 					Msg("error while saving validators commission")
 			}
 
-			err = parseCtx.Database.SaveValidatorsStatuses(validatorsStatuses)
+			err = parseCtx.Database.SaveValidatorsStatus(validatorsStatus)
 			if err != nil {
 				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
-					Msg("error while saving validators statuses")
+					Msg("error while saving validators status")
 			}
 
 			return nil

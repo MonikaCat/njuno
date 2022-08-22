@@ -227,32 +227,45 @@ WHERE validator_description.height <= excluded.height`
 
 // -------------------------------------------------------------------------------------------------------------------
 
-// SaveValidatorsStatuses save latest validator  in database
-func (db *Database) SaveValidatorsStatuses(statuses []types.ValidatorStatus) error {
-	if len(statuses) == 0 {
+// SaveValidatorsStatus save latest validator  in database
+func (db *Database) SaveValidatorsStatus(validatorsStatus []types.ValidatorStatus) error {
+	if len(validatorsStatus) == 0 {
 		return nil
 	}
 
-	statusStmt := `INSERT INTO validator_status (validator_address, in_active_set, jailed, tombstoned, height) VALUES `
-	var statusParams []interface{}
+	validatorStmt := `INSERT INTO validator (consensus_address) VALUES`
+	var validatorParams []interface{}
 
-	for i, status := range statuses {
+	validatorStatusStmt := `INSERT INTO validator_status (validator_address, in_active_set, jailed, tombstoned, height) VALUES `
+	var validatorStatusParams []interface{}
+
+	for i, status := range validatorsStatus {
+		validatorStmt += fmt.Sprintf("($%d),", i+1)
+		validatorParams = append(validatorParams, status.ConsensusAddress)
+
 		si := i * 5
-		statusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4, si+5)
-		statusParams = append(statusParams, status.ConsensusAddress, status.InActiveSet, status.Jailed, status.Tombstoned, status.Height)
+		validatorStatusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4, si+5)
+		validatorStatusParams = append(validatorStatusParams, status.ConsensusAddress, status.InActiveSet, status.Jailed, status.Tombstoned, status.Height)
 	}
 
-	statusStmt = statusStmt[:len(statusStmt)-1]
-	statusStmt += `
+	validatorStmt = validatorStmt[:len(validatorStmt)-1]
+	validatorStmt += "ON CONFLICT DO NOTHING"
+	_, err := db.Sql.Exec(validatorStmt, validatorParams...)
+	if err != nil {
+		return fmt.Errorf("error while storing validators: %s", err)
+	}
+
+	validatorStatusStmt = validatorStatusStmt[:len(validatorStatusStmt)-1]
+	validatorStatusStmt += `
 	ON CONFLICT (validator_address) DO UPDATE
 		SET in_active_set = excluded.in_active_set,
 		    jailed = excluded.jailed,
 		    tombstoned = excluded.tombstoned,
 		    height = excluded.height
 	WHERE validator_status.height <= excluded.height`
-	_, err := db.Sql.Exec(statusStmt, statusParams...)
+	_, err = db.Sql.Exec(validatorStatusStmt, validatorStatusParams...)
 	if err != nil {
-		return fmt.Errorf("error while stroring validators statuses: %s", err)
+		return fmt.Errorf("error while stroring validators status: %s", err)
 	}
 
 	return nil
