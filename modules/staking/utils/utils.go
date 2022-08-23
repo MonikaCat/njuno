@@ -15,7 +15,7 @@ import (
 // GetLatestValidatorsStatus queries the latest validators status and stores it inside yaml file,
 // returning an array of validators
 func GetLatestValidatorsStatus() *types.ValidatorsList {
-	validatorsCmd := exec.Command("sh", "-c", "/Users/monikapusz/Desktop/Github/njuno/query_validators_list.sh")
+	validatorsCmd := exec.Command("sh", "-c", "~/.njuno/query_validators.sh")
 
 	cmdOutput := &bytes.Buffer{}
 	validatorsCmd.Stdout = cmdOutput
