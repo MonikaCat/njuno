@@ -2,6 +2,7 @@ package staking
 
 import (
 	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
+	staking "github.com/MonikaCat/njuno/modules/staking/utils"
 	"github.com/MonikaCat/njuno/types"
 	"github.com/MonikaCat/njuno/types/config"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -19,13 +20,15 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 			if err != nil {
 				return err
 			}
-
 			var validators []types.Validator
 			var validatorsDescription []types.ValidatorDescription
 			var validatorsCommission []types.ValidatorCommission
 			var validatorsStatus []types.ValidatorStatus
 
-			for _, val := range parseCtx.ValidatorsList.Validators {
+			// query the latest validators status
+			validatorsLists := staking.GetLatestValidatorsStatus()
+
+			for _, val := range validatorsLists.Validators {
 				consAddr := sdk.ConsAddress(val.Validator.Address).String()
 
 				validators = append(validators, types.NewValidator(consAddr, val.Validator.Address, 1))
