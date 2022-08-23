@@ -159,42 +159,6 @@ func (w Worker) HandleGenesis(genesisDoc *tmtypes.GenesisDoc) error {
 	return nil
 }
 
-// SaveValidators persists a list of Tendermint validators with an address and a
-// consensus public key. An error is returned if the public key cannot be Bech32
-// encoded or if the DB write fails.
-func (w Worker) SaveValidators(vals []*tmtypes.Validator, height int64) error {
-	var validators []types.Validator
-
-	for _, val := range vals {
-		consAddr := sdk.ConsAddress(val.Address).String()
-
-		consPubKey, err := types.ConvertValidatorPubKeyToBech32String(val.PubKey)
-		if err != nil {
-			return fmt.Errorf("failed to convert validator public key for validators %s: %s", consAddr, err)
-		}
-
-		validatorAddress, err := sdk.ValAddressFromHex(val.Address.String())
-		if err != nil {
-			fmt.Printf("failed to convert validator address from hex: %s", err)
-		}
-
-		for _, entry := range w.validatorsList.Validators {
-			// compare with address from yaml file
-			if entry.Validator.Hex == val.Address.String() {
-				// store validators
-				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), consPubKey, entry.Validator.Address, height))
-			}
-		}
-	}
-
-	err := w.db.SaveValidators(validators)
-	if err != nil {
-		return fmt.Errorf("error while saving validators: %s", err)
-	}
-
-	return nil
-}
-
 // ExportBlock accepts a finalized block and a corresponding set of transactions
 // and persists them to the database along with attributable metadata. An error
 // is returned if the write fails.
@@ -202,21 +166,15 @@ func (w Worker) ExportBlock(
 	b *tmctypes.ResultBlock, r *tmctypes.ResultBlockResults, txs []types.TxResponse, vals *tmctypes.ResultValidators,
 ) error {
 
-	// Save all validators
-	err := w.SaveValidators(vals.Validators, b.Block.Height)
-	if err != nil {
-		return err
-	}
-
 	// Make sure the proposer exists
 	proposerAddr := sdk.ConsAddress(b.Block.ProposerAddress)
 	val := findValidatorByAddr(proposerAddr.String(), vals)
 	if val == nil {
-		return fmt.Errorf("failed to find validator by proposer address %s: %s", proposerAddr.String(), err)
+		return fmt.Errorf("failed to find validator by proposer address %s ", proposerAddr.String())
 	}
 
 	// Save the block
-	err = w.db.SaveBlock(types.NewBlockFromTmBlock(b, 0))
+	err := w.db.SaveBlock(types.NewBlockFromTmBlock(b, 0))
 	if err != nil {
 		return fmt.Errorf("failed to persist block: %s", err)
 	}
