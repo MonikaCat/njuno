@@ -32,23 +32,21 @@ type Worker struct {
 	codec   codec.BinaryMarshaler
 	modules []modules.Module
 
-	node           node.Node
-	db             database.Database
-	logger         logging.Logger
-	validatorsList *types.ValidatorsList
+	node   node.Node
+	db     database.Database
+	logger logging.Logger
 }
 
 // NewWorker allows to create a new Worker implementation.
 func NewWorker(ctx *Context, queue types.HeightQueue, index int) Worker {
 	return Worker{
-		index:          index,
-		codec:          ctx.EncodingConfig.Marshaler,
-		node:           ctx.Node,
-		queue:          queue,
-		db:             ctx.Database,
-		modules:        ctx.Modules,
-		logger:         ctx.Logger,
-		validatorsList: ctx.ValidatorsList,
+		index:   index,
+		codec:   ctx.EncodingConfig.Marshaler,
+		node:    ctx.Node,
+		queue:   queue,
+		db:      ctx.Database,
+		modules: ctx.Modules,
+		logger:  ctx.Logger,
 	}
 }
 
