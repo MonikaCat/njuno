@@ -19,9 +19,10 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 				return err
 			}
 
-			// query the latest validators status
-			validatorsLists := staking.GetLatestValidatorsStatus()
+			// query the latest validators list
+			validatorsLists := staking.GetLatestValidatorsList()
 
+			// parse validators list 
 			validators, validatorsDescription, validatorsCommission, validatorsStatus := staking.ParseValidatorsList(validatorsLists)
 
 			err = parseCtx.Database.SaveValidators(validators)
