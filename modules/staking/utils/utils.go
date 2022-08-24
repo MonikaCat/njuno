@@ -16,7 +16,7 @@ import (
 // GetLatestValidatorsList queries the latest validators list, stores it inside yaml file,
 // and returns an array of validators
 func GetLatestValidatorsList() *types.ValidatorsList {
-	validatorsCmd := exec.Command("sh", "-c", "~/.njuno/query_validators.sh")
+	validatorsCmd := exec.Command("sh", "-c", "~/.njuno/validators_query.sh")
 
 	cmdOutput := &bytes.Buffer{}
 	validatorsCmd.Stdout = cmdOutput
@@ -40,7 +40,7 @@ func GetLatestValidatorsList() *types.ValidatorsList {
 	return validatorsList
 }
 
-// ParseValidatorsList parses the validators list and returns arrays of validators, 
+// ParseValidatorsList parses the validators list and returns arrays of validators,
 // validators description, validators commission and validators status
 func ParseValidatorsList(validatorsList *types.ValidatorsList) ([]types.Validator, []types.ValidatorDescription, []types.ValidatorCommission, []types.ValidatorStatus) {
 	var validators []types.Validator
