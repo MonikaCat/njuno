@@ -3,9 +3,7 @@ package staking
 import (
 	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
 	staking "github.com/MonikaCat/njuno/modules/staking/utils"
-	"github.com/MonikaCat/njuno/types"
 	"github.com/MonikaCat/njuno/types/config"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -20,22 +18,11 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 			if err != nil {
 				return err
 			}
-			var validators []types.Validator
-			var validatorsDescription []types.ValidatorDescription
-			var validatorsCommission []types.ValidatorCommission
-			var validatorsStatus []types.ValidatorStatus
 
 			// query the latest validators status
 			validatorsLists := staking.GetLatestValidatorsStatus()
 
-			for _, val := range validatorsLists.Validators {
-				consAddr := sdk.ConsAddress(val.Validator.Address).String()
-
-				validators = append(validators, types.NewValidator(consAddr, val.Validator.Address, 1))
-				validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr, val.Validator.Details, val.Validator.Identity, val.Validator.Moniker, 1))
-				validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr, val.Validator.Commission, val.Validator.MinSelfDelegation, 1))
-				validatorsStatus = append(validatorsStatus, types.NewValidatorStatus(consAddr, val.Validator.InActiveSet, val.Validator.Jailed, val.Validator.Tombstoned, 1))
-			}
+			validators, validatorsDescription, validatorsCommission, validatorsStatus := staking.ParseValidatorsList(validatorsLists)
 
 			err = parseCtx.Database.SaveValidators(validators)
 			if err != nil {
