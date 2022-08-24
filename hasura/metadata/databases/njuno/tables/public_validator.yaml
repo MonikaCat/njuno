@@ -2,63 +2,43 @@ table:
   name: validator
   schema: public
 object_relationships:
-- name: validator_infos
+- name: validator_commission
   using:
     manual_configuration:
       column_mapping:
-        consensus_address: consensus_address
+        self_delegate_address: self_delegate_address
       insertion_order: null
       remote_table:
-        name: validator_info
+        name: validator_commission
         schema: public
 array_relationships:
-- name: blocks
-  using:
-    foreign_key_constraint_on:
-      column: proposer_address
-      table:
-        name: block
-        schema: public
-- name: double_sign_votes
-  using:
-    foreign_key_constraint_on:
-      column: validator_address
-      table:
-        name: double_sign_vote
-        schema: public
-- name: pre_commits
-  using:
-    foreign_key_constraint_on:
-      column: validator_address
-      table:
-        name: pre_commit
-        schema: public
 - name: validator_descriptions
   using:
     foreign_key_constraint_on:
-      column: validator_address
+      column: self_delegate_address
       table:
         name: validator_description
-        schema: public
-- name: validator_infos
-  using:
-    foreign_key_constraint_on:
-      column: consensus_address
-      table:
-        name: validator_info
         schema: public
 - name: validator_voting_powers
   using:
     foreign_key_constraint_on:
-      column: validator_address
+      column: self_delegate_address
       table:
         name: validator_voting_power
+        schema: public
+- name: validator_commissions
+  using:
+    foreign_key_constraint_on:
+      column: self_delegate_address
+      table:
+        name: validator_commission
         schema: public
 select_permissions:
 - permission:
     allow_aggregations: true
     columns:
-    - consensus_address
-    - consensus_pubkey
+     - consensus_address
+     - self_delegate_address
+     - height
     filter: {}
   role: anonymous
