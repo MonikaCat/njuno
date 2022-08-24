@@ -22,19 +22,13 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 			// query the latest validators list
 			validatorsLists := staking.GetLatestValidatorsList()
 
-			// parse validators list 
-			validators, validatorsDescription, validatorsCommission, validatorsStatus := staking.ParseValidatorsList(validatorsLists)
+			// parse validators list
+			validators, validatorsCommission, validatorsDescription, validatorsStatus, validatorsVP := staking.ParseValidatorsList(validatorsLists, 1)
 
 			err = parseCtx.Database.SaveValidators(validators)
 			if err != nil {
 				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
 					Msg("error while saving validators")
-			}
-
-			err = parseCtx.Database.SaveValidatorDescription(validatorsDescription)
-			if err != nil {
-				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
-					Msg("error while saving validators description")
 			}
 
 			err = parseCtx.Database.SaveValidatorCommission(validatorsCommission)
@@ -43,10 +37,22 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 					Msg("error while saving validators commission")
 			}
 
+			err = parseCtx.Database.SaveValidatorDescription(validatorsDescription)
+			if err != nil {
+				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
+					Msg("error while saving validators description")
+			}
+
 			err = parseCtx.Database.SaveValidatorsStatus(validatorsStatus)
 			if err != nil {
 				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
 					Msg("error while saving validators status")
+			}
+
+			err = parseCtx.Database.SaveValidatorsVotingPower(validatorsVP)
+			if err != nil {
+				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
+					Msg("error while saving validators voting power")
 			}
 
 			return nil
