@@ -42,20 +42,22 @@ func GetLatestValidatorsList() *types.ValidatorsList {
 
 // ParseValidatorsList parses the validators list and returns arrays of validators,
 // validators description, validators commission and validators status
-func ParseValidatorsList(validatorsList *types.ValidatorsList) ([]types.Validator, []types.ValidatorDescription, []types.ValidatorCommission, []types.ValidatorStatus) {
+func ParseValidatorsList(validatorsList *types.ValidatorsList, height int64) ([]types.Validator, []types.ValidatorCommission, []types.ValidatorDescription, []types.ValidatorStatus, []types.ValidatorVotingPower) {
 	var validators []types.Validator
-	var validatorsDescription []types.ValidatorDescription
 	var validatorsCommission []types.ValidatorCommission
+	var validatorsDescription []types.ValidatorDescription
 	var validatorsStatus []types.ValidatorStatus
+	var validatorsVP []types.ValidatorVotingPower
 
 	for _, val := range validatorsList.Validators {
-		consAddr := sdk.ConsAddress(val.Validator.Address).String()
+		consAddr := sdk.ConsAddress(val.Validator.Address)
 
-		validators = append(validators, types.NewValidator(consAddr, val.Validator.Address, 1))
-		validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr, val.Validator.Details, val.Validator.Identity, val.Validator.Moniker, 1))
-		validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr, val.Validator.Commission, val.Validator.MinSelfDelegation, 1))
-		validatorsStatus = append(validatorsStatus, types.NewValidatorStatus(consAddr, val.Validator.InActiveSet, val.Validator.Jailed, val.Validator.Tombstoned, 1))
+		validators = append(validators, types.NewValidator(consAddr.String(), val.Validator.Address, height))
+		validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr.String(), val.Validator.Address, val.Validator.Commission, val.Validator.MinSelfDelegation, height))
+		validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr.String(), val.Validator.Address, val.Validator.Details, val.Validator.Identity, val.Validator.Moniker, height))
+		validatorsStatus = append(validatorsStatus, types.NewValidatorStatus(consAddr.String(), val.Validator.Address, val.Validator.InActiveSet, val.Validator.Jailed, val.Validator.Tombstoned, height))
+		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr.String(), val.Validator.Address, val.Validator.VotingPower, height))
 	}
 
-	return validators, validatorsDescription, validatorsCommission, validatorsStatus
+	return validators, validatorsCommission, validatorsDescription, validatorsStatus, validatorsVP
 }
