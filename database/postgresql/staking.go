@@ -24,6 +24,7 @@ func (db *Database) GetValidatorsDescription() ([]types.ValidatorDescription, er
 	for _, index := range result {
 		list = append(list,
 			types.NewValidatorDescription(index.ValAddress,
+				index.SelfDelegateAddress,
 				dbtypes.ToString(index.Details),
 				dbtypes.ToString(index.Identity),
 				dbtypes.ToString(index.Moniker),
@@ -127,40 +128,24 @@ func (db *Database) SaveValidators(validators []types.Validator) error {
 		return nil
 	}
 
-	validatorQuery := `INSERT INTO validator (consensus_address) VALUES `
-
-	validatorInfoQuery := `INSERT INTO validator_info (consensus_address, self_delegate_address, height) VALUES `
-	var validatorInfoParams []interface{}
+	validatorQuery := `INSERT INTO validator (consensus_address, self_delegate_address, height) VALUES `
 	var validatorParams []interface{}
 
 	for i, validator := range validators {
-		vi := i * 3 // Starting position for validator info params
+		vi := i * 3 // Starting position for validator
 
-		validatorQuery += fmt.Sprintf("($%d),", i+1)
+		validatorQuery += fmt.Sprintf("($%d,$%d,$%d),", vi+1, vi+2, vi+3)
 		validatorParams = append(validatorParams,
-			validator.ConsensusAddr)
-
-		validatorInfoQuery += fmt.Sprintf("($%d,$%d,$%d),", vi+1, vi+2, vi+3)
-		validatorInfoParams = append(validatorInfoParams,
 			validator.ConsensusAddr, validator.SelfDelegateAddress,
 			validator.Height,
 		)
 	}
 
-	validatorQuery = validatorQuery[:len(validatorQuery)-1] // Remove trailing ","
-	validatorQuery += `
-ON CONFLICT (consensus_address) DO NOTHING`
-
+	validatorQuery = validatorQuery[:len(validatorQuery)-1] // Remove the trailing ","
+	validatorQuery += `ON CONFLICT DO NOTHING`
 	_, err := db.Sql.Exec(validatorQuery, validatorParams...)
 	if err != nil {
-		return fmt.Errorf("error while storing validators: %s", err)
-	}
-
-	validatorInfoQuery = validatorInfoQuery[:len(validatorInfoQuery)-1] // Remove the trailing ","
-	validatorInfoQuery += `ON CONFLICT DO NOTHING`
-	_, err = db.Sql.Exec(validatorInfoQuery, validatorInfoParams...)
-	if err != nil {
-		return fmt.Errorf("error while storing validator infos: %s", err)
+		return fmt.Errorf("error while storing validator: %s", err)
 	}
 
 	return nil
@@ -170,14 +155,15 @@ ON CONFLICT (consensus_address) DO NOTHING`
 
 // SaveValidatorCommission saves validators commission in database.
 func (db *Database) SaveValidatorCommission(validatorsCommission []types.ValidatorCommission) error {
-	stmt := `INSERT INTO validator_commission (validator_address, commission, min_self_delegation, height) VALUES `
+	stmt := `INSERT INTO validator_commission (validator_address, self_delegate_address, commission, min_self_delegation, height) VALUES `
 
 	var commissionList []interface{}
 	for i, data := range validatorsCommission {
-		si := i * 4
-		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4)
+		si := i * 5
+		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4, si+5)
 		commissionList = append(commissionList,
 			dbtypes.ToNullString(data.ValAddress),
+			data.SelfDelegateAddress,
 			dbtypes.ToNullString(data.Commission),
 			dbtypes.ToNullString(data.MinSelfDelegation),
 			data.Height)
@@ -186,7 +172,8 @@ func (db *Database) SaveValidatorCommission(validatorsCommission []types.Validat
 	stmt = stmt[:len(stmt)-1]
 	stmt += `
 ON CONFLICT (validator_address) DO UPDATE 
-	SET commission = excluded.commission, 
+	SET self_delegate_address = excluded.self_delegate_address,
+		commission = excluded.commission, 
 		min_self_delegation = excluded.min_self_delegation,
 		height = excluded.height
 WHERE validator_commission.height <= excluded.height`
@@ -198,15 +185,16 @@ WHERE validator_commission.height <= excluded.height`
 
 // SaveValidatorDescription save validators description in database.
 func (db *Database) SaveValidatorDescription(description []types.ValidatorDescription) error {
-	stmt := `INSERT INTO validator_description (validator_address, moniker, identity, details, height) VALUES `
+	stmt := `INSERT INTO validator_description (validator_address, self_delegate_address, moniker, identity, details, height) VALUES `
 
 	var descriptionList []interface{}
 	for i, desc := range description {
-		si := i * 5
+		si := i * 6
 
-		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4, si+5)
+		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4, si+5, si+6)
 		descriptionList = append(descriptionList,
 			dbtypes.ToNullString(desc.OperatorAddress),
+			desc.SelfDelegateAddress,
 			dbtypes.ToNullString(desc.Moniker),
 			dbtypes.ToNullString(desc.Identity),
 			dbtypes.ToNullString(desc.Description),
@@ -215,7 +203,8 @@ func (db *Database) SaveValidatorDescription(description []types.ValidatorDescri
 
 	stmt = stmt[:len(stmt)-1]
 	stmt += ` ON CONFLICT (validator_address) DO UPDATE
-    SET moniker = excluded.moniker, 
+    SET self_delegate_address = excluded.self_delegate_address,
+		moniker = excluded.moniker, 
         details = excluded.details,
 		identity = excluded.identity,
         height = excluded.height
@@ -233,37 +222,25 @@ func (db *Database) SaveValidatorsStatus(validatorsStatus []types.ValidatorStatu
 		return nil
 	}
 
-	validatorStmt := `INSERT INTO validator (consensus_address) VALUES`
-	var validatorParams []interface{}
-
-	validatorStatusStmt := `INSERT INTO validator_status (validator_address, in_active_set, jailed, tombstoned, height) VALUES `
+	validatorStatusStmt := `INSERT INTO validator_status (validator_address, self_delegate_address, in_active_set, jailed, tombstoned, height) VALUES `
 	var validatorStatusParams []interface{}
 
 	for i, status := range validatorsStatus {
-		validatorStmt += fmt.Sprintf("($%d),", i+1)
-		validatorParams = append(validatorParams, status.ConsensusAddress)
-
-		si := i * 5
-		validatorStatusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4, si+5)
-		validatorStatusParams = append(validatorStatusParams, status.ConsensusAddress, status.InActiveSet, status.Jailed, status.Tombstoned, status.Height)
-	}
-
-	validatorStmt = validatorStmt[:len(validatorStmt)-1]
-	validatorStmt += "ON CONFLICT DO NOTHING"
-	_, err := db.Sql.Exec(validatorStmt, validatorParams...)
-	if err != nil {
-		return fmt.Errorf("error while storing validators: %s", err)
+		si := i * 6
+		validatorStatusStmt += fmt.Sprintf("($%d,$%d,$%d,$%d,$%d,$%d),", si+1, si+2, si+3, si+4, si+5, si+6)
+		validatorStatusParams = append(validatorStatusParams, status.ConsensusAddress, status.SelfDelegateAddress, status.InActiveSet, status.Jailed, status.Tombstoned, status.Height)
 	}
 
 	validatorStatusStmt = validatorStatusStmt[:len(validatorStatusStmt)-1]
 	validatorStatusStmt += `
 	ON CONFLICT (validator_address) DO UPDATE
-		SET in_active_set = excluded.in_active_set,
+		SET self_delegate_address = excluded.self_delegate_address,
+			in_active_set = excluded.in_active_set,
 		    jailed = excluded.jailed,
 		    tombstoned = excluded.tombstoned,
 		    height = excluded.height
 	WHERE validator_status.height <= excluded.height`
-	_, err = db.Sql.Exec(validatorStatusStmt, validatorStatusParams...)
+	_, err := db.Sql.Exec(validatorStatusStmt, validatorStatusParams...)
 	if err != nil {
 		return fmt.Errorf("error while stroring validators status: %s", err)
 	}
@@ -279,19 +256,20 @@ func (db *Database) SaveValidatorsVotingPower(entries []types.ValidatorVotingPow
 		return nil
 	}
 
-	stmt := `INSERT INTO validator_voting_power (validator_address, voting_power, height) VALUES `
+	stmt := `INSERT INTO validator_voting_power (validator_address, self_delegate_address, voting_power, height) VALUES `
 	var params []interface{}
 
 	for i, entry := range entries {
-		pi := i * 3
-		stmt += fmt.Sprintf("($%d,$%d,$%d),", pi+1, pi+2, pi+3)
-		params = append(params, entry.ConsensusAddress, entry.VotingPower, entry.Height)
+		pi := i * 4
+		stmt += fmt.Sprintf("($%d,$%d,$%d,$%d),", pi+1, pi+2, pi+3, pi+4)
+		params = append(params, entry.ConsensusAddress, entry.SelfDelegateAddress, entry.VotingPower, entry.Height)
 	}
 
 	stmt = stmt[:len(stmt)-1]
 	stmt += `
 ON CONFLICT (validator_address) DO UPDATE 
-	SET voting_power = excluded.voting_power, 
+	SET self_delegate_address = excluded.self_delegate_address,
+		voting_power = excluded.voting_power, 
 		height = excluded.height
 WHERE validator_voting_power.height <= excluded.height`
 
