@@ -1,19 +1,20 @@
 /* ---- VALIDATOR INFO ---- */
-CREATE TABLE validator_info
+CREATE TABLE validator
 (
-    consensus_address     TEXT   NOT NULL UNIQUE PRIMARY KEY REFERENCES validator (consensus_address),
-    self_delegate_address TEXT,
+    consensus_address     TEXT   NOT NULL UNIQUE,
+    self_delegate_address TEXT   NOT NULL PRIMARY KEY,
     height                BIGINT NOT NULL
 );
-CREATE INDEX validator_info_self_delegate_address_index ON validator_info (self_delegate_address);
+CREATE INDEX validator_self_delegate_address_index ON validator (self_delegate_address);
 
 
 /* ---- VALIDATOR VOTING POWER ---- */
 CREATE TABLE validator_voting_power
 (
-    validator_address TEXT   NOT NULL REFERENCES validator (consensus_address) PRIMARY KEY,
-    voting_power      BIGINT NOT NULL,
-    height            BIGINT NOT NULL
+    validator_address     TEXT   NOT NULL UNIQUE,
+    self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
+    voting_power          BIGINT NOT NULL,
+    height                BIGINT NOT NULL
 );
 CREATE INDEX validator_voting_power_height_index ON validator_voting_power (height);
 
@@ -21,11 +22,12 @@ CREATE INDEX validator_voting_power_height_index ON validator_voting_power (heig
 /* ---- VALIDATOR DESCRIPTION ---- */
 CREATE TABLE validator_description
 (
-    validator_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
-    moniker           TEXT,
-    identity          TEXT,
-    details           TEXT,
-    height            BIGINT NOT NULL
+    validator_address     TEXT   NOT NULL UNIQUE,
+    self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
+    moniker               TEXT,
+    identity              TEXT,
+    details               TEXT,
+    height                BIGINT NOT NULL
 );
 CREATE INDEX validator_description_height_index ON validator_description (height);
 
@@ -33,21 +35,23 @@ CREATE INDEX validator_description_height_index ON validator_description (height
 /* ---- VALIDATOR COMMISSION ---- */
 CREATE TABLE validator_commission
 (
-    validator_address   TEXT   NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
-    commission          TEXT   NOT NULL,
-    min_self_delegation TEXT   NOT NULL,
-    height              BIGINT NOT NULL
+    validator_address     TEXT   NOT NULL UNIQUE,
+    self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
+    commission            TEXT   NOT NULL,
+    min_self_delegation   TEXT   NOT NULL,
+    height                BIGINT NOT NULL
 );
 CREATE INDEX validator_commission_height_index ON validator_commission (height);
 
 /* ---- VALIDATOR STATUS ---- */
 CREATE TABLE validator_status
 (
-    validator_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (consensus_address),
-    in_active_set     TEXT   NOT NULL,
-    jailed            TEXT   NOT NULL,
-    tombstoned        TEXT   NOT NULL,
-    height            BIGINT NOT NULL
+    validator_address     TEXT   NOT NULL UNIQUE,
+    self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
+    in_active_set         TEXT   NOT NULL,
+    jailed                TEXT   NOT NULL,
+    tombstoned            TEXT   NOT NULL,
+    height                BIGINT NOT NULL
 );
 CREATE INDEX validator_status_height_index ON validator_status (height);
 
