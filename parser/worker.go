@@ -18,8 +18,8 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 
 	"github.com/MonikaCat/njuno/node"
-	"github.com/MonikaCat/njuno/types"
-	bdtypes "github.com/MonikaCat/njuno/types"
+
+	types "github.com/MonikaCat/njuno/types"
 	"github.com/MonikaCat/njuno/types/utils"
 )
 
@@ -250,15 +250,15 @@ func (w Worker) ExportTxs(txs []types.TxResponse) error {
 }
 
 // UnmarshalTxs process all transactions contained in a block
-func (w Worker) UnmarshalTxs(block *tmctypes.ResultBlock) ([]bdtypes.TxResponse, error) {
-	txResponses := make([]bdtypes.TxResponse, len(block.Block.Txs))
+func (w Worker) UnmarshalTxs(block *tmctypes.ResultBlock) ([]types.TxResponse, error) {
+	txResponses := make([]types.TxResponse, len(block.Block.Txs))
 
 	// get tx details from the block
-	var transaction bdtypes.TxResponse
+	var transaction types.TxResponse
 	for _, t := range block.Block.Txs {
 		_ = json.Unmarshal(t, &transaction)
 
-		txResponses = append(txResponses, bdtypes.NewTxResponse(transaction.Fee, transaction.Memo, transaction.Msg, transaction.Signatures, fmt.Sprintf("%X", t.Hash()), block.Block.Height))
+		txResponses = append(txResponses, types.NewTxResponse(transaction.Fee, transaction.Memo, transaction.Msg, transaction.Signatures, fmt.Sprintf("%X", t.Hash()), block.Block.Height))
 	}
 
 	return txResponses, nil

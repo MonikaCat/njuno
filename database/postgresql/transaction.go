@@ -27,7 +27,7 @@ func (db *Database) SaveTx(tx types.TxResponse) error {
 // -------------------------------------------------------------------------------------------------------------------
 
 // saveTxInsidePartition stores the given transaction inside the partition having the given id
-func (db *Database) saveTxInsidePartition(tx types.TxResponse, partitionId int64) error {
+func (db *Database) saveTxInsidePartition(tx types.TxResponse, partitionID int64) error {
 	sqlStatement := `
 INSERT INTO transaction 
 (hash, height, memo, signatures, fee, gas, partition_id) 
@@ -42,7 +42,7 @@ ON CONFLICT (hash, partition_id) DO UPDATE
 	if tx.Height != 0 {
 		_, err := db.Sql.Exec(sqlStatement,
 			tx.Hash, tx.Height, tx.Memo, pq.Array(dbtypes.NewDBSignatures(tx.Signatures)),
-			pq.Array(dbtypes.NewDbCoins(tx.Fee.Amount)), tx.Fee.Gas, partitionId)
+			pq.Array(dbtypes.NewDbCoins(tx.Fee.Amount)), tx.Fee.Gas, partitionID)
 		if err != nil {
 			return fmt.Errorf("error while storing transaction with hash %s : %s", tx.Hash, err)
 		}
