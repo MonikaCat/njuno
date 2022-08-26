@@ -1,10 +1,6 @@
 table:
   name: block
   schema: public
-object_relationships:
-- name: validator
-  using:
-    foreign_key_constraint_on: proposer_address
 array_relationships:
 - name: pre_commits
   using:

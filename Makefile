@@ -38,7 +38,7 @@ endif
 
 install: go.sum
 	@echo "installing njuno binary..."
-	@go install -mod=readonly $(BUILD_FLAGS) ./cmd/njuno
+	@go install -mod=readonly $(BUILD_FLAGS) ./cmd/njuno && cp modules/staking/utils/validators_query.sh ~/.njuno
 .PHONY: install
 
 ###############################################################################

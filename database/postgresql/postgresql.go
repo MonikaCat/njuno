@@ -9,8 +9,6 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 
-	_ "github.com/lib/pq" // nolint
-
 	"github.com/MonikaCat/njuno/database"
 )
 

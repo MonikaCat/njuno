@@ -5,7 +5,6 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
 	"github.com/MonikaCat/njuno/node"
-	"github.com/MonikaCat/njuno/types"
 
 	"github.com/MonikaCat/njuno/modules/actions"
 	"github.com/MonikaCat/njuno/modules/bank"
@@ -37,13 +36,12 @@ type Context struct {
 	Database       database.Database
 	Proxy          node.Node
 	Logger         logging.Logger
-	ValidatorsList *types.ValidatorsList
 }
 
 // NewContext allows to build a new Context instance
 func NewContext(
 	parsingConfig config.Config, sdkConfig *sdk.Config, encodingConfig *params.EncodingConfig,
-	database database.Database, proxy node.Node, logger logging.Logger, validatorsList *types.ValidatorsList,
+	database database.Database, proxy node.Node, logger logging.Logger,
 ) Context {
 	return Context{
 		NJunoConfig:    parsingConfig,
@@ -52,7 +50,6 @@ func NewContext(
 		Database:       database,
 		Proxy:          proxy,
 		Logger:         logger,
-		ValidatorsList: validatorsList,
 	}
 }
 
@@ -104,7 +101,7 @@ func (r *DefaultRegistrar) BuildModules(ctx Context) modules.Modules {
 		mint.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		pricefeed.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		pruning.NewModule(ctx.NJunoConfig, ctx.Database, ctx.Logger),
-		staking.NewModule(ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy, ctx.ValidatorsList),
+		staking.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 		telemetry.NewModule(ctx.NJunoConfig),
 		token.NewModule(ctx.NJunoConfig, ctx.EncodingConfig.Marshaler, ctx.Database, ctx.Logger, ctx.Proxy),
 	}

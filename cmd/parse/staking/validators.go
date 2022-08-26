@@ -1,12 +1,9 @@
 package staking
 
 import (
-	"fmt"
-
 	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
-	"github.com/MonikaCat/njuno/types"
+	staking "github.com/MonikaCat/njuno/modules/staking/utils"
 	"github.com/MonikaCat/njuno/types/config"
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -22,25 +19,22 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 				return err
 			}
 
-			var validators []types.Validator
-			var validatorsDescription []types.ValidatorDescription
-			var validatorsCommission []types.ValidatorCommission
+			// query the latest validators list
+			validatorsLists := staking.GetLatestValidatorsList()
 
-			for _, val := range parseCtx.ValidatorsList.Validators {
-				consAddr := sdk.ConsAddress(val.Validator.Hex).String()
-				validatorAddress, err := sdk.ValAddressFromHex(val.Validator.Hex)
-				if err != nil {
-					fmt.Printf("failed to convert validator address from hex: %s", err)
-				}
-				validators = append(validators, types.NewValidator(consAddr, validatorAddress.String(), "", val.Validator.Address, 1))
-				validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr, val.Validator.Details, val.Validator.Identity, val.Validator.Moniker, 1))
-				validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr, val.Validator.Commission, 1))
-			}
+			// parse validators list
+			validators, validatorsCommission, validatorsDescription, validatorsStatus, validatorsVP := staking.ParseValidatorsList(validatorsLists, 1)
 
 			err = parseCtx.Database.SaveValidators(validators)
 			if err != nil {
 				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
 					Msg("error while saving validators")
+			}
+
+			err = parseCtx.Database.SaveValidatorCommission(validatorsCommission)
+			if err != nil {
+				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
+					Msg("error while saving validators commission")
 			}
 
 			err = parseCtx.Database.SaveValidatorDescription(validatorsDescription)
@@ -49,11 +43,18 @@ func validatorsCmd(parseConfig *parsecmdtypes.Config) *cobra.Command {
 					Msg("error while saving validators description")
 			}
 
-			err = parseCtx.Database.SaveValidatorCommission(validatorsCommission)
+			err = parseCtx.Database.SaveValidatorsStatus(validatorsStatus)
 			if err != nil {
 				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
-					Msg("error while saving validators commission")
+					Msg("error while saving validators status")
 			}
+
+			err = parseCtx.Database.SaveValidatorsVotingPower(validatorsVP)
+			if err != nil {
+				log.Error().Str("module", "staking").Err(err).Int64("height", 1).
+					Msg("error while saving validators voting power")
+			}
+
 			return nil
 		},
 	}

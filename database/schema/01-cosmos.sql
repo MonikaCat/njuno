@@ -1,11 +1,3 @@
-/* ---- VALIDATOR ---- */
-CREATE TABLE validator
-(
-    consensus_address TEXT NOT NULL PRIMARY KEY UNIQUE, /* Validator consensus address */
-    consensus_pubkey  TEXT NOT NULL /* Validator consensus public key */
-);
-
-
 /* ---- BLOCK ---- */
 CREATE TABLE block
 (
@@ -13,7 +5,7 @@ CREATE TABLE block
     hash             TEXT    NOT NULL UNIQUE,
     num_txs          INTEGER DEFAULT 0,
     total_gas        BIGINT  DEFAULT 0,
-    proposer_address TEXT    REFERENCES validator (consensus_address),
+    proposer_address TEXT    NOT NULL,
     timestamp        TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
 CREATE INDEX block_height_index ON block (height);
@@ -24,7 +16,7 @@ CREATE INDEX block_proposer_address_index ON block (proposer_address);
 /* ---- PRE COMMIT ---- */
 CREATE TABLE pre_commit
 (
-    validator_address TEXT                        NOT NULL REFERENCES validator (consensus_address),
+    validator_address TEXT                        NOT NULL,
     height            BIGINT                      NOT NULL REFERENCES block (height),
     timestamp         TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     voting_power      BIGINT                      NOT NULL,

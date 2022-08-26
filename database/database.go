@@ -133,6 +133,10 @@ type Database interface {
 	// An error is returned if the operation fails.
 	SaveValidatorDescription(description []types.ValidatorDescription) error
 
+	// SaveValidatorsStatus stores the validators status in database.
+	// An error is returned if the operation fails.
+	SaveValidatorsStatus(validatorsStatus []types.ValidatorStatus) error
+
 	// SaveValidatorsVotingPower stores a list of validators voting power in database.
 	// An error is returned if the operation fails.
 	SaveValidatorsVotingPower(entries []types.ValidatorVotingPower) error
