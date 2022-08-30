@@ -1,7 +1,7 @@
 package actions
 
 import (
-	remote "github.com/MonikaCat/njuno/node/remote/config"
+	remote "github.com/forbole/njuno/node/remote/config"
 	"gopkg.in/yaml.v3"
 )
 

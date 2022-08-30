@@ -3,7 +3,7 @@ package staking
 import (
 	"encoding/hex"
 
-	types "github.com/MonikaCat/njuno/types"
+	types "github.com/forbole/njuno/types"
 	"github.com/rs/zerolog/log"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"

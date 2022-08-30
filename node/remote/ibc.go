@@ -6,7 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 )
 
 // IBCTransferParams implements node.Node

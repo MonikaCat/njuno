@@ -1,4 +1,4 @@
-module github.com/MonikaCat/njuno
+module github.com/forbole/njuno
 
 go 1.17
 

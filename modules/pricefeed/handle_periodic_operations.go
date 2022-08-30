@@ -3,9 +3,9 @@ package pricefeed
 import (
 	"fmt"
 
-	"github.com/MonikaCat/njuno/modules/pricefeed/coingecko"
-	"github.com/MonikaCat/njuno/modules/utils"
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/modules/pricefeed/coingecko"
+	"github.com/forbole/njuno/modules/utils"
+	"github.com/forbole/njuno/types"
 	"github.com/go-co-op/gocron"
 	"github.com/rs/zerolog/log"
 )

@@ -1,7 +1,7 @@
 package mint
 
 import (
-	"github.com/MonikaCat/njuno/modules/utils"
+	"github.com/forbole/njuno/modules/utils"
 	"github.com/go-co-op/gocron"
 	"github.com/rs/zerolog/log"
 )

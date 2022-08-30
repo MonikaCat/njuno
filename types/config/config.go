@@ -3,10 +3,10 @@ package config
 import (
 	"strings"
 
-	databaseconfig "github.com/MonikaCat/njuno/database/config"
-	loggingconfig "github.com/MonikaCat/njuno/logging/config"
-	nodeconfig "github.com/MonikaCat/njuno/node/config"
-	parserconfig "github.com/MonikaCat/njuno/parser/config"
+	databaseconfig "github.com/forbole/njuno/database/config"
+	loggingconfig "github.com/forbole/njuno/logging/config"
+	nodeconfig "github.com/forbole/njuno/node/config"
+	parserconfig "github.com/forbole/njuno/parser/config"
 )
 
 var (

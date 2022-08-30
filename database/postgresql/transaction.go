@@ -3,9 +3,9 @@ package postgresql
 import (
 	"fmt"
 
-	dbtypes "github.com/MonikaCat/njuno/database/types"
-	"github.com/MonikaCat/njuno/types"
-	"github.com/MonikaCat/njuno/types/config"
+	dbtypes "github.com/forbole/njuno/database/types"
+	"github.com/forbole/njuno/types"
+	"github.com/forbole/njuno/types/config"
 	"github.com/lib/pq"
 )
 

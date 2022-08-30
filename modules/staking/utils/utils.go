@@ -6,9 +6,9 @@ import (
 	"os"
 	"os/exec"
 
-	types "github.com/MonikaCat/njuno/types"
-	"github.com/MonikaCat/njuno/types/config"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	types "github.com/forbole/njuno/types"
+	"github.com/forbole/njuno/types/config"
 	"github.com/rs/zerolog/log"
 	"gopkg.in/yaml.v2"
 )

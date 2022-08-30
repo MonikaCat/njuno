@@ -3,8 +3,8 @@ package staking
 import (
 	"fmt"
 
-	staking "github.com/MonikaCat/njuno/modules/staking/utils"
-	"github.com/MonikaCat/njuno/modules/utils"
+	staking "github.com/forbole/njuno/modules/staking/utils"
+	"github.com/forbole/njuno/modules/utils"
 	"github.com/go-co-op/gocron"
 	"github.com/rs/zerolog/log"
 )

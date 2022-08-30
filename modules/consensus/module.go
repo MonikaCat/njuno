@@ -1,9 +1,9 @@
 package consensus
 
 import (
-	"github.com/MonikaCat/njuno/database"
+	"github.com/forbole/njuno/database"
 
-	"github.com/MonikaCat/njuno/modules"
+	"github.com/forbole/njuno/modules"
 )
 
 var (

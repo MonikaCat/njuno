@@ -5,7 +5,7 @@ import (
 
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 
-	"github.com/MonikaCat/njuno/database"
+	"github.com/forbole/njuno/database"
 )
 
 // HandleBlock implements modules.BlockModule

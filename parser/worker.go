@@ -4,23 +4,23 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/MonikaCat/njuno/logging"
+	"github.com/forbole/njuno/logging"
 
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"github.com/MonikaCat/njuno/database"
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/database"
+	"github.com/forbole/njuno/types/config"
 
-	"github.com/MonikaCat/njuno/modules"
+	"github.com/forbole/njuno/modules"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 	tmtypes "github.com/tendermint/tendermint/types"
 
-	"github.com/MonikaCat/njuno/node"
+	"github.com/forbole/njuno/node"
 
-	types "github.com/MonikaCat/njuno/types"
-	"github.com/MonikaCat/njuno/types/utils"
+	types "github.com/forbole/njuno/types"
+	"github.com/forbole/njuno/types/utils"
 )
 
 // Worker defines a job consumer that is responsible for getting and

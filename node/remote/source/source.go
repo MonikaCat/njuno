@@ -3,7 +3,7 @@ package remote
 import (
 	"context"
 
-	"github.com/MonikaCat/njuno/node"
+	"github.com/forbole/njuno/node"
 )
 
 var (

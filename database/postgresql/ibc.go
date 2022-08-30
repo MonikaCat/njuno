@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 )
 
 // SaveIBCTransferParams allows to store the given ibc transfer params inside the database

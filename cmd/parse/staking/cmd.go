@@ -1,7 +1,7 @@
 package staking
 
 import (
-	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
+	parsecmdtypes "github.com/forbole/njuno/cmd/parse/types"
 	"github.com/spf13/cobra"
 )
 

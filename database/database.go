@@ -5,13 +5,13 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 
-	"github.com/MonikaCat/njuno/logging"
+	"github.com/forbole/njuno/logging"
 
-	databaseconfig "github.com/MonikaCat/njuno/database/config"
+	databaseconfig "github.com/forbole/njuno/database/config"
 
-	dbtypes "github.com/MonikaCat/njuno/database/types"
-	"github.com/MonikaCat/njuno/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	dbtypes "github.com/forbole/njuno/database/types"
+	"github.com/forbole/njuno/types"
 )
 
 // Database represents an abstract database that can be used to save data inside it
