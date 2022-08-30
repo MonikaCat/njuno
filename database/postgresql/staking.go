@@ -3,8 +3,8 @@ package postgresql
 import (
 	"fmt"
 
-	dbtypes "github.com/forbole/njuno/database/types"
-	"github.com/forbole/njuno/types"
+	dbtypes "github.com/MonikaCat/njuno/database/types"
+	"github.com/MonikaCat/njuno/types"
 )
 
 // GetValidatorDescription returns validators description from database.
@@ -171,8 +171,8 @@ func (db *Database) SaveValidatorCommission(validatorsCommission []types.Validat
 
 	stmt = stmt[:len(stmt)-1]
 	stmt += `
-ON CONFLICT (validator_address) DO UPDATE 
-	SET self_delegate_address = excluded.self_delegate_address,
+ON CONFLICT (self_delegate_address) DO UPDATE 
+	SET validator_address = excluded.validator_address,
 		commission = excluded.commission, 
 		min_self_delegation = excluded.min_self_delegation,
 		height = excluded.height
@@ -202,8 +202,8 @@ func (db *Database) SaveValidatorDescription(description []types.ValidatorDescri
 	}
 
 	stmt = stmt[:len(stmt)-1]
-	stmt += ` ON CONFLICT (validator_address) DO UPDATE
-    SET self_delegate_address = excluded.self_delegate_address,
+	stmt += ` ON CONFLICT (self_delegate_address) DO UPDATE
+    SET validator_address = excluded.validator_address,
 		moniker = excluded.moniker, 
         details = excluded.details,
 		identity = excluded.identity,
@@ -233,8 +233,8 @@ func (db *Database) SaveValidatorsStatus(validatorsStatus []types.ValidatorStatu
 
 	validatorStatusStmt = validatorStatusStmt[:len(validatorStatusStmt)-1]
 	validatorStatusStmt += `
-	ON CONFLICT (validator_address) DO UPDATE
-		SET self_delegate_address = excluded.self_delegate_address,
+	ON CONFLICT (self_delegate_address) DO UPDATE
+		SET validator_address = excluded.validator_address,
 			in_active_set = excluded.in_active_set,
 		    jailed = excluded.jailed,
 		    tombstoned = excluded.tombstoned,
@@ -267,8 +267,8 @@ func (db *Database) SaveValidatorsVotingPower(entries []types.ValidatorVotingPow
 
 	stmt = stmt[:len(stmt)-1]
 	stmt += `
-ON CONFLICT (validator_address) DO UPDATE 
-	SET self_delegate_address = excluded.self_delegate_address,
+ON CONFLICT (self_delegate_address) DO UPDATE 
+	SET validator_address = excluded.validator_address,
 		voting_power = excluded.voting_power, 
 		height = excluded.height
 WHERE validator_voting_power.height <= excluded.height`
