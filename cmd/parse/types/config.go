@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/types/config"
 
 	"github.com/spf13/cobra"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 )
 
 // ReadConfigPreRunE represents a Cobra cmd function allowing to read the config before executing the command itself

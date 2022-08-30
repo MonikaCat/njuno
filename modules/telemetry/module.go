@@ -1,8 +1,8 @@
 package telemetry
 
 import (
-	"github.com/MonikaCat/njuno/modules"
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/modules"
+	"github.com/forbole/njuno/types/config"
 )
 
 const (

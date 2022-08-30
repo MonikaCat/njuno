@@ -4,28 +4,28 @@ import (
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	"github.com/MonikaCat/njuno/node"
+	"github.com/forbole/njuno/node"
 
-	"github.com/MonikaCat/njuno/modules/actions"
-	"github.com/MonikaCat/njuno/modules/bank"
-	"github.com/MonikaCat/njuno/modules/consensus"
-	"github.com/MonikaCat/njuno/modules/ibc"
-	"github.com/MonikaCat/njuno/modules/mint"
-	"github.com/MonikaCat/njuno/modules/pricefeed"
-	"github.com/MonikaCat/njuno/modules/staking"
-	"github.com/MonikaCat/njuno/modules/telemetry"
-	"github.com/MonikaCat/njuno/modules/token"
+	"github.com/forbole/njuno/modules/actions"
+	"github.com/forbole/njuno/modules/bank"
+	"github.com/forbole/njuno/modules/consensus"
+	"github.com/forbole/njuno/modules/ibc"
+	"github.com/forbole/njuno/modules/mint"
+	"github.com/forbole/njuno/modules/pricefeed"
+	"github.com/forbole/njuno/modules/staking"
+	"github.com/forbole/njuno/modules/telemetry"
+	"github.com/forbole/njuno/modules/token"
 
-	"github.com/MonikaCat/njuno/logging"
+	"github.com/forbole/njuno/logging"
 
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/types/config"
 
-	"github.com/MonikaCat/njuno/modules/pruning"
+	"github.com/forbole/njuno/modules/pruning"
 
-	"github.com/MonikaCat/njuno/modules"
-	"github.com/MonikaCat/njuno/modules/messages"
+	"github.com/forbole/njuno/modules"
+	"github.com/forbole/njuno/modules/messages"
 
-	"github.com/MonikaCat/njuno/database"
+	"github.com/forbole/njuno/database"
 )
 
 // Context represents the context of the modules registrar

@@ -3,12 +3,12 @@ package parse
 import (
 	"github.com/spf13/cobra"
 
-	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
+	parsecmdtypes "github.com/forbole/njuno/cmd/parse/types"
 
-	parseblocks "github.com/MonikaCat/njuno/cmd/parse/blocks"
-	parsegenesis "github.com/MonikaCat/njuno/cmd/parse/genesis"
-	parsestaking "github.com/MonikaCat/njuno/cmd/parse/staking"
-	parsetransactions "github.com/MonikaCat/njuno/cmd/parse/transactions"
+	parseblocks "github.com/forbole/njuno/cmd/parse/blocks"
+	parsegenesis "github.com/forbole/njuno/cmd/parse/genesis"
+	parsestaking "github.com/forbole/njuno/cmd/parse/staking"
+	parsetransactions "github.com/forbole/njuno/cmd/parse/transactions"
 )
 
 // NewParseCmd returns the Cobra command allowing to parse chain data without having to re-sync the whole database

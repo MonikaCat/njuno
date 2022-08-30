@@ -1,9 +1,9 @@
 package node
 
 import (
-	types "github.com/MonikaCat/njuno/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	types "github.com/forbole/njuno/types"
 	constypes "github.com/tendermint/tendermint/consensus/types"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 )

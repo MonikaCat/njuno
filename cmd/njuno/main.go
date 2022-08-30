@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 
-	"github.com/MonikaCat/njuno/cmd/parse/types"
+	"github.com/forbole/njuno/cmd/parse/types"
 
-	"github.com/MonikaCat/njuno/modules/messages"
-	"github.com/MonikaCat/njuno/modules/registrar"
+	"github.com/forbole/njuno/modules/messages"
+	"github.com/forbole/njuno/modules/registrar"
 
-	"github.com/MonikaCat/njuno/cmd"
+	"github.com/forbole/njuno/cmd"
 )
 
 func main() {

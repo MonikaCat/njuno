@@ -1,6 +1,6 @@
 package types
 
-import "github.com/MonikaCat/njuno/types"
+import "github.com/forbole/njuno/types"
 
 // NewDBSignatures returns signatures in string array
 func NewDBSignatures(signaturesList []types.TxSignatures) []string {

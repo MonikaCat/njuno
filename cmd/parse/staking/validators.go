@@ -1,9 +1,9 @@
 package staking
 
 import (
-	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
-	staking "github.com/MonikaCat/njuno/modules/staking/utils"
-	"github.com/MonikaCat/njuno/types/config"
+	parsecmdtypes "github.com/forbole/njuno/cmd/parse/types"
+	staking "github.com/forbole/njuno/modules/staking/utils"
+	"github.com/forbole/njuno/types/config"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )

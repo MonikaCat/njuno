@@ -3,8 +3,8 @@ package postgresql
 import (
 	"fmt"
 
-	dbtypes "github.com/MonikaCat/njuno/database/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	dbtypes "github.com/forbole/njuno/database/types"
 	"github.com/lib/pq"
 )
 

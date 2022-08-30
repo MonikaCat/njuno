@@ -1,12 +1,12 @@
 package pruning
 
 import (
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/types/config"
 
-	"github.com/MonikaCat/njuno/logging"
+	"github.com/forbole/njuno/logging"
 
-	"github.com/MonikaCat/njuno/database"
-	"github.com/MonikaCat/njuno/modules"
+	"github.com/forbole/njuno/database"
+	"github.com/forbole/njuno/modules"
 )
 
 var (

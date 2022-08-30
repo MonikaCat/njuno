@@ -5,13 +5,13 @@ import (
 	"os"
 	"path"
 
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/types/config"
 
-	initcmd "github.com/MonikaCat/njuno/cmd/init"
-	parsecmd "github.com/MonikaCat/njuno/cmd/parse"
-	startcmd "github.com/MonikaCat/njuno/cmd/start"
+	initcmd "github.com/forbole/njuno/cmd/init"
+	parsecmd "github.com/forbole/njuno/cmd/parse"
+	startcmd "github.com/forbole/njuno/cmd/start"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 
 	"github.com/spf13/cobra"
 	"github.com/tendermint/tendermint/libs/cli"

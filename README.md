@@ -6,8 +6,8 @@
 
 > This branch is intended to be used with Cosmos SDK `v0.42.x`.
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/MonikaCat/njuno/Tests)](https://github.com/MonikaCat/njuno/actions?query=workflow%3ATests)
-[![Go Report Card](https://goreportcard.com/badge/github.com/MonikaCat/njuno)](https://goreportcard.com/report/github.com/MonikaCat/njuno)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/forbole/njuno/Tests)](https://github.com/forbole/njuno/actions?query=workflow%3ATests)
+[![Go Report Card](https://goreportcard.com/badge/github.com/forbole/njuno)](https://goreportcard.com/report/github.com/forbole/njuno)
 
 > nJuno is a Nomic blockchain data aggregator and exporter that provides the ability for developers and clients to query for indexed chain data.
 

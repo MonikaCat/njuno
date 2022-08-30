@@ -13,8 +13,8 @@ all: lint test-unit install
 ###                                Build flags                              ###
 ###############################################################################
 
-LD_FLAGS = -X github.com/MonikaCat/njuno/cmd.Version=$(VERSION) \
-	-X github.com/MonikaCat/njuno/cmd.Commit=$(COMMIT)
+LD_FLAGS = -X github.com/forbole/njuno/cmd.Version=$(VERSION) \
+	-X github.com/forbole/njuno/cmd.Commit=$(COMMIT)
 
 BUILD_FLAGS := -ldflags '$(LD_FLAGS)'
 
@@ -76,7 +76,7 @@ lint-fix:
 format:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs gofmt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs misspell -w
-	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/MonikaCat/njuno
+	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -name '*.pb.go' | xargs goimports -w -local github.com/forbole/njuno
 .PHONY: format
 
 clean:

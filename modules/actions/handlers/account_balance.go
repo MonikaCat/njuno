@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 
-	"github.com/MonikaCat/njuno/modules/actions/types"
+	"github.com/forbole/njuno/modules/actions/types"
 
 	"github.com/rs/zerolog/log"
 )

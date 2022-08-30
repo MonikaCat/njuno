@@ -8,17 +8,17 @@ import (
 	"syscall"
 	"time"
 
-	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
+	parsecmdtypes "github.com/forbole/njuno/cmd/parse/types"
 
-	"github.com/MonikaCat/njuno/logging"
+	"github.com/forbole/njuno/logging"
 
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/types/config"
 
 	"github.com/go-co-op/gocron"
 
-	"github.com/MonikaCat/njuno/modules"
-	"github.com/MonikaCat/njuno/parser"
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/modules"
+	"github.com/forbole/njuno/parser"
+	"github.com/forbole/njuno/types"
 
 	"github.com/spf13/cobra"
 )

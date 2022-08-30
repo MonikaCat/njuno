@@ -3,8 +3,8 @@ package postgresql
 import (
 	"fmt"
 
-	dbtypes "github.com/MonikaCat/njuno/database/types"
-	"github.com/MonikaCat/njuno/types"
+	dbtypes "github.com/forbole/njuno/database/types"
+	"github.com/forbole/njuno/types"
 )
 
 // GetTokensPriceID returns the slice of price ids for all tokens stored in db

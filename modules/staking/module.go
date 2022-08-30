@@ -3,11 +3,11 @@ package staking
 import (
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"github.com/MonikaCat/njuno/database"
-	"github.com/MonikaCat/njuno/logging"
-	"github.com/MonikaCat/njuno/modules"
-	source "github.com/MonikaCat/njuno/node"
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/database"
+	"github.com/forbole/njuno/logging"
+	"github.com/forbole/njuno/modules"
+	source "github.com/forbole/njuno/node"
+	"github.com/forbole/njuno/types/config"
 )
 
 var (

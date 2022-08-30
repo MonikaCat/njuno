@@ -1,12 +1,12 @@
 package actions
 
 import (
-	"github.com/MonikaCat/njuno/modules"
-	"github.com/MonikaCat/njuno/node"
-	"github.com/MonikaCat/njuno/node/builder"
-	nodeconfig "github.com/MonikaCat/njuno/node/config"
-	"github.com/MonikaCat/njuno/types/config"
 	"github.com/cosmos/cosmos-sdk/simapp/params"
+	"github.com/forbole/njuno/modules"
+	"github.com/forbole/njuno/node"
+	"github.com/forbole/njuno/node/builder"
+	nodeconfig "github.com/forbole/njuno/node/config"
+	"github.com/forbole/njuno/types/config"
 )
 
 var (

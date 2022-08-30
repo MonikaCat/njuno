@@ -6,8 +6,8 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/MonikaCat/njuno/modules/actions/handlers"
-	actionstypes "github.com/MonikaCat/njuno/modules/actions/types"
+	"github.com/forbole/njuno/modules/actions/handlers"
+	actionstypes "github.com/forbole/njuno/modules/actions/types"
 )
 
 var (

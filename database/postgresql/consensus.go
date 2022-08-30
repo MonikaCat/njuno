@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	dbtypes "github.com/MonikaCat/njuno/database/types"
-	"github.com/MonikaCat/njuno/types"
+	dbtypes "github.com/forbole/njuno/database/types"
+	"github.com/forbole/njuno/types"
 )
 
 // GetBlockHeightTimeMinuteAgo return block height and time that a block proposals

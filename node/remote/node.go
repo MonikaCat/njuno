@@ -7,9 +7,9 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/codec"
 
-	"github.com/MonikaCat/njuno/node"
+	"github.com/forbole/njuno/node"
 
-	remoteConfig "github.com/MonikaCat/njuno/node/remote/config"
+	remoteConfig "github.com/forbole/njuno/node/remote/config"
 	httpclient "github.com/tendermint/tendermint/rpc/client/http"
 	jsonrpcclient "github.com/tendermint/tendermint/rpc/jsonrpc/client"
 )

@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/MonikaCat/njuno/parser"
+	"github.com/forbole/njuno/parser"
 
-	nodebuilder "github.com/MonikaCat/njuno/node/builder"
-	"github.com/MonikaCat/njuno/types/config"
+	nodebuilder "github.com/forbole/njuno/node/builder"
+	"github.com/forbole/njuno/types/config"
 
-	"github.com/MonikaCat/njuno/database"
+	"github.com/forbole/njuno/database"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 
-	modsregistrar "github.com/MonikaCat/njuno/modules/registrar"
+	modsregistrar "github.com/forbole/njuno/modules/registrar"
 )
 
 // GetParserContext setups all the things that can be used to later parse the chain state

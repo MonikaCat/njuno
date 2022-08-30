@@ -3,7 +3,7 @@ package transactions
 import (
 	"github.com/spf13/cobra"
 
-	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
+	parsecmdtypes "github.com/forbole/njuno/cmd/parse/types"
 )
 
 // NewTransactionsCmd returns the Cobra command that allows to fix missing or incomplete transactions

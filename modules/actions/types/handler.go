@@ -1,6 +1,6 @@
 package types
 
-import "github.com/MonikaCat/njuno/node"
+import "github.com/forbole/njuno/node"
 
 // ActionHandler represents a Hasura action request handler.
 // It returns an interface to be returned to the called, or an error if something is wrong

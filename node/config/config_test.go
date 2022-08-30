@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/require"
 	"gopkg.in/yaml.v3"
 
-	nodeconfig "github.com/MonikaCat/njuno/node/config"
-	remote "github.com/MonikaCat/njuno/node/remote/config"
+	nodeconfig "github.com/forbole/njuno/node/config"
+	remote "github.com/forbole/njuno/node/remote/config"
 )
 
 func TestConfig_UnmarshalYAML(t *testing.T) {

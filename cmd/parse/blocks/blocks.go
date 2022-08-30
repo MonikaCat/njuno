@@ -3,14 +3,14 @@ package blocks
 import (
 	"fmt"
 
-	parsecmdtypes "github.com/MonikaCat/njuno/cmd/parse/types"
+	parsecmdtypes "github.com/forbole/njuno/cmd/parse/types"
 
 	"github.com/rs/zerolog/log"
 
 	"github.com/spf13/cobra"
 
-	"github.com/MonikaCat/njuno/parser"
-	"github.com/MonikaCat/njuno/types/config"
+	"github.com/forbole/njuno/parser"
+	"github.com/forbole/njuno/types/config"
 )
 
 const (

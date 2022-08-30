@@ -3,7 +3,7 @@ package token
 import (
 	"gopkg.in/yaml.v3"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 )
 
 // Config contains the configuration about the token and pricefeed module

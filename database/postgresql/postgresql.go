@@ -4,12 +4,12 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/MonikaCat/njuno/logging"
+	"github.com/forbole/njuno/logging"
 	"github.com/jmoiron/sqlx"
 
 	"github.com/cosmos/cosmos-sdk/simapp/params"
 
-	"github.com/MonikaCat/njuno/database"
+	"github.com/forbole/njuno/database"
 )
 
 // Builder creates a database connection with the given database connection info

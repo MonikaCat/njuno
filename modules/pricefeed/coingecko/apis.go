@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 )
 
 // GetCoinsList allows to fetch from the remote APIs the list of all the supported tokens

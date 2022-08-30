@@ -3,7 +3,7 @@ package consensus
 import (
 	"fmt"
 
-	"github.com/MonikaCat/njuno/types"
+	"github.com/forbole/njuno/types"
 
 	"github.com/rs/zerolog/log"
 	tmtypes "github.com/tendermint/tendermint/types"
