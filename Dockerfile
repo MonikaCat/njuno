@@ -44,4 +44,4 @@ RUN apk add --no-cache bash
 
 # Copy over binaries from the build-env
 COPY --from=build-env /go/bin/njuno /usr/bin/njuno
-COPY --from=build-env /go/src/github.com/forbole/njuno/modules/staking/utils/validators_query.sh /home/.njuno/validators_query.sh
+COPY --from=build-env /go/src/github.com/forbole/njuno/modules/staking/utils/validators_query.sh $HOME/.njuno/validators_query.sh
