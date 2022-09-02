@@ -40,8 +40,12 @@ RUN apk add --update ca-certificates
 WORKDIR /home
 
 # Install bash
-RUN apk add --no-cache bash
+RUN apk add --no-cache bash build-base gcc wget git curl
+RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
+RUN git clone https://github.com/MonikaCat/nomic.git nomic && cd nomic
+RUN cargo install --locked --path .
 
 # Copy over binaries from the build-env
 COPY --from=build-env /go/bin/njuno /usr/bin/njuno
-COPY --from=build-env /go/src/github.com/forbole/njuno/modules/staking/utils/validators_query.sh $HOME/.njuno/validators_query.sh
+COPY --from=build-env /go/src/github.com/forbole/njuno/modules/staking/utils/validators_query.sh /home/.njuno/validators_query.sh
