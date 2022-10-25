@@ -2,6 +2,7 @@ package remote
 
 import (
 	"context"
+	"crypto/tls"
 	"fmt"
 	"net/http"
 
@@ -36,11 +37,7 @@ func NewNode(cfg *remoteConfig.Details, codec codec.Marshaler) (*Node, error) {
 	}
 
 	// Tweak the transport
-	httpTransport, ok := (httpClient.Transport).(*http.Transport)
-	if !ok {
-		return nil, fmt.Errorf("invalid HTTP Transport: %T", httpTransport)
-	}
-	httpTransport.MaxConnsPerHost = cfg.RPC.MaxConnections
+	(httpClient.Transport).(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
 
 	rpcClient, err := httpclient.NewWithClient(cfg.RPC.Address, "/websocket", httpClient)
 	if err != nil {
