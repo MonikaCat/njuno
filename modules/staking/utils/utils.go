@@ -55,7 +55,7 @@ func ParseValidatorsList(validatorsList *types.ValidatorsList, height int64) ([]
 		consAddr := sdk.ConsAddress(val.Validator.Address)
 		avatarURL, err := keybase.GetAvatarURL(val.Validator.Identity)
 		if err != nil {
-			fmt.Errorf("error while getting Avatar URL: %s", err)
+			fmt.Printf("error while getting Avatar URL: %s", err)
 		}
 
 		validators = append(validators, types.NewValidator(consAddr.String(), val.Validator.Address, height))
