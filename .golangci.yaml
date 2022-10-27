@@ -12,7 +12,6 @@ linters:
     - dogsled
     - gofmt
     - goimports
-    - gosec
     - ineffassign
     - misspell
     - nakedret
