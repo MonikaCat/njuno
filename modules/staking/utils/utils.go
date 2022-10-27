@@ -67,3 +67,19 @@ func ParseValidatorsList(validatorsList *types.ValidatorsList, height int64) ([]
 
 	return validators, validatorsCommission, validatorsDescription, validatorsStatus, validatorsVP
 }
+
+// ParseAvatarURL parses the validators list from db and stores updated avatar url in db
+func ParseAvatarURL(validatorsList []types.ValidatorDescription, height int64) []types.ValidatorDescription {
+	var validatorsDescription []types.ValidatorDescription
+	for _, val := range validatorsList {
+		avatarURL, err := keybase.GetAvatarURL(val.Identity)
+		if err != nil {
+			fmt.Errorf("error while getting Avatar URL: %s", err)
+		}
+
+		validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(val.OperatorAddress, val.SelfDelegateAddress, val.Description, val.Identity, avatarURL, val.Moniker, height))
+	}
+
+	return validatorsDescription
+}
+
