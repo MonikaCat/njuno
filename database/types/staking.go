@@ -41,19 +41,21 @@ type ValidatorDescriptionRow struct {
 	SelfDelegateAddress string         `db:"self_delegate_address"`
 	Moniker             sql.NullString `db:"moniker"`
 	Identity            sql.NullString `db:"identity"`
+	AvatarURL           sql.NullString `db:"avatar_url"`
 	Details             sql.NullString `db:"details"`
 	Height              int64          `db:"height"`
 }
 
 // NewValidatorDescriptionRow allows to build new ValidatorDescriptionRow instance
 func NewValidatorDescriptionRow(
-	valAddress, selfDelegateAddress, moniker, identity, details string, height int64,
+	valAddress, selfDelegateAddress, moniker, identity, avatarURL, details string, height int64,
 ) ValidatorDescriptionRow {
 	return ValidatorDescriptionRow{
 		ValAddress:          valAddress,
 		SelfDelegateAddress: selfDelegateAddress,
 		Moniker:             ToNullString(moniker),
 		Identity:            ToNullString(identity),
+		AvatarURL:           ToNullString(avatarURL),
 		Details:             ToNullString(details),
 		Height:              height,
 	}
@@ -65,6 +67,7 @@ func (v ValidatorDescriptionRow) Equal(w ValidatorDescriptionRow) bool {
 		v.SelfDelegateAddress == w.SelfDelegateAddress &&
 		v.Moniker == w.Moniker &&
 		v.Identity == w.Identity &&
+		v.AvatarURL == w.AvatarURL &&
 		v.Details == w.Details &&
 		v.Height == w.Height
 }

@@ -106,18 +106,20 @@ type ValidatorDescription struct {
 	Description         string
 	Identity            string
 	Moniker             string
+	AvatarURL           string
 	Height              int64
 }
 
 // NewValidatorDescription returns a new ValidatorDescription object
 func NewValidatorDescription(
-	opAddr, selfDelegateAddress, description, identity string, moniker string, height int64,
+	opAddr, selfDelegateAddress, description, identity, avatarURL, moniker string, height int64,
 ) ValidatorDescription {
 	return ValidatorDescription{
 		OperatorAddress:     opAddr,
 		SelfDelegateAddress: selfDelegateAddress,
 		Description:         description,
 		Identity:            identity,
+		AvatarURL:           avatarURL,
 		Moniker:             moniker,
 		Height:              height,
 	}

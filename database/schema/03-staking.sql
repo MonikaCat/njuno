@@ -13,7 +13,7 @@ CREATE TABLE validator_voting_power
 (
     validator_address     TEXT   NOT NULL UNIQUE,
     self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
-    voting_power          BIGINT NOT NULL,
+    voting_power          TEXT   NOT NULL DEFAULT '0',
     height                BIGINT NOT NULL
 );
 CREATE INDEX validator_voting_power_height_index ON validator_voting_power (height);
@@ -26,6 +26,7 @@ CREATE TABLE validator_description
     self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
     moniker               TEXT,
     identity              TEXT,
+    avatar_url            TEXT,
     details               TEXT,
     height                BIGINT NOT NULL
 );
@@ -38,7 +39,7 @@ CREATE TABLE validator_commission
     validator_address     TEXT   NOT NULL UNIQUE,
     self_delegate_address TEXT   NOT NULL PRIMARY KEY REFERENCES validator (self_delegate_address),
     commission            TEXT   NOT NULL,
-    min_self_delegation   TEXT   NOT NULL,
+    min_self_delegation   TEXT   NOT NULL DEFAULT '0',
     height                BIGINT NOT NULL
 );
 CREATE INDEX validator_commission_height_index ON validator_commission (height);

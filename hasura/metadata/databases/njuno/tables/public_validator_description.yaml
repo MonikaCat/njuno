@@ -13,6 +13,7 @@ select_permissions:
     - self_delegate_address
     - moniker
     - identity
+    - avatar_url
     - details
     - height
     filter: {}
