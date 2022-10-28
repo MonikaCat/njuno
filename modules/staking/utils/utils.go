@@ -2,11 +2,13 @@ package utils
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/forbole/njuno/modules/staking/keybase"
 	types "github.com/forbole/njuno/types"
 	"github.com/forbole/njuno/types/config"
 	"github.com/rs/zerolog/log"
@@ -51,10 +53,14 @@ func ParseValidatorsList(validatorsList *types.ValidatorsList, height int64) ([]
 
 	for _, val := range validatorsList.Validators {
 		consAddr := sdk.ConsAddress(val.Validator.Address)
+		avatarURL, err := keybase.GetAvatarURL(val.Validator.Identity)
+		if err != nil {
+			fmt.Printf("error while getting Avatar URL: %s", err)
+		}
 
 		validators = append(validators, types.NewValidator(consAddr.String(), val.Validator.Address, height))
 		validatorsCommission = append(validatorsCommission, types.NewValidatorCommission(consAddr.String(), val.Validator.Address, val.Validator.Commission, val.Validator.MinSelfDelegation, height))
-		validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr.String(), val.Validator.Address, val.Validator.Details, val.Validator.Identity, val.Validator.Moniker, height))
+		validatorsDescription = append(validatorsDescription, types.NewValidatorDescription(consAddr.String(), val.Validator.Address, val.Validator.Details, val.Validator.Identity, avatarURL, val.Validator.Moniker, height))
 		validatorsStatus = append(validatorsStatus, types.NewValidatorStatus(consAddr.String(), val.Validator.Address, val.Validator.InActiveSet, val.Validator.Jailed, val.Validator.Tombstoned, height))
 		validatorsVP = append(validatorsVP, types.NewValidatorVotingPower(consAddr.String(), val.Validator.Address, val.Validator.VotingPower, height))
 	}

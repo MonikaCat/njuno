@@ -27,6 +27,7 @@ func (db *Database) GetValidatorsDescription() ([]types.ValidatorDescription, er
 				index.SelfDelegateAddress,
 				dbtypes.ToString(index.Details),
 				dbtypes.ToString(index.Identity),
+				dbtypes.ToString(index.AvatarURL),
 				dbtypes.ToString(index.Moniker),
 				index.Height))
 	}
@@ -185,18 +186,19 @@ WHERE validator_commission.height <= excluded.height`
 
 // SaveValidatorDescription save validators description in database.
 func (db *Database) SaveValidatorDescription(description []types.ValidatorDescription) error {
-	stmt := `INSERT INTO validator_description (validator_address, self_delegate_address, moniker, identity, details, height) VALUES `
+	stmt := `INSERT INTO validator_description (validator_address, self_delegate_address, moniker, identity, avatar_url, details, height) VALUES `
 
 	var descriptionList []interface{}
 	for i, desc := range description {
-		si := i * 6
+		si := i * 7
 
-		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4, si+5, si+6)
+		stmt += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, $%d, $%d),", si+1, si+2, si+3, si+4, si+5, si+6, si+7)
 		descriptionList = append(descriptionList,
 			dbtypes.ToNullString(desc.OperatorAddress),
 			desc.SelfDelegateAddress,
 			dbtypes.ToNullString(desc.Moniker),
 			dbtypes.ToNullString(desc.Identity),
+			dbtypes.ToNullString(desc.AvatarURL),
 			dbtypes.ToNullString(desc.Description),
 			desc.Height)
 	}
@@ -205,8 +207,9 @@ func (db *Database) SaveValidatorDescription(description []types.ValidatorDescri
 	stmt += ` ON CONFLICT (self_delegate_address) DO UPDATE
     SET validator_address = excluded.validator_address,
 		moniker = excluded.moniker, 
-        details = excluded.details,
 		identity = excluded.identity,
+		avatar_url = excluded.avatar_url,
+        details = excluded.details,
         height = excluded.height
 WHERE validator_description.height <= excluded.height`
 	_, err := db.Sql.Exec(stmt, descriptionList...)
