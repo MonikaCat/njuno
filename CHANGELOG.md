@@ -1,6 +1,9 @@
 ## Unreleased
 
 ### Changes
+- ([\#36](https://github.com/forbole/njuno/pull/36)) Added InsecureSkipVerify flag to httpClient
+- ([\#35](https://github.com/forbole/njuno/pull/35)) Stored validators `avatar_url` in database
+
 
 #### Dockerfile
 - ([\#20](https://github.com/forbole/njuno/pull/20)) Updated `Dockerfile`
