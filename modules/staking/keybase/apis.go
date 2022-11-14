@@ -10,7 +10,7 @@ import (
 // GetAvatarURL returns the avatar URL from the given identity.
 // If no identity is found, it returns an empty string instead.
 func GetAvatarURL(identity string) (string, error) {
-	if len(identity) < 10 {
+	if len(identity) < 15 {
 		return "", nil
 	}
 
