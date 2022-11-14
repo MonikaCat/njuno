@@ -22,6 +22,9 @@ func (m *Module) RunAdditionalOperations() error {
 	// -- Register the Account Balance endpoint --
 	worker.RegisterHandler("/account_balance", handlers.AccountBalanceHandler)
 
+	// -- Staking Delegator --
+	worker.RegisterHandler("/delegation_total", handlers.TotalDelegationsAmountHandler)
+
 	// Listen for and trap any OS signal to gracefully shutdown and exit
 	m.trapSignal()
 

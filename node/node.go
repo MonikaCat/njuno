@@ -53,6 +53,10 @@ type Node interface {
 	// An error is returned if the query fails.
 	Supply() (sdk.Coins, error)
 
+	// TotalDelegations queries the total value of delegated tokens
+	// for given address. An error is returned if the query fails.
+	TotalDelegations(address string) (sdk.Coin, error)
+
 	// Validators returns all the known Tendermint validators for a given block
 	// height. An error is returned if the query fails.
 	Validators(height int64) (*tmctypes.ResultValidators, error)
