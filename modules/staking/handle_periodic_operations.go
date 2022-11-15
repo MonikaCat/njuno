@@ -95,12 +95,13 @@ func (m *Module) updateStakingPool(height int64, validatorsVP []types.ValidatorV
 	for _, vp := range validatorsVP {
 		v, err := strconv.ParseInt(vp.VotingPower, 10, 64)
 		if err != nil {
-			fmt.Errorf("failed to parse voting power from string to int: %s", err)
+			log.Error().Str("module", "staking").Err(err).Int64("height", height).
+				Msg("failed to parse voting power from string to int")
 		}
 		bondedTokens += v
 	}
 
-	// Calculate not bonded tokens by substracting bonded tokens
+	// Calculate not bonded tokens by subtracting bonded tokens
 	// from the total token supply value
 	var notBondedTokens = totalTokenSupply - bondedTokens
 
