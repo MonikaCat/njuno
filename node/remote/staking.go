@@ -8,6 +8,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/forbole/njuno/types"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
@@ -74,11 +75,11 @@ func (cp *Node) TotalDelegations(address string) (sdk.Coin, error) {
 		return sdk.Coin{}, fmt.Errorf("error while processing total delegations value of address %s: %s", address, err)
 	}
 
-	var delegation stakingtypes.DelegationResponse
+	var delegation types.QueryTotalDelegationsResponse
 	err = json.Unmarshal(bz, &delegation)
 	if err != nil {
 		return sdk.Coin{}, fmt.Errorf("error while unmarshaling total delegations value of address %s: %s", address, err)
 	}
 
-	return delegation.Balance, nil
+	return delegation.DelegationResponses[0].Balance, nil
 }

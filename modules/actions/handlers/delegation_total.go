@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/forbole/njuno/modules/actions/types"
-
 	"github.com/rs/zerolog/log"
 )
 
@@ -18,8 +18,7 @@ func TotalDelegationsAmountHandler(ctx *types.Context, payload *types.Payload) (
 		return nil, fmt.Errorf("error while getting account delegations value: %s", err)
 	}
 
-	return types.Coin{
-		Amount: balance.Amount.String(),
-		Denom:  balance.Denom,
+	return types.Balance{
+		Coins: types.ConvertCoins(sdk.NewCoins(balance)),
 	}, nil
 }

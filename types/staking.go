@@ -1,5 +1,7 @@
 package types
 
+import sdk "github.com/cosmos/cosmos-sdk/types"
+
 // DoubleSignEvidence represent a double sign evidence on each tendermint block
 type DoubleSignEvidence struct {
 	VoteA  DoubleSignVote
@@ -190,4 +192,15 @@ func NewValidatorStatus(valConsAddr, selfDelegateAddress, inActiveSet, jailed, t
 		Tombstoned:          tombstoned,
 		Height:              height,
 	}
+}
+
+// DelegationResponses represents the total delegation value
+// of each address
+type DelegationResponses struct {
+	Balance sdk.Coin `json:"balance"`
+}
+
+// QueryAllBalancesResponse contains the account total delegation value
+type QueryTotalDelegationsResponse struct {
+	DelegationResponses []DelegationResponses `json:"delegation_responses"`
 }
