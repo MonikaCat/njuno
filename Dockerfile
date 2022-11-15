@@ -42,6 +42,7 @@ RUN set -ex \
     && apt-get install git build-essential libssl-dev pkg-config clang -y
 RUN git clone https://github.com/MonikaCat/nomic.git /home/nomic
 WORKDIR /home/nomic
+RUN git fetch && git checkout njuno-update
 RUN cargo build --locked
 
 # Copy over binaries from the build-env
