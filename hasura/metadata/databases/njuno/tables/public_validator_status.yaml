@@ -1,0 +1,19 @@
+table:
+  name: validator_status
+  schema: public
+object_relationships:
+- name: validator
+  using:
+    foreign_key_constraint_on: self_delegate_address
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - in_active_set
+    - jailed
+    - self_delegate_address
+    - tombstoned
+    - validator_address
+    - height
+    filter: {}
+  role: anonymous
