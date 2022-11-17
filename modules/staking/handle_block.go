@@ -17,9 +17,6 @@ func (m *Module) HandleBlock(
 	// Update double sign evidences
 	go m.updateDoubleSignEvidence(block.Block.Height, block.Block.Evidence.Evidence)
 
-	// Update staking pool
-	go m.updateStakingPool(block.Block.Height)
-
 	return nil
 }
 
@@ -63,25 +60,5 @@ func (m *Module) updateDoubleSignEvidence(height int64, evidenceList tmtypes.Evi
 			return
 		}
 
-	}
-}
-
-// updateStakingPool reads the current staking pool and stores its value inside the database
-func (m *Module) updateStakingPool(height int64) {
-	log.Debug().Str("module", "staking").Int64("height", height).
-		Msg("updating staking pool")
-
-	stakingPool, err := m.source.StakingPool()
-	if err != nil {
-		log.Error().Str("module", "staking").Err(err).Int64("height", height).
-			Msg("error while getting staking pool")
-		return
-	}
-
-	err = m.db.SaveStakingPool(types.NewStakingPool(stakingPool.BondedTokens, stakingPool.NotBondedTokens, height))
-	if err != nil {
-		log.Error().Str("module", "staking").Err(err).Int64("height", height).
-			Msg("error while saving staking pool")
-		return
 	}
 }

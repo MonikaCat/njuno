@@ -16,6 +16,20 @@ actions:
       name: Content-Type
   permissions:
   - role: anonymous
+- name: action_delegation_total
+  definition:
+    kind: synchronous
+    handler: "{{ACTION_BASE_URL}}/delegation_total"
+    output_type: ActionBalance
+    arguments:
+    - name: address
+      type: String!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
 
 ############### CUSTOM TYPES ###############
 custom_types:

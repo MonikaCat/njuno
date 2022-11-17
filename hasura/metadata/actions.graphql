@@ -5,6 +5,12 @@ type Query {
     ): ActionBalance
 }
 
+type Query {
+    action_delegation_total(
+        address: String!
+    ): ActionBalance
+}
+
 type ActionBalance {
     coins: [ActionCoin]
 }

@@ -1,6 +1,7 @@
 package keybase
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,7 +11,7 @@ import (
 // GetAvatarURL returns the avatar URL from the given identity.
 // If no identity is found, it returns an empty string instead.
 func GetAvatarURL(identity string) (string, error) {
-	if len(identity) < 10 {
+	if len(identity) < 15 {
 		return "", nil
 	}
 
@@ -44,7 +45,11 @@ func GetAvatarURL(identity string) (string, error) {
 // queryKeyBase queries the Keybase APIs for the given endpoint, and de-serializes
 // the response as a JSON object inside the given ptr
 func queryKeyBase(endpoint string, ptr interface{}) error {
-	resp, err := http.Get("https://keybase.io/_/api/1.0" + endpoint)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+	resp, err := client.Get("https://keybase.io/_/api/1.0" + endpoint)
 	if err != nil {
 		return fmt.Errorf("error while querying keybase APIs: %s", err)
 	}

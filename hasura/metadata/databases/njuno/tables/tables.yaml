@@ -18,4 +18,5 @@
 - "!include public_validator_commission.yaml"
 - "!include public_validator.yaml"
 - "!include public_validator_description.yaml"
+- "!include public_validator_status.yaml"
 - "!include public_validator_voting_power.yaml"

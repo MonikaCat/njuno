@@ -16,10 +16,7 @@
 #
 # To exit the bash, just execute
 # > exit
-FROM golang:alpine AS build-env
-
-# Set up dependencies
-ENV PACKAGES curl make git libc-dev bash gcc linux-headers eudev-dev py-pip
+FROM golang:bullseye AS build-env
 
 # Set working directory for the build
 WORKDIR /go/src/github.com/forbole/njuno
@@ -28,20 +25,30 @@ WORKDIR /go/src/github.com/forbole/njuno
 COPY . .
 
 # Install minimum necessary dependencies, build Cosmos SDK, remove packages
-RUN apk update
-RUN apk add --no-cache $PACKAGES && \
+RUN apt-get update
+RUN apt-get install curl make git build-essential libssl-dev pkg-config clang -y && \
     make install
 
 # Final image
-FROM alpine:edge
+FROM rust:bullseye as build-nomic
 
 # Install ca-certificates
-RUN apk add --update ca-certificates
 WORKDIR /home
 
 # Install bash
-RUN apk add --no-cache bash
+RUN set -ex \
+    && sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list \
+    && apt-get update \
+    && apt-get install git build-essential libssl-dev pkg-config clang -y
+RUN git clone https://github.com/MonikaCat/nomic.git /home/nomic
+WORKDIR /home/nomic
+RUN git fetch && git checkout njuno-update
+RUN cargo build --locked
 
 # Copy over binaries from the build-env
+FROM debian:bullseye-slim
+#WORKDIR /njuno
+ENV HOME=/home/forbole
 COPY --from=build-env /go/bin/njuno /usr/bin/njuno
 COPY --from=build-env /go/src/github.com/forbole/njuno/modules/staking/utils/validators_query.sh $HOME/.njuno/validators_query.sh
+COPY --from=build-nomic /home/nomic/target/debug/nomic /usr/bin/nomic

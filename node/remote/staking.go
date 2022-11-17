@@ -6,7 +6,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	"github.com/forbole/njuno/types"
 	tmctypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
@@ -57,4 +59,27 @@ func (cp *Node) Validators(height int64) (*tmctypes.ResultValidators, error) {
 	}
 
 	return vals, nil
+}
+
+// TotalDelegations implements node.Node
+func (cp *Node) TotalDelegations(address string) (sdk.Coin, error) {
+	resp, err := http.Get(fmt.Sprintf("%s/cosmos/staking/v1beta1/delegations/%s", cp.RESTNode, address))
+	if err != nil {
+		return sdk.Coin{}, fmt.Errorf("error while getting total delegations value of address %s: %s", address, err)
+	}
+
+	defer resp.Body.Close()
+
+	bz, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return sdk.Coin{}, fmt.Errorf("error while processing total delegations value of address %s: %s", address, err)
+	}
+
+	var delegation types.QueryTotalDelegationsResponse
+	err = json.Unmarshal(bz, &delegation)
+	if err != nil {
+		return sdk.Coin{}, fmt.Errorf("error while unmarshaling total delegations value of address %s: %s", address, err)
+	}
+
+	return delegation.DelegationResponses[0].Balance, nil
 }
