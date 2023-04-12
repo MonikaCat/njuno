@@ -1,6 +1,6 @@
 module github.com/forbole/njuno
 
-go 1.19
+go 1.17
 
 require (
 	github.com/cosmos/cosmos-sdk v0.42.9
