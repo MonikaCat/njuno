@@ -6,7 +6,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.42.9
 	github.com/go-co-op/gocron v1.35.3
 	github.com/gogo/protobuf v1.3.3
-	github.com/gorilla/mux v1.8.0
+	github.com/gorilla/mux v1.8.1
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.9
 	github.com/prometheus/client_golang v1.17.0
